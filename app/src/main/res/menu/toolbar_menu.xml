@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/view_page"
+        android:title="View page" >
+        <menu />
+    </item>
+    <item
+        android:id="@+id/show_swiped"
+        android:title="Show swiped">
+        <menu>
+            <item
+                android:id="@+id/show_found"
+                android:checkable="true"
+                android:title="Found items" />
+            <item
+                android:id="@+id/show_delta"
+                android:checkable="true"
+                android:title="Delta busted items" />
+        </menu>
+    </item>
+</menu>
