@@ -42,15 +42,17 @@ public class MainActivity extends AppCompatActivity {
     MenuItem showDeltaItem;
     MenuItem showFoundItem;
 
+    boolean isDeltaChecked = false;
+    boolean isFoundChecked = false;
+
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerAdapter;
+    int selectedPosition;
 
     List<ProductDetails> resultList = new ArrayList<>();
     HashMap<ProductDetails, Integer> swipedItems = new HashMap<>();
     ProductDetails lastItem;
     int lastPosition = 0;
-    static final int TYPE_FOUND = 0;
-    static final int TYPE_DELTA = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,15 +205,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 snackbar.show();
 
-                resultList.remove(lastItem);
+                resultList.remove(lastPosition);
                 recyclerAdapter.notifyItemRemoved(lastPosition);
                 recyclerAdapter.notifyItemRangeChanged(lastPosition, resultList.size());
 
-                if (direction == ItemTouchHelper.LEFT) {
-                    showSwipedItems(TYPE_DELTA);
-                } else {
-                    showSwipedItems(TYPE_FOUND);
-                }
+                updateShowSwipedItems();
             }
         };
 
@@ -226,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
         showDeltaItem = menu.findItem(R.id.show_delta);
         showFoundItem = menu.findItem(R.id.show_found);
+
         return true;
     }
 
@@ -250,13 +249,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.show_delta:
+                isDeltaChecked = !isDeltaChecked;
                 item.setChecked(!item.isChecked());
-                showSwipedItems(TYPE_DELTA);
+                updateShowSwipedItems();
                 break;
 
             case R.id.show_found:
+                isFoundChecked = !isFoundChecked;
                 item.setChecked(!item.isChecked());
-                showSwipedItems(TYPE_FOUND);
+                updateShowSwipedItems();
                 break;
 
             default:
@@ -275,47 +276,57 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void showSwipedItems(int type) {
+    public void updateShowSwipedItems() {
+        System.out.println("Delta : " + isDeltaChecked + " || Found : " + isFoundChecked);
         HashMap<ProductDetails, Integer> tempMap = new HashMap<>();
         tempMap.putAll(swipedItems);
-        switch (type) {
-            case TYPE_DELTA:
-                for (ProductDetails item : tempMap.keySet()) {
-                    if (item.deltabusted) {
-                        int pos = swipedItems.get(item);
-                        if (showDeltaItem.isChecked()) {
-                            resultList.add(pos, item);
-                            swipedItems.remove(item);
-                            recyclerAdapter.notifyItemInserted(pos);
-                            recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-                        } else {
-                            swipedItems.put(item, pos);
-                            resultList.remove(item);
-                            recyclerAdapter.notifyItemRemoved(pos);
-                            recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-                        }
-                    }
-                }
+
+        for (ProductDetails item : swipedItems.keySet()) {
+            int pos = swipedItems.get(item);
+            if (item.deltabusted && isDeltaChecked) {
+                resultList.add(pos, item);
+                recyclerAdapter.notifyItemInserted(pos);
+                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
+            } else if (item.deltabusted && !isDeltaChecked && resultList.get(pos).sku.contains(item.sku)) {
+                resultList.remove(pos);
+                recyclerAdapter.notifyItemRemoved(pos);
+                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
+            }
+
+            if (item.found && isFoundChecked) {
+                resultList.add(pos, item);
+                recyclerAdapter.notifyItemInserted(pos);
+                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
+            } else if (item.found && !isFoundChecked && resultList.get(pos).sku.contains(item.sku)) {
+                System.out.println("Item Removed");
+                resultList.remove(pos);
+                recyclerAdapter.notifyItemRemoved(pos);
+                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected (MenuItem item) {
+        switch (item.getOrder()) {
+            case 0:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(resultList.get(selectedPosition).url));
+                startActivity(intent);
                 break;
 
-            case TYPE_FOUND:
-                for (ProductDetails item : tempMap.keySet()) {
-                    if (item.found) {
-                        int pos = swipedItems.get(item);
-                        if (showFoundItem.isChecked()) {
-                            resultList.add(pos, item);
-                            swipedItems.remove(item);
-                            recyclerAdapter.notifyItemInserted(pos);
-                            recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-                        } else {
-                            swipedItems.put(item, pos);
-                            resultList.remove(item);
-                            recyclerAdapter.notifyItemRemoved(pos);
-                            recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-                        }
-                    }
+            case 1:
+                openImage(resultList.get(selectedPosition).pageNum);
+                break;
+
+            case 2:
+                swipedItems.remove(resultList.get(selectedPosition));
+                if (resultList.get(selectedPosition).deltabusted) {
+                    resultList.get(selectedPosition).deltabusted = false;
+                } else if (resultList.get(selectedPosition).found) {
+                    resultList.get(selectedPosition).found = false;
                 }
                 break;
         }
+        return true;
     }
 }

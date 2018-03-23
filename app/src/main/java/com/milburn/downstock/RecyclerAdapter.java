@@ -1,11 +1,12 @@
 package com.milburn.downstock;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private ImageView item_image;
         private TextView multiple_plano;
         private TextView page_num;
+        private CheckBox item_selected;
 
         public ViewHolder(View v) {
             super(v);
@@ -40,6 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             item_image = v.findViewById(R.id.item_image);
             multiple_plano = v.findViewById(R.id.multiple_plano);
             page_num = v.findViewById(R.id.page_num);
+            item_selected = v.findViewById(R.id.item_selected);
         }
     }
 
@@ -61,15 +64,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(itemDataset.get(position).url));
-                context.startActivity(intent);
+                context.selectedPosition = position;
+                view.showContextMenu();
+            }
+        });
+
+        holder.view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.setHeaderTitle("Item options");
+                menu.add(Menu.NONE, v.getId(), 0, "Open item URL");
+                menu.add(Menu.NONE, v.getId(), 1, "View page");
+
+                if (itemDataset.get(position).found) {
+                    menu.add(Menu.NONE, v.getId(), 2, "Remove from 'found'");
+                } else if (itemDataset.get(position).deltabusted) {
+                    menu.add(Menu.NONE, v.getId(), 2, "Remove from 'deltabusted'");
+                }
             }
         });
 
         holder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                context.openImage(itemDataset.get(position).pageNum);
+                view.setSelected(!view.isSelected());
+                holder.item_selected.setVisibility(holder.view.isSelected() ? View.VISIBLE : View.GONE);
                 return true;
             }
         });
@@ -82,9 +101,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.item_image.setImageBitmap(itemDataset.get(position).imageBit);
         holder.page_num.setText("Page " + (itemDataset.get(position).pageNum+1));
 
-        if (!itemDataset.get(position).multiple_plano) {
-            holder.multiple_plano.setVisibility(View.GONE);
-        }
+        holder.multiple_plano.setVisibility(itemDataset.get(position).multiple_plano ? View.VISIBLE : View.GONE);
+        holder.item_selected.setVisibility(holder.view.isSelected() ? View.VISIBLE : View.GONE);
     }
 
     @Override
