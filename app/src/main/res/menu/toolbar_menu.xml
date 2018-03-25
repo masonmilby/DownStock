@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/view_page"
@@ -8,16 +9,9 @@
     </item>
     <item
         android:id="@+id/show_swiped"
-        android:title="Show swiped">
-        <menu>
-            <item
-                android:id="@+id/show_found"
-                android:checkable="true"
-                android:title="Found items" />
-            <item
-                android:id="@+id/show_delta"
-                android:checkable="true"
-                android:title="Delta busted items" />
-        </menu>
-    </item>
+        android:checkable="true"
+        android:title="Show swiped items"></item>
+    <item
+        android:id="@+id/settings"
+        android:title="Settings" />
 </menu>

@@ -30,6 +30,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView multiple_plano;
         private TextView page_num;
         private CheckBox item_selected;
+        private TextView item_status;
+        private TextView item_stock;
 
         public ViewHolder(View v) {
             super(v);
@@ -43,6 +45,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             multiple_plano = v.findViewById(R.id.multiple_plano);
             page_num = v.findViewById(R.id.page_num);
             item_selected = v.findViewById(R.id.item_selected);
+            item_status = v.findViewById(R.id.item_status);
+            item_stock = v.findViewById(R.id.item_stock);
         }
     }
 
@@ -65,7 +69,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 context.selectedPosition = position;
-                view.showContextMenu();
+                if (!context.selectionState) {
+                    view.showContextMenu();
+                } else {
+                    itemDataset.get(position).selected = !itemDataset.get(position).selected;
+                    notifyItemChanged(position);
+                }
             }
         });
 
@@ -75,11 +84,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 menu.setHeaderTitle("Item options");
                 menu.add(Menu.NONE, v.getId(), 0, "Open item URL");
                 menu.add(Menu.NONE, v.getId(), 1, "View page");
+                menu.add(Menu.NONE, v.getId(), 2, "Remove item");
 
                 if (itemDataset.get(position).found) {
-                    menu.add(Menu.NONE, v.getId(), 2, "Remove from 'found'");
+                    menu.add(Menu.NONE, v.getId(), 3, "Remove from 'found'");
                 } else if (itemDataset.get(position).deltabusted) {
-                    menu.add(Menu.NONE, v.getId(), 2, "Remove from 'deltabusted'");
+                    menu.add(Menu.NONE, v.getId(), 3, "Remove from 'deltabusted'");
                 }
             }
         });
@@ -87,8 +97,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                view.setSelected(!view.isSelected());
-                holder.item_selected.setVisibility(holder.view.isSelected() ? View.VISIBLE : View.GONE);
+                context.selectionState = true;
+                itemDataset.get(position).selected = !itemDataset.get(position).selected;;
+                notifyItemChanged(position);
                 return true;
             }
         });
@@ -101,8 +112,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.item_image.setImageBitmap(itemDataset.get(position).imageBit);
         holder.page_num.setText("Page " + (itemDataset.get(position).pageNum+1));
 
+        if (itemDataset.get(position).inStock && itemDataset.get(position).stores.get(0).lowStock) {
+            holder.item_stock.setText("Few in stock");
+        } else if (itemDataset.get(position).inStock) {
+            holder.item_stock.setText("In stock");
+        } else {
+            holder.item_stock.setText("Not in stock");
+        }
+
         holder.multiple_plano.setVisibility(itemDataset.get(position).multiple_plano ? View.VISIBLE : View.GONE);
-        holder.item_selected.setVisibility(holder.view.isSelected() ? View.VISIBLE : View.GONE);
+        holder.item_selected.setVisibility(itemDataset.get(position).selected ? View.VISIBLE : View.GONE);
+
+        if (itemDataset.get(position).deltabusted) {
+            holder.item_status.setText("|  Deltabusted");
+            holder.item_status.setVisibility(View.VISIBLE);
+        } else if (itemDataset.get(position).found) {
+            holder.item_status.setText("|  Found");
+            holder.item_status.setVisibility(View.VISIBLE);
+        } else {
+            holder.item_status.setVisibility(View.GONE);
+        }
     }
 
     @Override

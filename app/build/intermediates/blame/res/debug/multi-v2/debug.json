@@ -2691,9 +2691,11 @@
                 {
                     "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/values/strings.xml",
                     "from": {
-                        "startLines": "-1",
-                        "startColumns": "-1",
-                        "startOffsets": "-1"
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "46",
+                        "endOffsets": "58"
                     },
                     "to": {
                         "startLines": "814",
@@ -2798,11 +2800,9 @@
                 {
                     "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/values/keys.xml",
                     "from": {
-                        "startLines": "4,3,5,-1",
-                        "startColumns": "4,4,4,-1",
-                        "startOffsets": "192,115,272,-1",
-                        "endColumns": "79,76,84,-1",
-                        "endOffsets": "267,187,352,-1"
+                        "startLines": "-1,-1,-1,-1",
+                        "startColumns": "-1,-1,-1,-1",
+                        "startOffsets": "-1,-1,-1,-1"
                     },
                     "to": {
                         "startLines": "811,812,813,816",

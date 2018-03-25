@@ -2,10 +2,11 @@ package com.milburn.downstock;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -29,43 +31,68 @@ import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-
     TextRecognizer textRecognizer;
     List<Uri> imageList = new ArrayList<>();
-    CoordinatorLayout coordinatorLayout;
-    MenuItem showDeltaItem;
-    MenuItem showFoundItem;
+    ProgressBar progressBar;
 
-    boolean isDeltaChecked = false;
-    boolean isFoundChecked = false;
+    MenuItem showSwipedItems;
+    boolean isShowSwipedChecked = false;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerAdapter;
     int selectedPosition;
+    boolean selectionState = false;
+    int numItemsSelected = 0;
 
     List<ProductDetails> resultList = new ArrayList<>();
-    HashMap<ProductDetails, Integer> swipedItems = new HashMap<>();
+    List<ProductDetails> swipedItems = new ArrayList<>();
     ProductDetails lastItem;
     int lastPosition = 0;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_main);
-        coordinatorLayout = findViewById(R.id.coordinator);
+        recyclerView = findViewById(R.id.recycler);
+        progressBar = findViewById(R.id.progressBar);
 
         MobileAds.initialize(this, this.getString(R.string.admob_key));
         AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        initialize();
+        if (sharedPreferences.getString("store_id_pref", "0").contentEquals("0")) {
+            startActivityForResult(new Intent(this, SettingsActivity.class), 0);
+        } else {
+            initialize();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            initialize();
+        } else if (requestCode == 1 && resultCode == RESULT_OK) {
+            List<Uri> uriList = new ArrayList<>();
+            if (data.getClipData() != null) {
+                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                    uriList.add(data.getClipData().getItemAt(i).getUri());
+                }
+            } else {
+                uriList.add(data.getData());
+            }
+
+            getItems(uriList);
+        }
     }
 
     private void initialize() {
@@ -92,22 +119,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
         startActivityForResult(intent, 1);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            List<Uri> uriList = new ArrayList<>();
-            if (data.getClipData() != null) {
-                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                    uriList.add(data.getClipData().getItemAt(i).getUri());
-                }
-            } else {
-                uriList.add(data.getData());
-            }
-
-            getItems(uriList);
-        }
     }
 
     private void getItems(List<Uri> uriList) {
@@ -154,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupRecycler(final List<ProductDetails> result) {
         resultList = result;
-        recyclerView = findViewById(R.id.recycler);
         recyclerAdapter = new RecyclerAdapter(resultList, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -164,14 +174,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                swipedItems.remove(lastItem);
                 lastItem.deltabusted = false;
                 lastItem.found = false;
                 resultList.add(lastPosition, lastItem);
-                swipedItems.remove(lastItem);
                 recyclerAdapter.notifyItemInserted(lastPosition);
                 recyclerAdapter.notifyItemRangeChanged(lastPosition, resultList.size());
 
-                recyclerView.scrollToPosition(lastPosition);
+                recyclerView.smoothScrollToPosition(lastPosition);
             }
         }
 
@@ -185,30 +195,27 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 lastPosition = viewHolder.getAdapterPosition();
                 lastItem = resultList.get(lastPosition);
-                Snackbar snackbar = Snackbar.make(coordinatorLayout, "0", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(recyclerView, "0", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Undo", new UndoListener());
 
                 switch (direction) {
                     case ItemTouchHelper.LEFT:
                         lastItem.deltabusted = true;
                         lastItem.found = false;
-                        swipedItems.put(lastItem, lastPosition);
+                        swipedItems.add(lastItem);
                         snackbar.setText("Product delta busted");
                         break;
 
                     case ItemTouchHelper.RIGHT:
                         lastItem.deltabusted = false;
                         lastItem.found = true;
-                        swipedItems.put(lastItem, lastPosition);
+                        swipedItems.add(lastItem);
                         snackbar.setText("Product found");
                         break;
                 }
                 snackbar.show();
 
-                resultList.remove(lastPosition);
-                recyclerAdapter.notifyItemRemoved(lastPosition);
-                recyclerAdapter.notifyItemRangeChanged(lastPosition, resultList.size());
-
+                removeItem(lastPosition);
                 updateShowSwipedItems();
             }
         };
@@ -222,8 +229,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu, menu);
 
-        showDeltaItem = menu.findItem(R.id.show_delta);
-        showFoundItem = menu.findItem(R.id.show_found);
+        showSwipedItems = menu.findItem(R.id.show_swiped);
 
         return true;
     }
@@ -246,18 +252,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.show_swiped:
-                break;
-
-            case R.id.show_delta:
-                isDeltaChecked = !isDeltaChecked;
+                isShowSwipedChecked = !isShowSwipedChecked;
                 item.setChecked(!item.isChecked());
                 updateShowSwipedItems();
                 break;
 
-            case R.id.show_found:
-                isFoundChecked = !isFoundChecked;
-                item.setChecked(!item.isChecked());
-                updateShowSwipedItems();
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
 
             default:
@@ -277,32 +278,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateShowSwipedItems() {
-        System.out.println("Delta : " + isDeltaChecked + " || Found : " + isFoundChecked);
-        HashMap<ProductDetails, Integer> tempMap = new HashMap<>();
-        tempMap.putAll(swipedItems);
-
-        for (ProductDetails item : swipedItems.keySet()) {
-            int pos = swipedItems.get(item);
-            if (item.deltabusted && isDeltaChecked) {
-                resultList.add(pos, item);
-                recyclerAdapter.notifyItemInserted(pos);
-                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-            } else if (item.deltabusted && !isDeltaChecked && resultList.get(pos).sku.contains(item.sku)) {
-                resultList.remove(pos);
-                recyclerAdapter.notifyItemRemoved(pos);
-                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
+        for (ProductDetails item : swipedItems) {
+            if (!resultList.contains(item) & isShowSwipedChecked) {
+                insertItem(0, item);
+            } else if (resultList.contains(item) & !isShowSwipedChecked) {
+                int pos = resultList.indexOf(item);
+                removeItem(pos);
             }
+        }
 
-            if (item.found && isFoundChecked) {
-                resultList.add(pos, item);
-                recyclerAdapter.notifyItemInserted(pos);
-                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-            } else if (item.found && !isFoundChecked && resultList.get(pos).sku.contains(item.sku)) {
-                System.out.println("Item Removed");
-                resultList.remove(pos);
-                recyclerAdapter.notifyItemRemoved(pos);
-                recyclerAdapter.notifyItemRangeChanged(pos, resultList.size());
-            }
+        if (isShowSwipedChecked & swipedItems.size() >= 1) {
+            recyclerView.smoothScrollToPosition(0);
         }
     }
 
@@ -319,14 +305,46 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case 2:
+                removeItem(selectedPosition);
+                break;
+
+            case 3:
                 swipedItems.remove(resultList.get(selectedPosition));
-                if (resultList.get(selectedPosition).deltabusted) {
-                    resultList.get(selectedPosition).deltabusted = false;
-                } else if (resultList.get(selectedPosition).found) {
-                    resultList.get(selectedPosition).found = false;
-                }
+                resultList.get(selectedPosition).deltabusted = false;
+                resultList.get(selectedPosition).found = false;
+                recyclerAdapter.notifyItemChanged(selectedPosition);
                 break;
         }
         return true;
+    }
+
+    public void insertItem(int position, ProductDetails item) {
+        resultList.add(position, item);
+        recyclerAdapter.notifyItemInserted(position);
+        recyclerAdapter.notifyItemRangeChanged(position, resultList.size());
+    }
+
+    public void removeItem(int position) {
+        resultList.remove(position);
+        recyclerAdapter.notifyItemRemoved(position);
+        recyclerAdapter.notifyItemRangeChanged(position, resultList.size());
+    }
+
+    public void showProgress(final boolean showBar, final boolean increment, final int progress) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (showBar) {
+                    if (increment) {
+                        progressBar.incrementProgressBy(progress);
+                    } else {
+                        progressBar.setProgress(progress);
+                    }
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 }
