@@ -1,12 +1,12 @@
 package com.milburn.downstock;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.jsoup.Jsoup;
 
@@ -23,10 +23,12 @@ public class BBYApi extends AsyncTask<List<String[]>, Void, List<ProductDetails>
 
     public AsyncResponse delegate = null;
     private MainActivity context;
+    private SharedPreferences sharedPreferences;
 
     public BBYApi(MainActivity con, AsyncResponse asyncResponse) {
         context = con;
         delegate = asyncResponse;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(con);
     }
 
     public interface AsyncResponse {
@@ -48,7 +50,7 @@ public class BBYApi extends AsyncTask<List<String[]>, Void, List<ProductDetails>
                 }
             } else {
                 String itemUrl = "https://api.bestbuy.com/v1/products/" + item[0] + ".json?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&apiKey=" + context.getString(R.string.bbyapi);
-                String availUrl = "https://api.bestbuy.com/v1/products/" + item[0] + "/stores.json?storeId=161&apiKey=" + context.getString(R.string.bbyapi);
+                String availUrl = "https://api.bestbuy.com/v1/products/" + item[0] + "/stores.json?storeId="+ sharedPreferences.getString("store_id_pref", "0") + "&apiKey=" + context.getString(R.string.bbyapi);
                 String itemResult = null;
                 String availResult = null;
                 try {
