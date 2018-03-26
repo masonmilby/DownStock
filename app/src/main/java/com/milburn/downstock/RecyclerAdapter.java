@@ -1,9 +1,11 @@
 package com.milburn.downstock;
 
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -72,8 +74,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 if (!context.selectionState) {
                     view.showContextMenu();
                 } else {
-                    itemDataset.get(position).selected = !itemDataset.get(position).selected;
-                    notifyItemChanged(position);
+                    context.selectItem(position);
                 }
             }
         });
@@ -81,15 +82,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                MenuInflater inflater = context.getMenuInflater();
+                inflater.inflate(R.menu.context_menu, menu);
+
                 menu.setHeaderTitle("Item options");
-                menu.add(Menu.NONE, v.getId(), 0, "Open item URL");
-                menu.add(Menu.NONE, v.getId(), 1, "View page");
-                menu.add(Menu.NONE, v.getId(), 2, "Remove item");
 
                 if (itemDataset.get(position).found) {
-                    menu.add(Menu.NONE, v.getId(), 3, "Remove from 'found'");
+                    menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'found'");
                 } else if (itemDataset.get(position).deltabusted) {
-                    menu.add(Menu.NONE, v.getId(), 3, "Remove from 'deltabusted'");
+                    menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'deltabusted'");
                 }
             }
         });
@@ -97,9 +98,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                context.selectionState = true;
-                itemDataset.get(position).selected = !itemDataset.get(position).selected;;
-                notifyItemChanged(position);
+                context.selectItem(position);
                 return true;
             }
         });

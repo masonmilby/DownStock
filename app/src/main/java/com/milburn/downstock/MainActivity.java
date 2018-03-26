@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.util.SparseArray;
@@ -39,15 +40,17 @@ public class MainActivity extends AppCompatActivity {
     TextRecognizer textRecognizer;
     List<Uri> imageList = new ArrayList<>();
     ProgressBar progressBar;
+    Toolbar toolbar;
 
     MenuItem showSwipedItems;
     boolean isShowSwipedChecked = false;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerAdapter;
+
     int selectedPosition;
     boolean selectionState = false;
-    int numItemsSelected = 0;
+    List<ProductDetails> selectedItems = new ArrayList<>();
 
     List<ProductDetails> resultList = new ArrayList<>();
     List<ProductDetails> swipedItems = new ArrayList<>();
@@ -59,11 +62,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_main);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         recyclerView = findViewById(R.id.recycler);
         progressBar = findViewById(R.id.progressBar);
+        showProgress(false, false, 0);
 
         MobileAds.initialize(this, this.getString(R.string.admob_key));
         AdView adView = findViewById(R.id.adView);
@@ -195,6 +203,12 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 lastPosition = viewHolder.getAdapterPosition();
                 lastItem = resultList.get(lastPosition);
+
+                if (selectedItems.contains(lastItem)) {
+                    selectedItems.remove(lastItem);
+                }
+                lastItem.selected = false;
+
                 Snackbar snackbar = Snackbar.make(recyclerView, "0", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Undo", new UndoListener());
 
@@ -236,12 +250,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem viewPage = menu.findItem(R.id.view_page);
-        viewPage.getSubMenu().clear();
+        showSwipedItems.setVisible(swipedItems.size() != 0);
 
-        for (int i = 0; i < imageList.size(); i++) {
-            viewPage.getSubMenu().add(Menu.NONE, i, i, "Page " + (i+1));
+        MenuItem viewPage = menu.findItem(R.id.view_page);
+
+        if (imageList.size() == 0) {
+            viewPage.setVisible(false);
+        } else {
+            viewPage.getSubMenu().clear();
+
+            for (int i = 0; i < imageList.size(); i++) {
+                viewPage.getSubMenu().add(Menu.NONE, i, i, "Page " + (i+1));
+            }
+            viewPage.setVisible(true);
         }
+
         return true;
     }
 
@@ -294,21 +317,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected (MenuItem item) {
-        switch (item.getOrder()) {
-            case 0:
+        switch (item.getItemId()) {
+            case R.id.open_url:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(resultList.get(selectedPosition).url));
                 startActivity(intent);
                 break;
 
-            case 1:
+            case R.id.view_page:
                 openImage(resultList.get(selectedPosition).pageNum);
                 break;
 
-            case 2:
-                removeItem(selectedPosition);
+            case R.id.remove_item:
+                deleteItem(selectedPosition);
                 break;
 
-            case 3:
+            default:
                 swipedItems.remove(resultList.get(selectedPosition));
                 resultList.get(selectedPosition).deltabusted = false;
                 resultList.get(selectedPosition).found = false;
@@ -328,6 +351,35 @@ public class MainActivity extends AppCompatActivity {
         resultList.remove(position);
         recyclerAdapter.notifyItemRemoved(position);
         recyclerAdapter.notifyItemRangeChanged(position, resultList.size());
+    }
+
+    public void deleteItem(int position) {
+        if (swipedItems.contains(resultList.get(position))) {
+            swipedItems.remove(resultList.get(position));
+        }
+        removeItem(position);
+    }
+
+    public void selectItem(int position) {
+        resultList.get(position).selected = !resultList.get(position).selected;
+        if (resultList.get(position).selected) {
+            selectedItems.add(resultList.get(position));
+        } else {
+            resultList.get(position).selected = true;
+            selectedItems.remove(resultList.get(position));
+            resultList.get(position).selected = false;
+        }
+        recyclerAdapter.notifyItemChanged(position);
+
+        selectionState = selectedItems.size() != 0;
+
+        if (selectionState) {
+            toolbar.setTitle(selectedItems.size() + " selected");
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        } else {
+            toolbar.setTitle(R.string.app_name);
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
     }
 
     public void showProgress(final boolean showBar, final boolean increment, final int progress) {

@@ -24,6 +24,10 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-hdpi-v4/abc_btn_check_to_on_mtrl_015.png"
     },
     {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-mdpi_ic_delete.png.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-mdpi/ic_delete.png"
+    },
+    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_googleg_disabled_color_18.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/res/drawable-mdpi-v4/googleg_disabled_color_18.png"
     },
@@ -216,12 +220,12 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/res/color/common_google_signin_btn_text_light.xml"
     },
     {
-        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout-sw600dp-v13_design_layout_snackbar.xml.flat",
-        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/res/layout-sw600dp-v13/design_layout_snackbar.xml"
-    },
-    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/color_abc_tint_btn_checkable.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/color/abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout-sw600dp-v13_design_layout_snackbar.xml.flat",
+        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/res/layout-sw600dp-v13/design_layout_snackbar.xml"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4_abc_btn_check_to_on_mtrl_015.png.flat",
@@ -488,12 +492,16 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/res/drawable/design_snackbar_background.xml"
     },
     {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_googleg_standard_color_18.png.flat",
+        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/res/drawable-xhdpi-v4/googleg_standard_color_18.png"
+    },
+    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout-v16_notification_template_custom_big.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/5cd322dc7a08c39340e7506d0bf53848/res/layout-v16/notification_template_custom_big.xml"
     },
     {
-        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_googleg_standard_color_18.png.flat",
-        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/res/drawable-xhdpi-v4/googleg_standard_color_18.png"
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxxhdpi_ic_delete.png.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-xxxhdpi/ic_delete.png"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxxhdpi-v4_abc_btn_switch_to_on_mtrl_00012.9.png.flat",
@@ -532,16 +540,16 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-hdpi-v4/abc_list_divider_mtrl_alpha.9.png"
     },
     {
-        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable_abc_btn_colored_material.xml.flat",
-        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable/abc_btn_colored_material.xml"
-    },
-    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4_abc_btn_radio_to_on_mtrl_015.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xxhdpi-v4/abc_btn_radio_to_on_mtrl_015.png"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout_abc_list_menu_item_radio.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/layout/abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable_abc_btn_colored_material.xml.flat",
+        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable/abc_btn_colored_material.xml"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxxhdpi-v4_abc_tab_indicator_mtrl_alpha.9.png.flat",
@@ -582,6 +590,10 @@
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_abc_textfield_default_mtrl_alpha.9.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xhdpi-v4/abc_textfield_default_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xhdpi_ic_delete.png.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-xhdpi/ic_delete.png"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/color_abc_search_url_text.xml.flat",
@@ -864,6 +876,10 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xxxhdpi-v4/abc_ic_menu_selectall_mtrl_alpha.png"
     },
     {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxhdpi_ic_delete.png.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-xxhdpi/ic_delete.png"
+    },
+    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/anim_abc_slide_in_bottom.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/anim/abc_slide_in_bottom.xml"
     },
@@ -878,6 +894,10 @@
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_menu_share_mtrl_alpha.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-hdpi-v4/abc_ic_menu_share_mtrl_alpha.png"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout_activity_preferences.xml.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/layout/activity_preferences.xml"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4_common_google_signin_btn_icon_dark_normal_background.9.png.flat",
@@ -1024,6 +1044,10 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xhdpi-v4/abc_ic_menu_paste_mtrl_am_alpha.png"
     },
     {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-anydpi-v21_ic_delete.xml.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_delete.xml"
+    },
+    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_menu_selectall_mtrl_alpha.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-hdpi-v4/abc_ic_menu_selectall_mtrl_alpha.png"
     },
@@ -1078,6 +1102,10 @@
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout_notification_template_big_media.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/e68c865189c56bb4169cd9388eaf2859/res/layout/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-hdpi_ic_delete.png.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-hdpi/ic_delete.png"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_abc_btn_check_to_on_mtrl_000.png.flat",
@@ -1424,12 +1452,12 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xxxhdpi-v4/abc_ic_menu_cut_mtrl_alpha.png"
     },
     {
-        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/color_abc_tint_edittext.xml.flat",
-        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/color/abc_tint_edittext.xml"
-    },
-    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout_design_text_input_password_icon.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/res/layout/design_text_input_password_icon.xml"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/color_abc_tint_edittext.xml.flat",
+        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/color/abc_tint_edittext.xml"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",
@@ -1522,6 +1550,10 @@
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4_abc_ic_star_black_16dp.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xxhdpi-v4/abc_ic_star_black_16dp.png"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-ldpi_ic_delete.png.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/build/generated/res/pngs/debug/drawable-ldpi/ic_delete.png"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_common_google_signin_btn_icon_dark_normal_background.9.png.flat",
@@ -1954,6 +1986,10 @@
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout_abc_activity_chooser_view_list_item.xml.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/layout/abc_activity_chooser_view_list_item.xml"
+    },
+    {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/menu_context_menu.xml.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/menu/context_menu.xml"
     },
     {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable_notification_bg.xml.flat",

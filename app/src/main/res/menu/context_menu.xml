@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/open_url"
+        android:title="Open item URL" />
+    <item
+        android:id="@+id/view_page"
+        android:title="View page" />
+    <item
+        android:id="@+id/remove_item"
+        android:title="Remove item" />
+</menu>

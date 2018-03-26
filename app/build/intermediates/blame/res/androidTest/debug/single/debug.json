@@ -1500,6 +1500,10 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-xxhdpi-v4/abc_ic_star_half_black_16dp.png"
     },
     {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/androidTest/debug/layout_notification_template_custom_big.xml.flat",
+        "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/5cd322dc7a08c39340e7506d0bf53848/res/layout/notification_template_custom_big.xml"
+    },
+    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_abc_tab_indicator_mtrl_alpha.9.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/res/drawable-mdpi-v4/abc_tab_indicator_mtrl_alpha.9.png"
     },
