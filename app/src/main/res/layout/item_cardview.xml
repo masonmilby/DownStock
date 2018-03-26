@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:clickable="true"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp">
@@ -145,6 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:buttonTint="@color/colorPrimary"
             android:checked="true"
             android:clickable="false"
             android:visibility="visible"

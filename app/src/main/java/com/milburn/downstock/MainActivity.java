@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     List<Uri> imageList = new ArrayList<>();
     ProgressBar progressBar;
     Toolbar toolbar;
+    ActionBar actionBar;
 
     MenuItem showSwipedItems;
     boolean isShowSwipedChecked = false;
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
         recyclerView = findViewById(R.id.recycler);
         progressBar = findViewById(R.id.progressBar);
         showProgress(false, false, 0);
@@ -241,28 +245,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu, menu);
+        if (!selectionState) {
+            inflater.inflate(R.menu.toolbar_menu, menu);
+            showSwipedItems = menu.findItem(R.id.show_swiped);
+        } else {
+            inflater.inflate(R.menu.toolbar_selected_menu, menu);
+        }
 
-        showSwipedItems = menu.findItem(R.id.show_swiped);
 
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        showSwipedItems.setVisible(swipedItems.size() != 0);
+        if (!selectionState) {
+            showSwipedItems.setVisible(swipedItems.size() != 0);
 
-        MenuItem viewPage = menu.findItem(R.id.view_page);
+            MenuItem viewPage = menu.findItem(R.id.view_page);
 
-        if (imageList.size() == 0) {
-            viewPage.setVisible(false);
-        } else {
-            viewPage.getSubMenu().clear();
+            if (imageList.size() == 0) {
+                viewPage.setVisible(false);
+            } else {
+                viewPage.getSubMenu().clear();
 
-            for (int i = 0; i < imageList.size(); i++) {
-                viewPage.getSubMenu().add(Menu.NONE, i, i, "Page " + (i+1));
+                for (int i = 0; i < imageList.size(); i++) {
+                    viewPage.getSubMenu().add(Menu.NONE, i, i, "Page " + (i+1));
+                }
+                viewPage.setVisible(true);
             }
-            viewPage.setVisible(true);
         }
 
         return true;
@@ -282,6 +292,21 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                break;
+
+            case android.R.id.home:
+                selectAll(true);
+                break;
+
+            case R.id.delete_items:
+                deleteItems(selectedItems);
+                break;
+
+            case R.id.share_items:
+                break;
+
+            case R.id.select_all_items:
+                selectAll(false);
                 break;
 
             default:
@@ -357,7 +382,19 @@ public class MainActivity extends AppCompatActivity {
         if (swipedItems.contains(resultList.get(position))) {
             swipedItems.remove(resultList.get(position));
         }
+        if (selectedItems.contains(resultList.get(position))) {
+            selectedItems.remove(resultList.get(position));
+        }
         removeItem(position);
+    }
+
+    public void deleteItems(List<ProductDetails> productDetailsList) {
+        List<ProductDetails> tempList = new ArrayList<>();
+        tempList.addAll(productDetailsList);
+        for (ProductDetails prod : tempList) {
+            deleteItem(resultList.indexOf(prod));
+        }
+        updateSelectionState();
     }
 
     public void selectItem(int position) {
@@ -371,14 +408,44 @@ public class MainActivity extends AppCompatActivity {
         }
         recyclerAdapter.notifyItemChanged(position);
 
+        updateSelectionState();
+    }
+
+    public void selectAll(boolean deselect) {
+        for (int i = 0; i < resultList.size(); i++) {
+            if (deselect == resultList.get(i).selected) {
+                selectItem(i);
+            }
+        }
+    }
+
+    public void updateSelectionState() {
         selectionState = selectedItems.size() != 0;
+
+        supportInvalidateOptionsMenu();
 
         if (selectionState) {
             toolbar.setTitle(selectedItems.size() + " selected");
-            toolbar.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorToolbarSelectedInverse));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorToolbarSelected));
+            toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorToolbarSelectedInverse), PorterDuff.Mode.MULTIPLY);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorToolbarSelectedInverse), PorterDuff.Mode.MULTIPLY);
         } else {
             toolbar.setTitle(R.string.app_name);
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorToolbarSelected));
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorToolbarSelected), PorterDuff.Mode.MULTIPLY);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (selectionState) {
+            selectAll(true);
+        } else {
+            super.onBackPressed();
         }
     }
 

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
+ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/bd995f1582a15845717cbadf3924edd5/AndroidManifest.xml:17:1-25:12
@@ -38,20 +38,20 @@ MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /User
 MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/e6d1262a55b3f49f5158ed786146f495/AndroidManifest.xml:2:1-8:12
 MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a54acfb790d430cab3dcb1cb0b110d63/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/fd0f99eeb7cbb72edca0c187a6d3b10e/AndroidManifest.xml:2:1-8:12
-INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
+INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 	package
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:3:5-36
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
-		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
+		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
-		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12
+		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:11-69
@@ -66,7 +66,7 @@ ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidMani
 	android:name
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:6:22-77
 application
-ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:8:5-33:19
+ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:8:5-30:19
 MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/e5d5a126bff7646ae6717e63537b4719/AndroidManifest.xml:7:5-20
@@ -132,19 +132,13 @@ ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidMani
 	android:name
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:21:27-74
 activity#com.milburn.downstock.SettingsActivity
-ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:24:9-31:20
+ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:24:9-28:20
 	android:parentActivityName
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:27:13-55
 	android:label
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:26:13-37
 	android:name
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:25:13-45
-meta-data#android.support.PARENT_ACTIVITY
-ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:28:9-30:44
-	android:value
-		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:30:13-42
-	android:name
-		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:29:13-59
 uses-sdk
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
@@ -242,6 +236,6 @@ ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmi
 	android:name
 		ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:24:13-58
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-IMPLIED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12 reason: com.google.android.gms.license has a targetSdkVersion < 4
+IMPLIED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12 reason: com.google.android.gms.license has a targetSdkVersion < 4
 uses-permission#android.permission.READ_PHONE_STATE
-IMPLIED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-35:12 reason: com.google.android.gms.license has a targetSdkVersion < 4
+IMPLIED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12 reason: com.google.android.gms.license has a targetSdkVersion < 4

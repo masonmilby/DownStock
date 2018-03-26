@@ -38,9 +38,6 @@
             android:name="com.milburn.downstock.SettingsActivity"
             android:label="Settings"
             android:parentActivityName="com.milburn.downstock.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
         </activity>
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
