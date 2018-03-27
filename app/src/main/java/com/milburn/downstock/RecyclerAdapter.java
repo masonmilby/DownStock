@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private ImageView item_image;
         private TextView multiple_plano;
         private TextView page_num;
-        private CheckBox item_selected;
+        private ImageView item_selected;
         private TextView item_status;
         private TextView item_stock;
 

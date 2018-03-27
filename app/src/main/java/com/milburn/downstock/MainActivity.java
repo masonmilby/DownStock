@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        recyclerView = findViewById(R.id.recycler);
+
         progressBar = findViewById(R.id.progressBar);
         showProgress(false, false, 0);
 
@@ -87,6 +91,77 @@ public class MainActivity extends AppCompatActivity {
         } else {
             initialize();
         }
+    }
+
+    private void initialize() {
+        textRecognizer = new TextRecognizer.Builder(getBaseContext()).build();
+        if (!textRecognizer.isOperational()) {
+            Log.i("Info", "Detector dependencies are not yet available.");
+
+            IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+            boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+
+            if (hasLowStorage) {
+                Toast.makeText(this, "Storage too low", Toast.LENGTH_LONG).show();
+                Log.i("Error", "Low storage");
+            }
+        } else {
+            showStartFragment(true);
+        }
+    }
+
+    private void showStartFragment(boolean show) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        SelectionFragment selectionFragment = new SelectionFragment();
+        RecyclerFragment recyclerFragment = new RecyclerFragment();
+
+        fragmentTransaction.replace(R.id.fragment_container, show ? selectionFragment : recyclerFragment, show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commit();
+
+        fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentStarted(FragmentManager fm, Fragment f) {
+                super.onFragmentStarted(fm, f);
+
+                if (f.getTag().contentEquals("Selection")) {
+                    Button buttonSelect = f.getView().findViewById(R.id.button_select);
+                    Button buttonScan = f.getView().findViewById(R.id.button_scan);
+
+                    if (buttonSelect != null && buttonScan != null) {
+                        buttonSelect.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pickPhotos();
+                            }
+                        });
+
+                        buttonScan.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                takePhotos();
+                            }
+                        });
+                    }
+                } else {
+                    recyclerView = f.getView().findViewById(R.id.recycler);
+                    setupRecycler();
+                }
+            }
+        }, true);
+    }
+
+    private void pickPhotos() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+        startActivityForResult(intent, 1);
+    }
+
+    private void takePhotos() {
+        //
     }
 
     @Override
@@ -105,32 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
             getItems(uriList);
         }
-    }
-
-    private void initialize() {
-        textRecognizer = new TextRecognizer.Builder(getBaseContext()).build();
-        if (!textRecognizer.isOperational()) {
-            Log.i("Info", "Detector dependencies are not yet available.");
-
-            IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
-            boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
-
-            if (hasLowStorage) {
-                Toast.makeText(this, "Storage too low", Toast.LENGTH_LONG).show();
-                Log.i("Error", "Low storage");
-            }
-        } else {
-            pickPhotos();
-        }
-    }
-
-    private void pickPhotos() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-        startActivityForResult(intent, 1);
     }
 
     private void getItems(List<Uri> uriList) {
@@ -169,14 +218,14 @@ public class MainActivity extends AppCompatActivity {
         BBYApi bbyApi = new BBYApi(this, new BBYApi.AsyncResponse() {
             @Override
             public void processFinish(List<ProductDetails> result) {
-                setupRecycler(result);
+                resultList = result;
+                showStartFragment(false);
             }
         });
         bbyApi.execute(itemList);
     }
 
-    private void setupRecycler(final List<ProductDetails> result) {
-        resultList = result;
+    private void setupRecycler() {
         recyclerAdapter = new RecyclerAdapter(resultList, this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -446,6 +495,7 @@ public class MainActivity extends AppCompatActivity {
             selectAll(true);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -453,16 +503,12 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (showBar) {
-                    if (increment) {
-                        progressBar.incrementProgressBy(progress);
-                    } else {
-                        progressBar.setProgress(progress);
-                    }
-                    progressBar.setVisibility(View.VISIBLE);
+                if (increment) {
+                    progressBar.incrementProgressBy(progress);
                 } else {
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setProgress(progress);
                 }
+                progressBar.setVisibility(showBar ? View.VISIBLE : View.GONE);
             }
         });
     }

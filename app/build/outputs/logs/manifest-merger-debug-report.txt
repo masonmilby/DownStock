@@ -4,40 +4,40 @@ ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidMani
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
-MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/bd995f1582a15845717cbadf3924edd5/AndroidManifest.xml:17:1-25:12
-MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/e5d5a126bff7646ae6717e63537b4719/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:17:1-29:12
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:17:1-36:12
-MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/25fb82f7caaedd752ca489904f62c5a6/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/9d37d26ae163ea624a582b4771ff03de/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-v4:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/3cf28163e4d1ffa389edb38a676b2ff3/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:appcompat-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/1b464992a61cb9f427b1ee555abe71c7/AndroidManifest.xml:2:1-11:12
-MERGED from [com.android.support:recyclerview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.0.aar/6df95170efe028e3d2e181d1755c244f/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:cardview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.0.aar/cfc49cfdbaefbb062910c767c7b374dd/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-fragment:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.0.aar/3a299030341ff055da72b9eeb0647693/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:animated-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.0.aar/368820b63ead4854ae057fb25780b5a9/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-core-ui:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.0.aar/6f780f4754f7e9a9f346ca11ec00686e/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-core-utils:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.0.aar/826ee192b1a7607de84a8de49da42e95/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:transition:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/transition-27.1.0.aar/c8a8c7d49207488efbe8d1ad16c6e694/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.0.aar/86cca12e77d1283ba82388c7c245d20f/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-media-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/e68c865189c56bb4169cd9388eaf2859/AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:support-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/5cd322dc7a08c39340e7506d0bf53848/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.gms:play-services-vision-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-license-12.0.0.aar/d2366303ffdaa0a11a3b6c62de18a0e1/AndroidManifest.xml:2:1-8:12
-MERGED from [com.google.android.gms:play-services-ads-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-license-12.0.0.aar/52c90af048c29cf733ca2ec2fefc6966/AndroidManifest.xml:2:1-8:12
-MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/6fb5958f8f40d0d1ec469dda88a97734/AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/9ab7a738a608940e7e7e8de9816a1acf/AndroidManifest.xml:17:1-22:12
-MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/361e3e149c5832b390933d0476d067e4/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.gms:play-services-base-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-license-12.0.0.aar/f9ac04cb8d082d8573720cd54938d343/AndroidManifest.xml:2:1-8:12
-MERGED from [com.google.android.gms:play-services-basement-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-12.0.0.aar/c58e986156baa8f16884861556f27f97/AndroidManifest.xml:2:1-8:12
-MERGED from [com.google.android.gms:play-services-vision-common-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-license-12.0.0.aar/fbff8b07e87e8825ee730c5b08bca04a/AndroidManifest.xml:2:1-8:12
-MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-license-12.0.0.aar/88926bfba9e924033fb4c857ff4ec4d8/AndroidManifest.xml:2:1-8:12
-MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/e6d1262a55b3f49f5158ed786146f495/AndroidManifest.xml:2:1-8:12
-MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a54acfb790d430cab3dcb1cb0b110d63/AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/fd0f99eeb7cbb72edca0c187a6d3b10e/AndroidManifest.xml:2:1-8:12
+MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/d919e1b18917fa92899176b30f1d6125/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:appcompat-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e965af87b730aa540b983e80c9c47b93/AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:recyclerview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.0.aar/842f1062a5cbe36a7160ff50e84d3ae7/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:cardview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.0.aar/4e68a4d30d954316283b2d006cb4b8b6/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/0038f71009f5c073c0d3a17a9c775f6a/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/AndroidManifest.xml:17:1-25:12
+MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/d8cf494c98233341f85738d349390b25/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:17:1-29:12
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:17:1-36:12
+MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/a881191672f8fd98a7538c8c5d8d74b2/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/e0c8118f201d650b914855f6eb0ad643/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-v4:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/bc7cd2318c2162c99465e249be9b9b1e/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.0.aar/335ce2fe6be41b99c019e951fcfb6477/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.0.aar/f00d4db9cb76b9f5a30cd922a3c9c4e9/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.0.aar/d7f1f1e004ffe8dc3f4aac9d83f8e01f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.0.aar/87f5b2a0721401f43c30b5269afb17b8/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.0.aar/54e1dc9034ec984e8333a0456e2dd809/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:transition:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/transition-27.1.0.aar/c0f4473e634c021fe7c90c5c5d742be5/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/87b48e178fbeb524bcbc13830603ed1b/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-vision-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-license-12.0.0.aar/1c6864ca0b475949ec164c609426558c/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-ads-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-license-12.0.0.aar/5d786a061945951fd2078d6cdae60e8a/AndroidManifest.xml:2:1-8:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/a67b719b705adf6d9bd959e5769e9c55/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/fe3c9b3514e67163f5b5e149787f32e5/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/e061f3d32c709ef7f42890b7cb4c60bf/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-base-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-license-12.0.0.aar/15706697f5ea17bc32b2b2e2b6f81b16/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-basement-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-12.0.0.aar/303061750a74a2b963795f06430b890b/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-vision-common-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-license-12.0.0.aar/fda47071821d8c4c7ce010e22525f08a/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-license-12.0.0.aar/9f79b9a942d910b8ee7036a580970581/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/b529761d498b056787ed4353f2f13ff6/AndroidManifest.xml:2:1-8:12
+MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/d27a9cc9b13dbd6c1c629ac65a3ade33/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/2223fc67e7300af744cff7bea08eff1a/AndroidManifest.xml:2:1-8:12
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12
@@ -57,8 +57,8 @@ INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidM
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
 ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:5:5-66
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:23:5-67
 	android:name
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:5:22-64
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
@@ -67,38 +67,38 @@ ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidMani
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:6:22-77
 application
 ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:8:5-30:19
-MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/e5d5a126bff7646ae6717e63537b4719/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/e5d5a126bff7646ae6717e63537b4719/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:22:5-27:19
-MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:22:5-27:19
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:26:5-34:19
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:26:5-34:19
-MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/25fb82f7caaedd752ca489904f62c5a6/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/25fb82f7caaedd752ca489904f62c5a6/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/9d37d26ae163ea624a582b4771ff03de/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/9d37d26ae163ea624a582b4771ff03de/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:22:5-26:19
-MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:22:5-26:19
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/1b464992a61cb9f427b1ee555abe71c7/AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/1b464992a61cb9f427b1ee555abe71c7/AndroidManifest.xml:9:5-20
-MERGED from [com.google.android.gms:play-services-vision-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-license-12.0.0.aar/d2366303ffdaa0a11a3b6c62de18a0e1/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-vision-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-license-12.0.0.aar/d2366303ffdaa0a11a3b6c62de18a0e1/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-ads-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-license-12.0.0.aar/52c90af048c29cf733ca2ec2fefc6966/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-ads-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-license-12.0.0.aar/52c90af048c29cf733ca2ec2fefc6966/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-base-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-license-12.0.0.aar/f9ac04cb8d082d8573720cd54938d343/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-base-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-license-12.0.0.aar/f9ac04cb8d082d8573720cd54938d343/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-basement-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-12.0.0.aar/c58e986156baa8f16884861556f27f97/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-basement-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-12.0.0.aar/c58e986156baa8f16884861556f27f97/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-vision-common-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-license-12.0.0.aar/fbff8b07e87e8825ee730c5b08bca04a/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-vision-common-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-license-12.0.0.aar/fbff8b07e87e8825ee730c5b08bca04a/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-license-12.0.0.aar/88926bfba9e924033fb4c857ff4ec4d8/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-license-12.0.0.aar/88926bfba9e924033fb4c857ff4ec4d8/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/e6d1262a55b3f49f5158ed786146f495/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/e6d1262a55b3f49f5158ed786146f495/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/fd0f99eeb7cbb72edca0c187a6d3b10e/AndroidManifest.xml:5:5-6:19
-MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/fd0f99eeb7cbb72edca0c187a6d3b10e/AndroidManifest.xml:5:5-6:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e965af87b730aa540b983e80c9c47b93/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e965af87b730aa540b983e80c9c47b93/AndroidManifest.xml:9:5-20
+MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/0038f71009f5c073c0d3a17a9c775f6a/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/0038f71009f5c073c0d3a17a9c775f6a/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/d8cf494c98233341f85738d349390b25/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/d8cf494c98233341f85738d349390b25/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:26:5-34:19
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:26:5-34:19
+MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/a881191672f8fd98a7538c8c5d8d74b2/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/a881191672f8fd98a7538c8c5d8d74b2/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/e0c8118f201d650b914855f6eb0ad643/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/e0c8118f201d650b914855f6eb0ad643/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-vision-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-license-12.0.0.aar/1c6864ca0b475949ec164c609426558c/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-vision-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-license-12.0.0.aar/1c6864ca0b475949ec164c609426558c/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-ads-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-license-12.0.0.aar/5d786a061945951fd2078d6cdae60e8a/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-ads-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-license-12.0.0.aar/5d786a061945951fd2078d6cdae60e8a/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-base-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-license-12.0.0.aar/15706697f5ea17bc32b2b2e2b6f81b16/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-base-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-license-12.0.0.aar/15706697f5ea17bc32b2b2e2b6f81b16/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-basement-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-12.0.0.aar/303061750a74a2b963795f06430b890b/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-basement-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-12.0.0.aar/303061750a74a2b963795f06430b890b/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-vision-common-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-license-12.0.0.aar/fda47071821d8c4c7ce010e22525f08a/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-vision-common-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-license-12.0.0.aar/fda47071821d8c4c7ce010e22525f08a/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-license-12.0.0.aar/9f79b9a942d910b8ee7036a580970581/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-ads-lite-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-license-12.0.0.aar/9f79b9a942d910b8ee7036a580970581/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/b529761d498b056787ed4353f2f13ff6/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-gass-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-license-12.0.0.aar/b529761d498b056787ed4353f2f13ff6/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/2223fc67e7300af744cff7bea08eff1a/AndroidManifest.xml:5:5-6:19
+MERGED from [com.google.android.gms:play-services-tasks-license:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-12.0.0.aar/2223fc67e7300af744cff7bea08eff1a/AndroidManifest.xml:5:5-6:19
 	android:supportsRtl
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:13:9-35
 	android:label
@@ -121,7 +121,7 @@ activity#com.milburn.downstock.MainActivity
 ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:18:9-23:20
 	android:name
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:18:19-47
-intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:19:13-22:29
 action#android.intent.action.MAIN
 ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:20:17-69
@@ -143,62 +143,62 @@ uses-sdk
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
-MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/f71d9d023c08a8d944a0680f45adf396/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/52aef1522220c62f85641e719edb4abf/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/bd995f1582a15845717cbadf3924edd5/AndroidManifest.xml:21:5-23:62
-MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/bd995f1582a15845717cbadf3924edd5/AndroidManifest.xml:21:5-23:62
-MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/e5d5a126bff7646ae6717e63537b4719/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/e5d5a126bff7646ae6717e63537b4719/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/25fb82f7caaedd752ca489904f62c5a6/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/25fb82f7caaedd752ca489904f62c5a6/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/9d37d26ae163ea624a582b4771ff03de/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/9d37d26ae163ea624a582b4771ff03de/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-v4:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/3cf28163e4d1ffa389edb38a676b2ff3/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-v4:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/3cf28163e4d1ffa389edb38a676b2ff3/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:appcompat-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:appcompat-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/c23054a2205de97e68b9850e09e8fd42/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/1b464992a61cb9f427b1ee555abe71c7/AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/1b464992a61cb9f427b1ee555abe71c7/AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support:recyclerview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.0.aar/6df95170efe028e3d2e181d1755c244f/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:recyclerview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.0.aar/6df95170efe028e3d2e181d1755c244f/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:cardview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.0.aar/cfc49cfdbaefbb062910c767c7b374dd/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:cardview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.0.aar/cfc49cfdbaefbb062910c767c7b374dd/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-fragment:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.0.aar/3a299030341ff055da72b9eeb0647693/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-fragment:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.0.aar/3a299030341ff055da72b9eeb0647693/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.0.aar/368820b63ead4854ae057fb25780b5a9/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.0.aar/368820b63ead4854ae057fb25780b5a9/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-ui:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.0.aar/6f780f4754f7e9a9f346ca11ec00686e/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-ui:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.0.aar/6f780f4754f7e9a9f346ca11ec00686e/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-utils:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.0.aar/826ee192b1a7607de84a8de49da42e95/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-core-utils:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.0.aar/826ee192b1a7607de84a8de49da42e95/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/transition-27.1.0.aar/c8a8c7d49207488efbe8d1ad16c6e694/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/transition-27.1.0.aar/c8a8c7d49207488efbe8d1ad16c6e694/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.0.aar/86cca12e77d1283ba82388c7c245d20f/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.0.aar/86cca12e77d1283ba82388c7c245d20f/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-media-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/e68c865189c56bb4169cd9388eaf2859/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-media-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/e68c865189c56bb4169cd9388eaf2859/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/5cd322dc7a08c39340e7506d0bf53848/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/5cd322dc7a08c39340e7506d0bf53848/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/6fb5958f8f40d0d1ec469dda88a97734/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/6fb5958f8f40d0d1ec469dda88a97734/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/9ab7a738a608940e7e7e8de9816a1acf/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/9ab7a738a608940e7e7e8de9816a1acf/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/361e3e149c5832b390933d0476d067e4/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/361e3e149c5832b390933d0476d067e4/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a54acfb790d430cab3dcb1cb0b110d63/AndroidManifest.xml:20:5-44
-MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a54acfb790d430cab3dcb1cb0b110d63/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/d919e1b18917fa92899176b30f1d6125/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/d919e1b18917fa92899176b30f1d6125/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e965af87b730aa540b983e80c9c47b93/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/e965af87b730aa540b983e80c9c47b93/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.0.aar/842f1062a5cbe36a7160ff50e84d3ae7/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.0.aar/842f1062a5cbe36a7160ff50e84d3ae7/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.0.aar/4e68a4d30d954316283b2d006cb4b8b6/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.1.0.aar/4e68a4d30d954316283b2d006cb4b8b6/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/0038f71009f5c073c0d3a17a9c775f6a/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-vision:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-12.0.0.aar/0038f71009f5c073c0d3a17a9c775f6a/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/AndroidManifest.xml:21:5-23:62
+MERGED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/AndroidManifest.xml:21:5-23:62
+MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/d8cf494c98233341f85738d349390b25/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-vision-common:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-vision-common-12.0.0.aar/d8cf494c98233341f85738d349390b25/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/a881191672f8fd98a7538c8c5d8d74b2/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-gass:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-gass-12.0.0.aar/a881191672f8fd98a7538c8c5d8d74b2/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/e0c8118f201d650b914855f6eb0ad643/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-tasks-12.0.0.aar/e0c8118f201d650b914855f6eb0ad643/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/bc7cd2318c2162c99465e249be9b9b1e/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/bc7cd2318c2162c99465e249be9b9b1e/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.0.aar/335ce2fe6be41b99c019e951fcfb6477/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.0.aar/335ce2fe6be41b99c019e951fcfb6477/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.0.aar/f00d4db9cb76b9f5a30cd922a3c9c4e9/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.0.aar/f00d4db9cb76b9f5a30cd922a3c9c4e9/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.0.aar/d7f1f1e004ffe8dc3f4aac9d83f8e01f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.0.aar/d7f1f1e004ffe8dc3f4aac9d83f8e01f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.0.aar/87f5b2a0721401f43c30b5269afb17b8/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.0.aar/87f5b2a0721401f43c30b5269afb17b8/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.0.aar/54e1dc9034ec984e8333a0456e2dd809/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.0.aar/54e1dc9034ec984e8333a0456e2dd809/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/transition-27.1.0.aar/c0f4473e634c021fe7c90c5c5d742be5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/transition-27.1.0.aar/c0f4473e634c021fe7c90c5c5d742be5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/87b48e178fbeb524bcbc13830603ed1b/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/87b48e178fbeb524bcbc13830603ed1b/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/a67b719b705adf6d9bd959e5769e9c55/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/a67b719b705adf6d9bd959e5769e9c55/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/fe3c9b3514e67163f5b5e149787f32e5/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/fe3c9b3514e67163f5b5e149787f32e5/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/e061f3d32c709ef7f42890b7cb4c60bf/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/e061f3d32c709ef7f42890b7cb4c60bf/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/d27a9cc9b13dbd6c1c629ac65a3ade33/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/d27a9cc9b13dbd6c1c629ac65a3ade33/AndroidManifest.xml:20:5-44
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/bd995f1582a15845717cbadf3924edd5/AndroidManifest.xml:23:9-59
+		ADDED from [com.google.android.gms:play-services-ads:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
@@ -208,33 +208,33 @@ INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidM
 		ADDED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:23:9-26:75
+ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:23:9-26:75
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:25:13-37
+		ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:25:13-37
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:26:13-72
+		ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:26:13-72
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/8c21f554f14781d3334a61f0ecd47810/AndroidManifest.xml:24:13-79
+		ADDED from [com.google.android.gms:play-services-base:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/AndroidManifest.xml:24:13-79
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:24:5-79
+ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:24:5-79
 	android:name
-		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:24:22-76
+		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:24:22-76
 activity#com.google.android.gms.ads.AdActivity
-ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:29:9-33:64
+ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:29:9-33:64
 	android:exported
-		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:32:13-37
+		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:32:13-37
 	android:configChanges
-		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:31:13-122
+		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:31:13-122
 	android:theme
-		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:33:13-61
+		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:33:13-61
 	android:name
-		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/c689a7cf2f44053648a16b7f1ab432a3/AndroidManifest.xml:30:13-65
+		ADDED from [com.google.android.gms:play-services-ads-lite:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-lite-12.0.0.aar/793f92e1e9ed1ba9f28898171aa27a4c/AndroidManifest.xml:30:13-65
 meta-data#com.google.android.gms.version
-ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:23:9-25:69
+ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:23:9-25:69
 	android:value
-		ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:25:13-66
+		ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:25:13-66
 	android:name
-		ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/2328cd247d855955b7ea228e00912f62/AndroidManifest.xml:24:13-58
+		ADDED from [com.google.android.gms:play-services-basement:12.0.0] /Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/AndroidManifest.xml:24:13-58
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 IMPLIED from /Users/masonmilburn/StudioProjects/DownStock/app/src/main/AndroidManifest.xml:2:1-32:12 reason: com.google.android.gms.license has a targetSdkVersion < 4
 uses-permission#android.permission.READ_PHONE_STATE

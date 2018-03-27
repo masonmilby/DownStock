@@ -37,6 +37,7 @@ public class BBYApi extends AsyncTask<List<String[]>, Void, List<ProductDetails>
 
     @Override
     protected List<ProductDetails> doInBackground(List<String[]>... params) {
+        context.showProgress(false,false,0);
         Gson gson = new Gson();
         List<ProductDetails> productList = new ArrayList<>();
         Set<String> tempSkuSet = new HashSet<>();
