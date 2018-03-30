@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.milburn.downstock.ProductDetails.DetailedItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private List<ProductDetails> itemDataset = new ArrayList<>();
+    private ProductDetails productDetails;
+    private List<DetailedItem> detailedList;
     private MainActivity context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,9 +52,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    public RecyclerAdapter(List<ProductDetails> data, MainActivity con) {
-        itemDataset = data;
+    public RecyclerAdapter(ProductDetails data, MainActivity con) {
+        productDetails = data;
         context = con;
+        refreshData();
+    }
+
+    public void refreshData() {
+        detailedList = productDetails.getShownItems();
     }
 
     @Override
@@ -85,9 +92,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                 menu.setHeaderTitle("Item options");
 
-                if (itemDataset.get(position).found) {
+                if (detailedList.get(position).isFound()) {
                     menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'found'");
-                } else if (itemDataset.get(position).deltabusted) {
+                } else if (detailedList.get(position).isDeltabusted()) {
                     menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'deltabusted'");
                 }
             }
@@ -101,30 +108,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
-        holder.item_name.setText(itemDataset.get(position).name);
-        holder.item_sku.setText(itemDataset.get(position).sku);
-        holder.item_upc.setText(itemDataset.get(position).upc);
-        //holder.item_price.setText(itemDataset.get(position).salePrice);
-        holder.item_model.setText(itemDataset.get(position).modelNumber);
-        holder.item_image.setImageBitmap(itemDataset.get(position).imageBit);
-        holder.page_num.setText("Page " + (itemDataset.get(position).pageNum+1));
+        holder.item_name.setText(detailedList.get(position).getName());
+        holder.item_sku.setText(detailedList.get(position).getSku());
+        holder.item_upc.setText(detailedList.get(position).getUpc());
+        //holder.item_price.setText(detailedList.get(position).getSalePrice());
+        holder.item_model.setText(detailedList.get(position).getModelNumber());
+        holder.item_image.setImageBitmap(detailedList.get(position).getImageBit());
+        holder.page_num.setText("Page " + (detailedList.get(position).getPageNum()+1));
 
-        if (itemDataset.get(position).inStock && itemDataset.get(position).stores.get(0).lowStock) {
+        if (detailedList.get(position).isInStock() && detailedList.get(position).isLowStock()) {
             holder.item_stock.setText("Few in stock");
-        } else if (itemDataset.get(position).inStock) {
+            holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextOkay));
+        } else if (detailedList.get(position).isInStock()) {
             holder.item_stock.setText("In stock");
+            holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextGood));
         } else {
             holder.item_stock.setText("Not in stock");
+            holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextBad));
         }
 
-        holder.multiple_plano.setVisibility(itemDataset.get(position).multiple_plano ? View.VISIBLE : View.GONE);
-        holder.item_selected.setVisibility(itemDataset.get(position).selected ? View.VISIBLE : View.GONE);
+        holder.multiple_plano.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
+        holder.item_selected.setVisibility(detailedList.get(position).isSelected() ? View.VISIBLE : View.GONE);
 
-        if (itemDataset.get(position).deltabusted) {
+        if (detailedList.get(position).isDeltabusted()) {
             holder.item_status.setText("|  Deltabusted");
+            holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextBad));
             holder.item_status.setVisibility(View.VISIBLE);
-        } else if (itemDataset.get(position).found) {
+        } else if (detailedList.get(position).isFound()) {
             holder.item_status.setText("|  Found");
+            holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextGood));
             holder.item_status.setVisibility(View.VISIBLE);
         } else {
             holder.item_status.setVisibility(View.GONE);
@@ -133,6 +145,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return itemDataset.size();
+        return detailedList.size();
     }
 }

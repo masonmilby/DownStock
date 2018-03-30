@@ -5,4 +5,8 @@
     <color name="colorAccent">#448AFF</color>
     <color name="colorToolbarSelected">#FFFFFF</color>
     <color name="colorToolbarSelectedInverse">#000000</color>
+
+    <color name="colorTextGood">#4CAF50</color>
+    <color name="colorTextOkay">#FFC107</color>
+    <color name="colorTextBad">#F44336</color>
 </resources>

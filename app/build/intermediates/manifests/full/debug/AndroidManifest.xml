@@ -39,6 +39,7 @@
             android:label="Settings"
             android:parentActivityName="com.milburn.downstock.MainActivity" >
         </activity>
+        <activity android:name="com.milburn.downstock.CameraActivity" />
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
             android:exported="false"
