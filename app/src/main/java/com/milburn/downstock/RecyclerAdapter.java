@@ -53,6 +53,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public RecyclerAdapter(ProductDetails data, MainActivity con) {
+        setHasStableIds(true);
         productDetails = data;
         context = con;
         refreshData();
@@ -60,6 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public void refreshData() {
         detailedList = productDetails.getShownItems();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -146,5 +148,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount() {
         return detailedList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return detailedList.get(position).hashCode();
     }
 }

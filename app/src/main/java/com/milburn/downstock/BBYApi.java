@@ -22,6 +22,7 @@ public class BBYApi extends AsyncTask<ProductDetails, Void, ProductDetails> {
     public AsyncResponse delegate;
     private MainActivity context;
     private SharedPreferences sharedPreferences;
+    private Gson gson = new Gson();
 
     public BBYApi(MainActivity con, AsyncResponse asyncResponse) {
         context = con;
@@ -36,38 +37,27 @@ public class BBYApi extends AsyncTask<ProductDetails, Void, ProductDetails> {
     @Override
     protected ProductDetails doInBackground(ProductDetails... params) {
         context.showProgress(false,false,0);
-        Gson gson = new Gson();
+        ProductDetails productDetails = null;
         String itemUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + params[0].getAllBasicSkus() + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&apiKey=" + context.getString(R.string.bbyapi);
-        String availUrl = "https://api.bestbuy.com/v1/products/" + params[0].getBasicItem(0).getSku() + "/stores.json?storeId="+ sharedPreferences.getString("store_id_pref", "0") + "&apiKey=" + context.getString(R.string.bbyapi);
         String itemResult = null;
-        String availResult = null;
         try {
             itemResult = Jsoup.connect(itemUrl).ignoreContentType(true).execute().body();
-            System.out.println(itemResult);
-            availResult = Jsoup.connect(availUrl).ignoreContentType(true).execute().body();
-            System.out.println(availResult);
         } catch (IOException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("Status=403")) {
-                //
-            }
         }
-        if (itemResult != null && availResult != null) {
-            ProductDetails productDetails = gson.fromJson(itemResult, ProductDetails.class);
-            ItemStoreInfo itemStoreInfo = gson.fromJson(availResult, ItemStoreInfo.class);
-
-            System.out.println("Size:" + productDetails.sizeDetailedItems());
+        if (itemResult != null) {
+            productDetails = gson.fromJson(itemResult, ProductDetails.class);
 
             for (DetailedItem item : productDetails.getDetailedItems()) {
-                System.out.println(item.getSku());
+                context.showProgress(true, true, 100/productDetails.sizeDetailedItems());
                 item.setImageBit(getBitmap(item.getImage()));
                 item.setPageNum(params[0].getBasicItem(item.getSku()).getPageNum());
-                item.setStock(itemStoreInfo);
+                item.setStock(getStoreInfo(item));
             }
 
-            return productDetails;
         }
-        return null;
+        context.showProgress(false, false, 0);
+        return productDetails;
     }
 
     private Bitmap getBitmap(String url) {
@@ -80,6 +70,23 @@ public class BBYApi extends AsyncTask<ProductDetails, Void, ProductDetails> {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private ItemStoreInfo getStoreInfo(DetailedItem item) {
+        String availUrl = "https://api.bestbuy.com/v1/products/" + item.getSku() + "/stores.json?storeId="+ sharedPreferences.getString("store_id_pref", "0") + "&apiKey=" + context.getString(R.string.bbyapi);
+        String availResult = null;
+        try {
+            availResult = Jsoup.connect(availUrl).ignoreContentType(true).execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (e.getMessage().contains("Status=403")) {
+                //
+            }
+        }
+        if (availResult != null) {
+            return gson.fromJson(availResult, ItemStoreInfo.class);
+        }
+        return new ItemStoreInfo();
     }
 
     @Override

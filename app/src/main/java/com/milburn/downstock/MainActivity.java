@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -189,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             swipedItem.resetSwiped();
             swipedItem.setSelected(false);
-            notifyInsert(swipedPosition);
+            recyclerAdapter.refreshData();
+            recyclerView.smoothScrollToPosition(swipedPosition);
         }
     }
 
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupRecycler() {
         recyclerAdapter = new RecyclerAdapter(productDetails, this);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        recyclerView.setLayoutManager(new LinearLayout(this));
         recyclerView.setAdapter(recyclerAdapter);
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -240,9 +240,12 @@ public class MainActivity extends AppCompatActivity {
                         snackbar.setText("Product found");
                         break;
                 }
-                snackbar.show();
-                swipedItem.setSelected(false);
-                notifyRemoved(swipedPosition);
+                if (!productDetails.isShowSwiped()) {
+                    snackbar.show();
+                } else {
+                    recyclerView.removeAllViews();
+                }
+                recyclerAdapter.refreshData();
                 updateSelectionState();
                 updateSwiped();
             }
@@ -345,36 +348,24 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.remove_item:
-                removeItem(removedPosition, true);
+                removeItem(selectedPosition, true);
                 updateSwiped();
                 break;
 
             default:
                 productDetails.getShownItem(selectedPosition).resetSwiped();
-                itemChanged(selectedPosition);
+                recyclerAdapter.refreshData();
                 updateSwiped();
                 break;
         }
         return true;
     }
 
-    public void notifyInsert(int position) {
-        recyclerAdapter.refreshData();
-        recyclerAdapter.notifyItemInserted(position);
-        recyclerAdapter.notifyItemRangeChanged(position, productDetails.sizeShownItems());
-        recyclerView.smoothScrollToPosition(position);
-    }
-
-    public void notifyRemoved(int position) {
-        recyclerAdapter.refreshData();
-        recyclerAdapter.notifyItemRemoved(position);
-        recyclerAdapter.notifyItemRangeChanged(position, productDetails.sizeShownItems());
-    }
-
     public void insertItem(int position, DetailedItem item) {
         item.setSelected(false);
         productDetails.addDetailedItem(position, item);
-        notifyInsert(position);
+        recyclerAdapter.refreshData();
+        updateSwiped();
     }
 
     public void insertItems(List<DetailedItem> items) {
@@ -388,17 +379,11 @@ public class MainActivity extends AppCompatActivity {
         removedItem = productDetails.getShownItem(position);
 
         productDetails.removeShownItem(position);
-        notifyRemoved(position);
+        recyclerAdapter.refreshData();
 
         if (showSnack) {
             Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
         }
-    }
-
-    public void itemChanged(int position) {
-        recyclerAdapter.refreshData();
-        recyclerAdapter.notifyItemChanged(position);
-        recyclerAdapter.notifyItemRangeChanged(position, productDetails.sizeShownItems());
     }
 
     public void removeSelectedItems() {
@@ -416,8 +401,6 @@ public class MainActivity extends AppCompatActivity {
     public void selectItem(int position) {
         productDetails.getShownItem(position).setSelected(!productDetails.getShownItem(position).isSelected());
         recyclerAdapter.refreshData();
-        recyclerAdapter.notifyItemChanged(position);
-        recyclerAdapter.notifyItemRangeChanged(position, productDetails.sizeShownItems());
         updateSelectionState();
     }
 
@@ -431,9 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSwiped(boolean show) {
         productDetails.setShowSwiped(show);
-        showSwipedItems.setChecked(show);
         recyclerAdapter.refreshData();
-        recyclerAdapter.notifyDataSetChanged();
     }
 
     public void updateSwiped() {
@@ -441,8 +422,8 @@ public class MainActivity extends AppCompatActivity {
             if (productDetails.isShowSwiped() && productDetails.sizeSwipedItems() == 0) {
                 setSwiped(false);
             }
-            showSwipedItems.setIcon(productDetails.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
             showSwipedItems.setVisible(productDetails.sizeSwipedItems() != 0);
+            showSwipedItems.setIcon(productDetails.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
         }
     }
 

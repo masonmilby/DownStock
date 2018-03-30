@@ -138,7 +138,7 @@ public class ProductDetails {
         }
 
         public boolean isSwiped() {
-            return isDeltabusted() || isFound();
+            return isDeltabusted() | isFound();
         }
 
         public void resetSwiped() {
