@@ -60,18 +60,18 @@ public final class R {
         public static final int auto = 0x7f080022;
         public static final int center = 0x7f08002c;
         public static final int dark = 0x7f08003b;
-        public static final int icon_only = 0x7f080059;
-        public static final int light = 0x7f080069;
-        public static final int none = 0x7f080077;
-        public static final int normal = 0x7f080078;
-        public static final int progressBar = 0x7f080084;
-        public static final int radio = 0x7f080087;
-        public static final int standard = 0x7f0800b4;
-        public static final int text = 0x7f0800bd;
-        public static final int text2 = 0x7f0800be;
-        public static final int toolbar = 0x7f0800cc;
-        public static final int wide = 0x7f0800db;
-        public static final int wrap_content = 0x7f0800de;
+        public static final int icon_only = 0x7f08005b;
+        public static final int light = 0x7f08006b;
+        public static final int none = 0x7f08007a;
+        public static final int normal = 0x7f08007b;
+        public static final int progressBar = 0x7f080087;
+        public static final int radio = 0x7f08008a;
+        public static final int standard = 0x7f0800b7;
+        public static final int text = 0x7f0800c1;
+        public static final int text2 = 0x7f0800c2;
+        public static final int toolbar = 0x7f0800d0;
+        public static final int wide = 0x7f0800e1;
+        public static final int wrap_content = 0x7f0800e4;
     }
     public static final class integer {
         public static final int google_play_services_version = 0x7f090007;
@@ -104,7 +104,7 @@ public final class R {
         public static final int s7 = 0x7f0d0042;
     }
     public static final class style {
-        public static final int Theme_IAPTheme = 0x7f0e0121;
+        public static final int Theme_IAPTheme = 0x7f0e0122;
     }
     public static final class styleable {
         public static final int[] AdsAttrs = { 0x7f030022, 0x7f030023, 0x7f030024 };

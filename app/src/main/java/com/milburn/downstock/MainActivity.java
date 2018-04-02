@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,8 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
     MenuItem showSwipedItems;
 
+    Button buttonSelect;
+    Button buttonScan;
+
+    SwipeRefreshLayout swipeRefresh;
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
+
+    View fragmentContainer;
 
     int selectedPosition = 0;
     int swipedPosition = 0;
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     ProductDetails productDetails;
 
     SharedPreferences sharedPreferences;
+    SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
     OcrDetectorProcessor ocr;
 
     @Override
@@ -63,9 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         ocr = new OcrDetectorProcessor(this);
         setContentView(R.layout.activity_main);
 
+        fragmentContainer = findViewById(R.id.fragment_container);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -100,13 +110,14 @@ public class MainActivity extends AppCompatActivity {
                 super.onFragmentStarted(fm, f);
 
                 if (f.getTag().contentEquals("Selection")) {
-                    Button buttonSelect = f.getView().findViewById(R.id.button_select);
-                    Button buttonScan = f.getView().findViewById(R.id.button_scan);
+                    buttonSelect = f.getView().findViewById(R.id.button_select);
+                    buttonScan = f.getView().findViewById(R.id.button_scan);
 
                     if (buttonSelect != null && buttonScan != null) {
                         buttonSelect.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                setSelectionButtonsEnabled(false);
                                 pickPhotos();
                             }
                         });
@@ -114,16 +125,35 @@ public class MainActivity extends AppCompatActivity {
                         buttonScan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                setSelectionButtonsEnabled(false);
                                 takePhotos();
                             }
                         });
                     }
                 } else {
                     recyclerView = f.getView().findViewById(R.id.recycler);
+                    swipeRefresh = f.getView().findViewById(R.id.swipeRefresh);
+
                     setupRecycler();
                 }
             }
         }, true);
+    }
+
+    private void setSelectionButtonsEnabled(boolean enabled) {
+        if (buttonSelect != null && buttonScan != null) {
+            if (enabled) {
+                buttonSelect.setEnabled(true);
+                buttonSelect.setAlpha(1);
+                buttonScan.setEnabled(true);
+                buttonScan.setAlpha(1);
+            } else {
+                buttonSelect.setEnabled(false);
+                buttonSelect.setAlpha((float)0.5);
+                buttonScan.setEnabled(false);
+                buttonScan.setAlpha((float)0.5);
+            }
+        }
     }
 
     private void pickPhotos() {
@@ -148,38 +178,52 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case 1:
-                if (data.getClipData() != null) {
-                    for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                        uriList.add(data.getClipData().getItemAt(i).getUri());
+                if (data != null) {
+                    if (data.getClipData() != null) {
+                        for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                            uriList.add(data.getClipData().getItemAt(i).getUri());
+                        }
+                    } else if (data.getData() != null){
+                        uriList.add(data.getData());
                     }
                 } else {
-                    uriList.add(data.getData());
+                    setSelectionButtonsEnabled(true);
+                    Snackbar.make(fragmentContainer, "No image selected", Snackbar.LENGTH_LONG).show();
+                    break;
                 }
 
                 if (ocr.isRecognizerReady()) {
                     productDetails = ocr.recognizeSkus(uriList);
                     if (productDetails.sizeBasicItems() <= 0) {
-                        Snackbar.make(recyclerView, "Cannot find SKUs in image", Snackbar.LENGTH_LONG).show();
+                        setSelectionButtonsEnabled(true);
+                        Snackbar.make(fragmentContainer, "Cannot find SKUs in image", Snackbar.LENGTH_LONG).show();
                     } else {
-                        queryItems(productDetails);
+                        queryApi(productDetails, false);
                     }
                 }
                 break;
 
             case 2:
+                setSelectionButtonsEnabled(true);
                 break;
         }
     }
 
-    private void queryItems(ProductDetails basic) {
+    private void queryApi(ProductDetails prods, final boolean updateStock) {
         BBYApi bbyApi = new BBYApi(this, new BBYApi.AsyncResponse() {
             @Override
-            public void processFinish(ProductDetails detailed) {
-                productDetails.setDetailedItems(detailed.getDetailedItems());
-                showStartFragment(false);
+            public void processFinish(Object detailed) {
+                productDetails = (ProductDetails)detailed;
+                if (updateStock) {
+                    swipeRefresh.setRefreshing(false);
+                    recyclerAdapter.refreshData();
+                    Snackbar.make(fragmentContainer, "Stock updated", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    showStartFragment(false);
+                }
             }
         });
-        bbyApi.execute(basic);
+        bbyApi.execute(prods);
     }
 
     class UndoSwipeListener implements View.OnClickListener {
@@ -226,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 swipedPosition = viewHolder.getLayoutPosition();
                 swipedItem = productDetails.getShownItem(swipedPosition);
 
-                Snackbar snackbar = Snackbar.make(recyclerView, "0", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(fragmentContainer, "0", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Undo", new UndoSwipeListener());
 
                 switch (direction) {
@@ -245,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     recyclerView.removeAllViews();
                 }
+                swipedItem.setSelected(false);
                 recyclerAdapter.refreshData();
                 updateSelectionState();
                 updateSwiped();
@@ -253,6 +298,24 @@ public class MainActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryApi(productDetails, true);
+            }
+        });
+
+        sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("store_id_pref")) {
+                    swipeRefresh.setRefreshing(true);
+                    queryApi(productDetails, true);
+                }
+            }
+        };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
     @Override
@@ -382,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerAdapter.refreshData();
 
         if (showSnack) {
-            Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
+            Snackbar.make(fragmentContainer, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
         }
     }
 
@@ -395,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
         updateSelectionState();
         updateSwiped();
 
-        Snackbar.make(recyclerView, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
+        Snackbar.make(fragmentContainer, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
     }
 
     public void selectItem(int position) {

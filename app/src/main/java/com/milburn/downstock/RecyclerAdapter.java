@@ -35,6 +35,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView item_status;
         private TextView item_stock;
 
+        private TextView div_multi;
+        private TextView div_status;
+
         public ViewHolder(View v) {
             super(v);
             view = v;
@@ -49,6 +52,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             item_selected = v.findViewById(R.id.item_selected);
             item_status = v.findViewById(R.id.item_status);
             item_stock = v.findViewById(R.id.item_stock);
+
+            div_multi = v.findViewById(R.id.div_multi);
+            div_status = v.findViewById(R.id.div_status);
         }
     }
 
@@ -130,18 +136,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
 
         holder.multiple_plano.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
+        holder.div_multi.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
+
         holder.item_selected.setVisibility(detailedList.get(position).isSelected() ? View.VISIBLE : View.GONE);
 
         if (detailedList.get(position).isDeltabusted()) {
-            holder.item_status.setText("|  Deltabusted");
+            holder.item_status.setText("Deltabusted");
             holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextBad));
             holder.item_status.setVisibility(View.VISIBLE);
+            holder.div_status.setVisibility(View.VISIBLE);
         } else if (detailedList.get(position).isFound()) {
-            holder.item_status.setText("|  Found");
+            holder.item_status.setText("Found");
             holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextGood));
             holder.item_status.setVisibility(View.VISIBLE);
+            holder.div_status.setVisibility(View.VISIBLE);
         } else {
             holder.item_status.setVisibility(View.GONE);
+            holder.div_status.setVisibility(View.GONE);
         }
     }
 

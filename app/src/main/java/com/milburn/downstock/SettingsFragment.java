@@ -16,7 +16,7 @@ public class SettingsFragment extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 preference.getEditor().putString("store_id_pref", newValue.toString()).commit();
                 getActivity().finish();
-                return false;
+                return true;
             }
         });
     }

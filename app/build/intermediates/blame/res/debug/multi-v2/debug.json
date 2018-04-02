@@ -1,55 +1,6 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-en-rCA_values-en-rCA.arsc.flat",
-            "map": [
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-en-rCA/values-en-rCA.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,209,309,417,501,601,716,793,869,951,1054,1158,1257,1362,1465,1569,1725,1825",
-                        "endColumns": "103,99,107,83,99,114,76,75,81,102,103,98,104,102,103,155,99,81",
-                        "endOffsets": "204,304,412,496,596,711,788,864,946,1049,1153,1252,1357,1460,1564,1720,1820,1902"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-sw600dp-v13_values-sw600dp-v13.arsc.flat",
-            "map": [
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-sw600dp-v13/values-sw600dp-v13.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,124,193,263,337,413,472,543",
-                        "endColumns": "68,68,69,73,75,58,70,67",
-                        "endOffsets": "119,188,258,332,408,467,538,606"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/d919e1b18917fa92899176b30f1d6125/res/values-sw600dp-v13/values-sw600dp-v13.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,115,185,256,328,386,444,550,614,677",
-                        "endLines": "2,3,4,5,6,7,8,9,10,14",
-                        "endColumns": "59,69,70,71,57,57,105,63,62,12",
-                        "endOffsets": "110,180,251,323,381,439,545,609,672,854"
-                    },
-                    "to": {
-                        "startLines": "10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "611,671,741,812,884,942,1000,1106,1170,1233",
-                        "endLines": "10,11,12,13,14,15,16,17,18,22",
-                        "endColumns": "59,69,70,71,57,57,105,63,62,12",
-                        "endOffsets": "666,736,807,879,937,995,1101,1165,1228,1410"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-az_values-az.arsc.flat",
             "map": [
                 {
@@ -135,6 +86,55 @@
                         "startOffsets": "5317",
                         "endColumns": "100",
                         "endOffsets": "5413"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-sw600dp-v13_values-sw600dp-v13.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,124,193,263,337,413,472,543",
+                        "endColumns": "68,68,69,73,75,58,70,67",
+                        "endOffsets": "119,188,258,332,408,467,538,606"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/design-27.1.0.aar/d919e1b18917fa92899176b30f1d6125/res/values-sw600dp-v13/values-sw600dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,115,185,256,328,386,444,550,614,677",
+                        "endLines": "2,3,4,5,6,7,8,9,10,14",
+                        "endColumns": "59,69,70,71,57,57,105,63,62,12",
+                        "endOffsets": "110,180,251,323,381,439,545,609,672,854"
+                    },
+                    "to": {
+                        "startLines": "10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "611,671,741,812,884,942,1000,1106,1170,1233",
+                        "endLines": "10,11,12,13,14,15,16,17,18,22",
+                        "endColumns": "59,69,70,71,57,57,105,63,62,12",
+                        "endOffsets": "666,736,807,879,937,995,1101,1165,1228,1410"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-en-rCA_values-en-rCA.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-en-rCA/values-en-rCA.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,209,309,417,501,601,716,793,869,951,1054,1158,1257,1362,1465,1569,1725,1825",
+                        "endColumns": "103,99,107,83,99,114,76,75,81,102,103,98,104,102,103,155,99,81",
+                        "endOffsets": "204,304,412,496,596,711,788,864,946,1049,1153,1252,1357,1460,1564,1720,1820,1902"
                     }
                 }
             ]
@@ -320,96 +320,6 @@
             ]
         },
         {
-            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-is_values-is.arsc.flat",
-            "map": [
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/res/values-is/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "247",
-                        "endColumns": "187",
-                        "endOffsets": "434"
-                    },
-                    "to": {
-                        "startLines": "27",
-                        "startColumns": "4",
-                        "startOffsets": "2967",
-                        "endColumns": "187",
-                        "endOffsets": "3150"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-is/values-is.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,205,302,414,499,600,714,794,874,955,1065,1173,1271,1380,1479,1582,1737,1835",
-                        "endColumns": "99,96,111,84,100,113,79,79,80,109,107,97,108,98,102,154,97,80",
-                        "endOffsets": "200,297,409,494,595,709,789,869,950,1060,1168,1266,1375,1474,1577,1732,1830,1911"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,44",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,205,302,414,499,600,714,794,874,955,1065,1173,1271,1380,1479,1582,1737,5058",
-                        "endColumns": "99,96,111,84,100,113,79,79,80,109,107,97,108,98,102,154,97,80",
-                        "endOffsets": "200,297,409,494,595,709,789,869,950,1060,1168,1266,1375,1474,1577,1732,1830,5134"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/res/values-is/values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10",
-                        "startColumns": "0,0,0,0,0,0,0",
-                        "startOffsets": "199,266,370,437,500,581,683",
-                        "endColumns": "66,103,66,62,80,101,73",
-                        "endOffsets": "265,369,436,499,580,682,756"
-                    },
-                    "to": {
-                        "startLines": "37,38,39,40,41,42,43",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "4472,4543,4651,4722,4789,4874,4980",
-                        "endColumns": "70,107,70,66,84,105,77",
-                        "endOffsets": "4538,4646,4717,4784,4869,4975,5053"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/res/values-is/values-is.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "45",
-                        "startColumns": "4",
-                        "startOffsets": "5139",
-                        "endColumns": "100",
-                        "endOffsets": "5235"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/res/values-is/values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
-                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "245,349,535,658,765,965,1088,1223,1353,1566,1670,1858,1982,2183,2363,2453,2542",
-                        "endColumns": "103,185,122,106,199,122,134,129,212,103,187,123,200,179,89,88,103",
-                        "endOffsets": "348,534,657,764,964,1087,1222,1352,1565,1669,1857,1981,2182,2362,2452,2541,2645"
-                    },
-                    "to": {
-                        "startLines": "19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "1835,1943,2129,2256,2367,2567,2694,2833,3155,3368,3476,3664,3792,3993,4177,4271,4364",
-                        "endColumns": "107,185,126,110,199,126,138,133,212,107,187,127,200,183,93,92,107",
-                        "endOffsets": "1938,2124,2251,2362,2562,2689,2828,2962,3363,3471,3659,3787,3988,4172,4266,4359,4467"
-                    }
-                }
-            ]
-        },
-        {
             "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-mk_values-mk.arsc.flat",
             "map": [
                 {
@@ -500,42 +410,61 @@
             ]
         },
         {
-            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-port_values-port.arsc.flat",
+            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-is_values-is.arsc.flat",
             "map": [
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-port/values-port.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/res/values-is/values.xml",
                     "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "55",
-                        "endOffsets": "106"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-ru_values-ru.arsc.flat",
-            "map": [
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/res/values-ru/values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
-                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "245,350,548,672,780,981,1108,1249,1378,1618,1723,1917,2041,2267,2451,2546,2632",
-                        "endColumns": "104,197,123,107,200,126,140,128,239,104,193,123,225,183,94,85,110",
-                        "endOffsets": "349,547,671,779,980,1107,1248,1377,1617,1722,1916,2040,2266,2450,2545,2631,2742"
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "247",
+                        "endColumns": "187",
+                        "endOffsets": "434"
                     },
                     "to": {
-                        "startLines": "19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "1892,2001,2199,2327,2439,2640,2771,2916,3265,3505,3614,3808,3936,4162,4350,4449,4539",
-                        "endColumns": "108,197,127,111,200,130,144,132,239,108,193,127,225,187,98,89,114",
-                        "endOffsets": "1996,2194,2322,2434,2635,2766,2911,3044,3500,3609,3803,3931,4157,4345,4444,4534,4649"
+                        "startLines": "27",
+                        "startColumns": "4",
+                        "startOffsets": "2967",
+                        "endColumns": "187",
+                        "endOffsets": "3150"
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/res/values-ru/values-ru.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-is/values-is.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,205,302,414,499,600,714,794,874,955,1065,1173,1271,1380,1479,1582,1737,1835",
+                        "endColumns": "99,96,111,84,100,113,79,79,80,109,107,97,108,98,102,154,97,80",
+                        "endOffsets": "200,297,409,494,595,709,789,869,950,1060,1168,1266,1375,1474,1577,1732,1830,1911"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,44",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,205,302,414,499,600,714,794,874,955,1065,1173,1271,1380,1479,1582,1737,5058",
+                        "endColumns": "99,96,111,84,100,113,79,79,80,109,107,97,108,98,102,154,97,80",
+                        "endOffsets": "200,297,409,494,595,709,789,869,950,1060,1168,1266,1375,1474,1577,1732,1830,5134"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/res/values-is/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10",
+                        "startColumns": "0,0,0,0,0,0,0",
+                        "startOffsets": "199,266,370,437,500,581,683",
+                        "endColumns": "66,103,66,62,80,101,73",
+                        "endOffsets": "265,369,436,499,580,682,756"
+                    },
+                    "to": {
+                        "startLines": "37,38,39,40,41,42,43",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "4472,4543,4651,4722,4789,4874,4980",
+                        "endColumns": "70,107,70,66,84,105,77",
+                        "endOffsets": "4538,4646,4717,4784,4869,4975,5053"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/res/values-is/values-is.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -546,60 +475,41 @@
                     "to": {
                         "startLines": "45",
                         "startColumns": "4",
-                        "startOffsets": "5351",
+                        "startOffsets": "5139",
                         "endColumns": "100",
-                        "endOffsets": "5447"
+                        "endOffsets": "5235"
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-ru/values-ru.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/res/values-is/values.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,220,322,434,520,625,745,824,902,982,1088,1196,1294,1403,1509,1617,1792,1892",
-                        "endColumns": "114,101,111,85,104,119,78,77,79,105,107,97,108,105,107,174,99,80",
-                        "endOffsets": "215,317,429,515,620,740,819,897,977,1083,1191,1289,1398,1504,1612,1787,1887,1968"
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "245,349,535,658,765,965,1088,1223,1353,1566,1670,1858,1982,2183,2363,2453,2542",
+                        "endColumns": "103,185,122,106,199,122,134,129,212,103,187,123,200,179,89,88,103",
+                        "endOffsets": "348,534,657,764,964,1087,1222,1352,1565,1669,1857,1981,2182,2362,2452,2541,2645"
                     },
                     "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,44",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,220,322,434,520,625,745,824,902,982,1088,1196,1294,1403,1509,1617,1792,5270",
-                        "endColumns": "114,101,111,85,104,119,78,77,79,105,107,97,108,105,107,174,99,80",
-                        "endOffsets": "215,317,429,515,620,740,819,897,977,1083,1191,1289,1398,1504,1612,1787,1887,5346"
+                        "startLines": "19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1835,1943,2129,2256,2367,2567,2694,2833,3155,3368,3476,3664,3792,3993,4177,4271,4364",
+                        "endColumns": "107,185,126,110,199,126,138,133,212,107,187,127,200,183,93,92,107",
+                        "endOffsets": "1938,2124,2251,2362,2562,2689,2828,2962,3363,3471,3659,3787,3988,4172,4266,4359,4467"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-port_values-port.arsc.flat",
+            "map": [
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/res/values-ru/values.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-port/values-port.xml",
                     "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "247",
-                        "endColumns": "215",
-                        "endOffsets": "462"
-                    },
-                    "to": {
-                        "startLines": "27",
+                        "startLines": "2",
                         "startColumns": "4",
-                        "startOffsets": "3049",
-                        "endColumns": "215",
-                        "endOffsets": "3260"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/res/values-ru/values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10",
-                        "startColumns": "0,0,0,0,0,0,0",
-                        "startOffsets": "199,277,388,455,522,599,710",
-                        "endColumns": "77,110,66,66,76,110,76",
-                        "endOffsets": "276,387,454,521,598,709,786"
-                    },
-                    "to": {
-                        "startLines": "37,38,39,40,41,42,43",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "4654,4736,4851,4922,4993,5074,5189",
-                        "endColumns": "81,114,70,70,80,114,80",
-                        "endOffsets": "4731,4846,4917,4988,5069,5184,5265"
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
                     }
                 }
             ]
@@ -695,44 +605,27 @@
             ]
         },
         {
-            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-sq_values-sq.arsc.flat",
+            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-ru_values-ru.arsc.flat",
             "map": [
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/res/values-sq/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "247",
-                        "endColumns": "187",
-                        "endOffsets": "434"
-                    },
-                    "to": {
-                        "startLines": "27",
-                        "startColumns": "4",
-                        "startOffsets": "3100",
-                        "endColumns": "187",
-                        "endOffsets": "3283"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/res/values-sq/values.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/res/values-ru/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "245,350,555,690,795,1015,1147,1299,1440,1669,1775,1981,2117,2345,2555,2646,2739",
-                        "endColumns": "104,204,134,104,219,131,151,140,228,105,205,135,227,209,90,92,106",
-                        "endOffsets": "349,554,689,794,1014,1146,1298,1439,1668,1774,1980,2116,2344,2554,2645,2738,2845"
+                        "startOffsets": "245,350,548,672,780,981,1108,1249,1378,1618,1723,1917,2041,2267,2451,2546,2632",
+                        "endColumns": "104,197,123,107,200,126,140,128,239,104,193,123,225,183,94,85,110",
+                        "endOffsets": "349,547,671,779,980,1107,1248,1377,1617,1722,1916,2040,2266,2450,2545,2631,2742"
                     },
                     "to": {
                         "startLines": "19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "1881,1990,2195,2334,2443,2663,2799,2955,3288,3517,3627,3833,3973,4201,4415,4510,4607",
-                        "endColumns": "108,204,138,108,219,135,155,144,228,109,205,139,227,213,94,96,110",
-                        "endOffsets": "1985,2190,2329,2438,2658,2794,2950,3095,3512,3622,3828,3968,4196,4410,4505,4602,4713"
+                        "startOffsets": "1892,2001,2199,2327,2439,2640,2771,2916,3265,3505,3614,3808,3936,4162,4350,4449,4539",
+                        "endColumns": "108,197,127,111,200,130,144,132,239,108,193,127,225,187,98,89,114",
+                        "endOffsets": "1996,2194,2322,2434,2635,2766,2911,3044,3500,3609,3803,3931,4157,4345,4444,4534,4649"
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/res/values-sq/values-sq.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/res/values-ru/values-ru.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -743,43 +636,60 @@
                     "to": {
                         "startLines": "45",
                         "startColumns": "4",
-                        "startOffsets": "5423",
+                        "startOffsets": "5351",
                         "endColumns": "100",
-                        "endOffsets": "5519"
+                        "endOffsets": "5447"
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/res/values-sq/values.xml",
-                    "from": {
-                        "startLines": "4,5,6,7,8,9,10",
-                        "startColumns": "0,0,0,0,0,0,0",
-                        "startOffsets": "199,269,396,459,523,610,725",
-                        "endColumns": "69,126,62,63,86,114,69",
-                        "endOffsets": "268,395,458,522,609,724,794"
-                    },
-                    "to": {
-                        "startLines": "37,38,39,40,41,42,43",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "4718,4792,4923,4990,5058,5149,5268",
-                        "endColumns": "73,130,66,67,90,118,73",
-                        "endOffsets": "4787,4918,4985,5053,5144,5263,5337"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-sq/values-sq.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-ru/values-ru.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,219,319,431,518,628,751,832,911,994,1100,1205,1303,1409,1512,1628,1782,1881",
-                        "endColumns": "113,99,111,86,109,122,80,78,82,105,104,97,105,102,115,153,98,80",
-                        "endOffsets": "214,314,426,513,623,746,827,906,989,1095,1200,1298,1404,1507,1623,1777,1876,1957"
+                        "startOffsets": "105,220,322,434,520,625,745,824,902,982,1088,1196,1294,1403,1509,1617,1792,1892",
+                        "endColumns": "114,101,111,85,104,119,78,77,79,105,107,97,108,105,107,174,99,80",
+                        "endOffsets": "215,317,429,515,620,740,819,897,977,1083,1191,1289,1398,1504,1612,1787,1887,1968"
                     },
                     "to": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,44",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,219,319,431,518,628,751,832,911,994,1100,1205,1303,1409,1512,1628,1782,5342",
-                        "endColumns": "113,99,111,86,109,122,80,78,82,105,104,97,105,102,115,153,98,80",
-                        "endOffsets": "214,314,426,513,623,746,827,906,989,1095,1200,1298,1404,1507,1623,1777,1876,5418"
+                        "startOffsets": "105,220,322,434,520,625,745,824,902,982,1088,1196,1294,1403,1509,1617,1792,5270",
+                        "endColumns": "114,101,111,85,104,119,78,77,79,105,107,97,108,105,107,174,99,80",
+                        "endOffsets": "215,317,429,515,620,740,819,897,977,1083,1191,1289,1398,1504,1612,1787,1887,5346"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/res/values-ru/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "247",
+                        "endColumns": "215",
+                        "endOffsets": "462"
+                    },
+                    "to": {
+                        "startLines": "27",
+                        "startColumns": "4",
+                        "startOffsets": "3049",
+                        "endColumns": "215",
+                        "endOffsets": "3260"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/res/values-ru/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10",
+                        "startColumns": "0,0,0,0,0,0,0",
+                        "startOffsets": "199,277,388,455,522,599,710",
+                        "endColumns": "77,110,66,66,76,110,76",
+                        "endOffsets": "276,387,454,521,598,709,786"
+                    },
+                    "to": {
+                        "startLines": "37,38,39,40,41,42,43",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "4654,4736,4851,4922,4993,5074,5189",
+                        "endColumns": "81,114,70,70,80,114,80",
+                        "endOffsets": "4731,4846,4917,4988,5069,5184,5265"
                     }
                 }
             ]
@@ -870,6 +780,96 @@
                         "startOffsets": "4779",
                         "endColumns": "100",
                         "endOffsets": "4875"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/values-sq_values-sq.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-12.0.0.aar/bbd98a50cecd2fde5d67eb8402ae8847/res/values-sq/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "247",
+                        "endColumns": "187",
+                        "endOffsets": "434"
+                    },
+                    "to": {
+                        "startLines": "27",
+                        "startColumns": "4",
+                        "startOffsets": "3100",
+                        "endColumns": "187",
+                        "endOffsets": "3283"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-12.0.0.aar/82f425296c39dbce991b60c8263f1683/res/values-sq/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "245,350,555,690,795,1015,1147,1299,1440,1669,1775,1981,2117,2345,2555,2646,2739",
+                        "endColumns": "104,204,134,104,219,131,151,140,228,105,205,135,227,209,90,92,106",
+                        "endOffsets": "349,554,689,794,1014,1146,1298,1439,1668,1774,1980,2116,2344,2554,2645,2738,2845"
+                    },
+                    "to": {
+                        "startLines": "19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1881,1990,2195,2334,2443,2663,2799,2955,3288,3517,3627,3833,3973,4201,4415,4510,4607",
+                        "endColumns": "108,204,138,108,219,135,155,144,228,109,205,139,227,213,94,96,110",
+                        "endOffsets": "1985,2190,2329,2438,2658,2794,2950,3095,3512,3622,3828,3968,4196,4410,4505,4602,4713"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/0d3b6c9a7f16b74beff4dba710c3677b/res/values-sq/values-sq.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "45",
+                        "startColumns": "4",
+                        "startOffsets": "5423",
+                        "endColumns": "100",
+                        "endOffsets": "5519"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-12.0.0.aar/337121e3563683fb32f8e4f6508489df/res/values-sq/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10",
+                        "startColumns": "0,0,0,0,0,0,0",
+                        "startOffsets": "199,269,396,459,523,610,725",
+                        "endColumns": "69,126,62,63,86,114,69",
+                        "endOffsets": "268,395,458,522,609,724,794"
+                    },
+                    "to": {
+                        "startLines": "37,38,39,40,41,42,43",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "4718,4792,4923,4990,5058,5149,5268",
+                        "endColumns": "73,130,66,67,90,118,73",
+                        "endOffsets": "4787,4918,4985,5053,5144,5263,5337"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.0.aar/936b93c9589ed35af8b893a375d37ed9/res/values-sq/values-sq.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,219,319,431,518,628,751,832,911,994,1100,1205,1303,1409,1512,1628,1782,1881",
+                        "endColumns": "113,99,111,86,109,122,80,78,82,105,104,97,105,102,115,153,98,80",
+                        "endOffsets": "214,314,426,513,623,746,827,906,989,1095,1200,1298,1404,1507,1623,1777,1876,1957"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,44",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,219,319,431,518,628,751,832,911,994,1100,1205,1303,1409,1512,1628,1782,5342",
+                        "endColumns": "113,99,111,86,109,122,80,78,82,105,104,97,105,102,115,153,98,80",
+                        "endOffsets": "214,314,426,513,623,746,827,906,989,1095,1200,1298,1404,1507,1623,1777,1876,5418"
                     }
                 }
             ]
@@ -2680,11 +2680,11 @@
                         "startOffsets": "-1,-1,-1,-1,-1,-1"
                     },
                     "to": {
-                        "startLines": "171,2205,2207,2208,2213,2215",
+                        "startLines": "171,2210,2212,2213,2218,2220",
                         "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "9705,159571,159747,159869,160131,160326",
+                        "startOffsets": "9705,159800,159976,160098,160360,160555",
                         "endColumns": "88,65,121,60,65,66",
-                        "endOffsets": "9789,159632,159864,159925,160192,160388"
+                        "endOffsets": "9789,159861,160093,160154,160421,160617"
                     }
                 },
                 {
@@ -2710,12 +2710,12 @@
                         "startOffsets": "-1"
                     },
                     "to": {
-                        "startLines": "2299",
+                        "startLines": "2304",
                         "startColumns": "4",
-                        "startOffsets": "165830",
-                        "endLines": "2306",
+                        "startOffsets": "166059",
+                        "endLines": "2311",
                         "endColumns": "8",
-                        "endOffsets": "166223"
+                        "endOffsets": "166452"
                     }
                 },
                 {
@@ -2767,17 +2767,17 @@
                 {
                     "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/values/styles.xml",
                     "from": {
-                        "startLines": "-1,-1",
-                        "startColumns": "-1,-1",
-                        "startOffsets": "-1,-1"
+                        "startLines": "-1,-1,-1",
+                        "startColumns": "-1,-1,-1",
+                        "startOffsets": "-1,-1,-1"
                     },
                     "to": {
-                        "startLines": "856,869",
-                        "startColumns": "4,4",
-                        "startOffsets": "71489,72425",
-                        "endLines": "859,874",
-                        "endColumns": "12,12",
-                        "endOffsets": "71691,72702"
+                        "startLines": "856,869,1960",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "71489,72425,140760",
+                        "endLines": "859,874,1964",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "71691,72702,140984"
                     }
                 },
                 {
@@ -2788,12 +2788,12 @@
                         "startOffsets": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1"
                     },
                     "to": {
-                        "startLines": "169,170,664,665,666,667,668,722,723,724,725,726,727,728,729,730,731,732,733,734,735,736,745,746,754,755,763,764,765,768,786,855,2200,2201,2206,2209,2214,2408,2409",
+                        "startLines": "169,170,664,665,666,667,668,722,723,724,725,726,727,728,729,730,731,732,733,734,735,736,745,746,754,755,763,764,765,768,786,855,2205,2206,2211,2214,2219,2413,2414",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "9573,9642,57543,57613,57681,57753,57823,61436,61497,61558,61620,61684,61746,61807,61875,61975,62035,62101,62174,62243,62300,62352,62867,62939,63360,63395,63762,63812,63846,63973,64970,71418,159253,159370,159637,159930,160197,174470,174542",
-                        "endLines": "169,170,664,665,666,667,668,722,723,724,725,726,727,728,729,730,731,732,733,734,735,736,745,746,754,755,763,764,765,768,786,855,2200,2204,2206,2212,2214,2408,2409",
+                        "startOffsets": "9573,9642,57543,57613,57681,57753,57823,61436,61497,61558,61620,61684,61746,61807,61875,61975,62035,62101,62174,62243,62300,62352,62867,62939,63360,63395,63762,63812,63846,63973,64970,71418,159482,159599,159866,160159,160426,174699,174771",
+                        "endLines": "169,170,664,665,666,667,668,722,723,724,725,726,727,728,729,730,731,732,733,734,735,736,745,746,754,755,763,764,765,768,786,855,2205,2209,2211,2217,2219,2413,2414",
                         "endColumns": "68,62,69,67,71,69,60,60,60,61,63,61,60,67,99,59,65,72,68,56,51,61,71,75,34,34,49,33,34,34,69,70,116,12,109,12,128,71,66",
-                        "endOffsets": "9637,9700,57608,57676,57748,57818,57879,61492,61553,61615,61679,61741,61802,61870,61970,62030,62096,62169,62238,62295,62347,62409,62934,63010,63390,63425,63807,63841,63876,64003,65035,71484,159365,159566,159742,160126,160321,174537,174604"
+                        "endOffsets": "9637,9700,57608,57676,57748,57818,57879,61492,61553,61615,61679,61741,61802,61870,61970,62030,62096,62169,62238,62295,62347,62409,62934,63010,63390,63425,63807,63841,63876,64003,65035,71484,159594,159795,159971,160355,160550,174766,174833"
                     }
                 },
                 {
@@ -2819,12 +2819,12 @@
                         "startOffsets": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1"
                     },
                     "to": {
-                        "startLines": "139,140,141,142,143,144,145,146,147,669,670,671,672,673,674,675,676,677,678,679,680,681,682,683,684,685,686,687,688,689,690,691,692,693,694,695,696,697,698,699,700,701,702,703,704,705,706,766,767,775,778,779,782,784,785,820,822,823,842,843,844,845,846,865,1204,1941,1942,2216,2219,2220,2223,2226,2229,2233,2273,2277,2282,2286,2291,2295,2410,2412,2416,2423,2427,2430,2439,2445,2448,2457,2461",
+                        "startLines": "139,140,141,142,143,144,145,146,147,669,670,671,672,673,674,675,676,677,678,679,680,681,682,683,684,685,686,687,688,689,690,691,692,693,694,695,696,697,698,699,700,701,702,703,704,705,706,766,767,775,778,779,782,784,785,820,822,823,842,843,844,845,846,865,1204,1941,1942,2221,2224,2225,2228,2231,2234,2238,2278,2282,2287,2291,2296,2300,2415,2417,2421,2428,2432,2435,2444,2450,2453,2462,2466",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "7654,7728,7809,7873,7939,8009,8079,8149,8219,57884,57938,58017,58090,58155,58218,58289,58360,58422,58491,58557,58624,58691,58747,58798,58851,58903,58957,59020,59079,59141,59200,59260,59323,59398,59470,59541,59597,59668,59725,59782,59848,59912,59983,60040,60093,60156,60208,63881,63928,64306,64480,64546,64725,64856,64913,67448,67653,67774,70194,70285,70586,70752,70907,72138,94813,139754,139851,160393,160594,160686,160865,161033,161208,161461,164336,164556,164914,165146,165516,165676,174609,174709,174950,175385,175592,175776,176341,176702,176831,177498,177678",
-                        "endLines": "139,140,141,142,143,144,145,146,147,669,670,671,672,673,674,675,676,677,678,679,680,681,682,683,684,685,686,687,688,689,690,691,692,693,694,695,696,697,698,699,700,701,702,703,704,705,706,766,767,775,778,779,782,784,785,820,822,823,842,843,844,845,846,868,1206,1941,1951,2218,2219,2222,2225,2228,2232,2237,2276,2281,2285,2290,2294,2298,2411,2415,2422,2426,2429,2438,2444,2447,2456,2460,2469",
+                        "startOffsets": "7654,7728,7809,7873,7939,8009,8079,8149,8219,57884,57938,58017,58090,58155,58218,58289,58360,58422,58491,58557,58624,58691,58747,58798,58851,58903,58957,59020,59079,59141,59200,59260,59323,59398,59470,59541,59597,59668,59725,59782,59848,59912,59983,60040,60093,60156,60208,63881,63928,64306,64480,64546,64725,64856,64913,67448,67653,67774,70194,70285,70586,70752,70907,72138,94813,139754,139851,160622,160823,160915,161094,161262,161437,161690,164565,164785,165143,165375,165745,165905,174838,174938,175179,175614,175821,176005,176570,176931,177060,177727,177907",
+                        "endLines": "139,140,141,142,143,144,145,146,147,669,670,671,672,673,674,675,676,677,678,679,680,681,682,683,684,685,686,687,688,689,690,691,692,693,694,695,696,697,698,699,700,701,702,703,704,705,706,766,767,775,778,779,782,784,785,820,822,823,842,843,844,845,846,868,1206,1941,1951,2223,2224,2227,2230,2233,2237,2242,2281,2286,2290,2295,2299,2303,2416,2420,2427,2431,2434,2443,2449,2452,2461,2465,2474",
                         "endColumns": "73,80,63,65,69,69,69,69,66,53,78,72,64,62,70,70,61,68,65,66,66,55,50,52,51,53,62,58,61,58,59,62,74,71,70,55,70,56,56,65,63,70,56,52,62,51,57,46,44,47,65,61,62,56,56,144,120,86,90,300,165,154,101,12,12,96,12,12,91,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12",
-                        "endOffsets": "7723,7804,7868,7934,8004,8074,8144,8214,8281,57933,58012,58085,58150,58213,58284,58355,58417,58486,58552,58619,58686,58742,58793,58846,58898,58952,59015,59074,59136,59195,59255,59318,59393,59465,59536,59592,59663,59720,59777,59843,59907,59978,60035,60088,60151,60203,60261,63923,63968,64349,64541,64603,64783,64908,64965,67588,67769,67856,70280,70581,70747,70902,71004,72420,94966,139846,140437,160589,160681,160860,161028,161203,161456,161747,164551,164909,165141,165511,165671,165825,174704,174945,175380,175587,175771,176336,176697,176826,177493,177673,178382"
+                        "endOffsets": "7723,7804,7868,7934,8004,8074,8144,8214,8281,57933,58012,58085,58150,58213,58284,58355,58417,58486,58552,58619,58686,58742,58793,58846,58898,58952,59015,59074,59136,59195,59255,59318,59393,59465,59536,59592,59663,59720,59777,59843,59907,59978,60035,60088,60151,60203,60261,63923,63968,64349,64541,64603,64783,64908,64965,67588,67769,67856,70280,70581,70747,70902,71004,72420,94966,139846,140437,160818,160910,161089,161257,161432,161685,161976,164780,165138,165370,165740,165900,166054,174933,175174,175609,175816,176000,176565,176926,177055,177722,177902,178611"
                     }
                 },
                 {
@@ -2896,22 +2896,20 @@
                         "startOffsets": "-1,-1"
                     },
                     "to": {
-                        "startLines": "4,2470",
+                        "startLines": "4,2475",
                         "startColumns": "4,4",
-                        "startOffsets": "254,178387",
-                        "endLines": "4,2472",
+                        "startOffsets": "254,178616",
+                        "endLines": "4,2477",
                         "endColumns": "60,12",
-                        "endOffsets": "310,178527"
+                        "endOffsets": "310,178756"
                     }
                 },
                 {
                     "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/values/colors.xml",
                     "from": {
-                        "startLines": "-1,-1,-1,-1,-1,9,-1,-1",
-                        "startColumns": "-1,-1,-1,-1,-1,4,-1,-1",
-                        "startOffsets": "-1,-1,-1,-1,-1,365,-1,-1",
-                        "endColumns": "-1,-1,-1,-1,-1,47,-1,-1",
-                        "endOffsets": "-1,-1,-1,-1,-1,408,-1,-1"
+                        "startLines": "-1,-1,-1,-1,-1,-1,-1,-1",
+                        "startColumns": "-1,-1,-1,-1,-1,-1,-1,-1",
+                        "startOffsets": "-1,-1,-1,-1,-1,-1,-1,-1"
                     },
                     "to": {
                         "startLines": "123,124,125,126,127,128,129,130",
@@ -2929,12 +2927,12 @@
                         "startOffsets": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1"
                     },
                     "to": {
-                        "startLines": "5,6,7,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,707,708,712,713,714,715,716,717,718,737,738,739,740,741,742,743,744,747,748,749,750,752,757,758,762,774,776,777,780,781,787,788,789,790,791,792,793,794,795,796,797,798,799,800,801,802,803,804,805,806,807,808,809,810,811,812,813,814,815,854,860,861,862,863,864,875,883,884,888,892,903,908,914,921,925,929,934,938,942,946,950,954,958,964,968,974,978,984,988,993,997,1000,1004,1010,1014,1020,1024,1030,1033,1037,1041,1045,1049,1053,1054,1055,1056,1059,1062,1065,1068,1072,1073,1074,1075,1076,1079,1081,1083,1085,1090,1091,1095,1101,1105,1106,1108,1119,1120,1124,1130,1134,1135,1136,1140,1167,1171,1172,1176,1207,1373,1399,1566,1592,1623,1631,1637,1651,1673,1678,1683,1693,1702,1711,1715,1722,1730,1737,1738,1747,1750,1753,1757,1761,1765,1768,1769,1773,1777,1787,1792,1799,1805,1806,1809,1813,1818,1820,1822,1825,1828,1830,1834,1837,1844,1847,1850,1854,1856,1860,1862,1864,1866,1870,1878,1886,1898,1904,1913,1916,1927,1930,1935,1936,1960,2018,2077,2078,2088,2097,2098,2100,2104,2107,2110,2113,2116,2120,2123,2126,2129,2133,2136,2140,2144,2145,2146,2147,2148,2149,2150,2151,2152,2153,2154,2155,2156,2157,2158,2159,2160,2161,2162,2163,2164,2166,2168,2169,2170,2171,2172,2173,2174,2175,2177,2178,2180,2181,2183,2185,2186,2188,2189,2190,2191,2192,2193,2195,2196,2197,2198,2199,2238,2240,2242,2244,2245,2246,2247,2248,2249,2250,2251,2252,2253,2254,2255,2256,2258,2259,2260,2261,2262,2263,2265,2269,2307,2308,2309,2310,2311,2312,2313,2314,2316,2318,2320,2322,2324,2325,2326,2327,2329,2331,2333,2334,2335,2336,2337,2338,2339,2340,2341,2342,2343,2344,2347,2348,2349,2350,2352,2354,2355,2357,2358,2360,2362,2364,2365,2366,2367,2368,2369,2370,2371,2372,2373,2374,2375,2377,2378,2379,2380,2382,2383,2384,2385,2386,2388,2390,2392,2394,2395,2396,2397,2398,2399,2400,2401,2402,2403,2404,2405,2406,2407",
+                        "startLines": "5,6,7,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,707,708,712,713,714,715,716,717,718,737,738,739,740,741,742,743,744,747,748,749,750,752,757,758,762,774,776,777,780,781,787,788,789,790,791,792,793,794,795,796,797,798,799,800,801,802,803,804,805,806,807,808,809,810,811,812,813,814,815,854,860,861,862,863,864,875,883,884,888,892,903,908,914,921,925,929,934,938,942,946,950,954,958,964,968,974,978,984,988,993,997,1000,1004,1010,1014,1020,1024,1030,1033,1037,1041,1045,1049,1053,1054,1055,1056,1059,1062,1065,1068,1072,1073,1074,1075,1076,1079,1081,1083,1085,1090,1091,1095,1101,1105,1106,1108,1119,1120,1124,1130,1134,1135,1136,1140,1167,1171,1172,1176,1207,1373,1399,1566,1592,1623,1631,1637,1651,1673,1678,1683,1693,1702,1711,1715,1722,1730,1737,1738,1747,1750,1753,1757,1761,1765,1768,1769,1773,1777,1787,1792,1799,1805,1806,1809,1813,1818,1820,1822,1825,1828,1830,1834,1837,1844,1847,1850,1854,1856,1860,1862,1864,1866,1870,1878,1886,1898,1904,1913,1916,1927,1930,1935,1936,1965,2023,2082,2083,2093,2102,2103,2105,2109,2112,2115,2118,2121,2125,2128,2131,2134,2138,2141,2145,2149,2150,2151,2152,2153,2154,2155,2156,2157,2158,2159,2160,2161,2162,2163,2164,2165,2166,2167,2168,2169,2171,2173,2174,2175,2176,2177,2178,2179,2180,2182,2183,2185,2186,2188,2190,2191,2193,2194,2195,2196,2197,2198,2200,2201,2202,2203,2204,2243,2245,2247,2249,2250,2251,2252,2253,2254,2255,2256,2257,2258,2259,2260,2261,2263,2264,2265,2266,2267,2268,2270,2274,2312,2313,2314,2315,2316,2317,2318,2319,2321,2323,2325,2327,2329,2330,2331,2332,2334,2336,2338,2339,2340,2341,2342,2343,2344,2345,2346,2347,2348,2349,2352,2353,2354,2355,2357,2359,2360,2362,2363,2365,2367,2369,2370,2371,2372,2373,2374,2375,2376,2377,2378,2379,2380,2382,2383,2384,2385,2387,2388,2389,2390,2391,2393,2395,2397,2399,2400,2401,2402,2403,2404,2405,2406,2407,2408,2409,2410,2411,2412",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "315,370,415,4627,4668,4723,4782,4844,4922,5003,5064,5139,5215,5292,5370,5455,5537,5613,5689,5766,5844,5950,6056,6135,6215,6272,8286,8360,8435,8500,8566,8621,8693,8766,8833,8901,8960,9019,9078,9137,9196,9250,9304,9357,9411,9465,9519,9794,9868,9947,10020,10094,10165,10237,10309,10382,10439,10497,10570,10644,10718,10793,10865,10938,11008,11079,11139,52320,52389,52458,52528,52602,52678,52742,52819,52895,52972,53037,53106,53183,53258,53327,53395,53472,53538,53599,53696,53761,53830,53929,54000,54059,54117,54174,54233,54304,54376,54448,54520,54592,54659,54727,54795,54854,54917,54981,55071,55162,55222,55288,55355,55421,55491,55555,55608,55721,55779,55842,55907,55972,56047,56120,56192,56241,56302,56363,56424,56486,56550,56614,56678,56743,56806,56866,56927,56993,57052,57112,57174,57245,57305,60266,60352,60602,60692,60779,60867,60949,61032,61122,62414,62466,62524,62569,62635,62699,62756,62813,63015,63072,63120,63169,63260,63473,63520,63716,64274,64354,64418,64608,64668,65040,65114,65184,65262,65316,65386,65471,65519,65565,65636,65714,65792,65864,65938,66012,66086,66166,66239,66308,66380,66457,66509,66582,66656,66725,66800,66874,66948,67089,71365,71696,71774,71864,71952,72048,72707,73289,73378,73625,73906,74572,74857,75250,75727,75949,76171,76447,76674,76904,77134,77364,77594,77821,78240,78466,78891,79121,79549,79768,80051,80259,80390,80617,81043,81268,81695,81916,82341,82461,82737,83038,83362,83653,83967,84104,84235,84340,84582,84749,84953,85161,85432,85544,85656,85761,85878,86092,86238,86378,86464,86812,86900,87146,87564,87813,87895,87993,88585,88685,88937,89361,89616,89710,89799,90036,92060,92302,92404,92657,94971,105007,106523,116657,118185,119942,120568,120988,122049,123314,123570,123806,124353,124847,125452,125650,126230,126794,127169,127287,127825,127982,128178,128451,128707,128877,129018,129082,129364,129650,130326,130590,130928,131281,131375,131561,131867,132129,132254,132381,132620,132831,132950,133143,133320,133775,133956,134078,134337,134450,134637,134739,134846,134975,135250,135758,136254,137131,137425,137995,138144,138876,139048,139384,139476,140760,145042,149467,149529,150107,150691,150782,150895,151124,151284,151436,151607,151774,152017,152187,152360,152531,152805,153004,153209,153539,153623,153719,153815,153913,154013,154115,154217,154319,154421,154523,154623,154719,154831,154960,155083,155214,155345,155443,155557,155651,155791,155925,156021,156133,156233,156349,156445,156557,156657,156797,156933,157097,157227,157385,157535,157676,157820,157955,158067,158217,158345,158473,158609,158741,158871,159001,159113,161752,161898,162042,162180,162246,162336,162412,162516,162606,162708,162816,162924,163024,163104,163196,163294,163404,163482,163588,163680,163784,163894,164016,164179,166228,166308,166408,166498,166608,166702,166808,166900,167000,167112,167226,167342,167458,167552,167666,167778,167880,168000,168122,168204,168308,168428,168554,168652,168746,168834,168946,169062,169184,169296,169471,169587,169673,169765,169877,170001,170068,170194,170262,170390,170534,170662,170731,170826,170941,171054,171153,171262,171373,171484,171585,171690,171790,171920,172011,172134,172228,172340,172426,172530,172626,172714,172832,172936,173040,173166,173254,173362,173462,173552,173662,173746,173848,173932,173986,174050,174156,174266,174350",
-                        "endLines": "5,6,7,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,707,708,712,713,714,715,716,717,718,737,738,739,740,741,742,743,744,747,748,749,750,752,757,758,762,774,776,777,780,781,787,788,789,790,791,792,793,794,795,796,797,798,799,800,801,802,803,804,805,806,807,808,809,810,811,812,813,814,815,854,860,861,862,863,864,882,883,887,891,895,907,913,920,924,928,933,937,941,945,949,953,957,963,967,973,977,983,987,992,996,999,1003,1009,1013,1019,1023,1029,1032,1036,1040,1044,1048,1052,1053,1054,1055,1058,1061,1064,1067,1071,1072,1073,1074,1075,1078,1080,1082,1084,1089,1090,1094,1100,1104,1105,1107,1118,1119,1123,1129,1133,1134,1135,1139,1166,1170,1171,1175,1203,1372,1398,1565,1591,1622,1630,1636,1650,1672,1677,1682,1692,1701,1710,1714,1721,1729,1736,1737,1746,1749,1752,1756,1760,1764,1767,1768,1772,1776,1786,1791,1798,1804,1805,1808,1812,1817,1819,1821,1824,1827,1829,1833,1836,1843,1846,1849,1853,1855,1859,1861,1863,1865,1869,1877,1885,1897,1903,1912,1915,1926,1929,1934,1935,1940,2017,2076,2077,2087,2096,2097,2099,2103,2106,2109,2112,2115,2119,2122,2125,2128,2132,2135,2139,2143,2144,2145,2146,2147,2148,2149,2150,2151,2152,2153,2154,2155,2156,2157,2158,2159,2160,2161,2162,2163,2165,2167,2168,2169,2170,2171,2172,2173,2174,2176,2177,2179,2180,2182,2184,2185,2187,2188,2189,2190,2191,2192,2194,2195,2196,2197,2198,2199,2239,2241,2243,2244,2245,2246,2247,2248,2249,2250,2251,2252,2253,2254,2255,2257,2258,2259,2260,2261,2262,2264,2268,2272,2307,2308,2309,2310,2311,2312,2313,2315,2317,2319,2321,2323,2324,2325,2326,2328,2330,2332,2333,2334,2335,2336,2337,2338,2339,2340,2341,2342,2343,2346,2347,2348,2349,2351,2353,2354,2356,2357,2359,2361,2363,2364,2365,2366,2367,2368,2369,2370,2371,2372,2373,2374,2376,2377,2378,2379,2381,2382,2383,2384,2385,2387,2389,2391,2393,2394,2395,2396,2397,2398,2399,2400,2401,2402,2403,2404,2405,2406,2407",
+                        "startOffsets": "315,370,415,4627,4668,4723,4782,4844,4922,5003,5064,5139,5215,5292,5370,5455,5537,5613,5689,5766,5844,5950,6056,6135,6215,6272,8286,8360,8435,8500,8566,8621,8693,8766,8833,8901,8960,9019,9078,9137,9196,9250,9304,9357,9411,9465,9519,9794,9868,9947,10020,10094,10165,10237,10309,10382,10439,10497,10570,10644,10718,10793,10865,10938,11008,11079,11139,52320,52389,52458,52528,52602,52678,52742,52819,52895,52972,53037,53106,53183,53258,53327,53395,53472,53538,53599,53696,53761,53830,53929,54000,54059,54117,54174,54233,54304,54376,54448,54520,54592,54659,54727,54795,54854,54917,54981,55071,55162,55222,55288,55355,55421,55491,55555,55608,55721,55779,55842,55907,55972,56047,56120,56192,56241,56302,56363,56424,56486,56550,56614,56678,56743,56806,56866,56927,56993,57052,57112,57174,57245,57305,60266,60352,60602,60692,60779,60867,60949,61032,61122,62414,62466,62524,62569,62635,62699,62756,62813,63015,63072,63120,63169,63260,63473,63520,63716,64274,64354,64418,64608,64668,65040,65114,65184,65262,65316,65386,65471,65519,65565,65636,65714,65792,65864,65938,66012,66086,66166,66239,66308,66380,66457,66509,66582,66656,66725,66800,66874,66948,67089,71365,71696,71774,71864,71952,72048,72707,73289,73378,73625,73906,74572,74857,75250,75727,75949,76171,76447,76674,76904,77134,77364,77594,77821,78240,78466,78891,79121,79549,79768,80051,80259,80390,80617,81043,81268,81695,81916,82341,82461,82737,83038,83362,83653,83967,84104,84235,84340,84582,84749,84953,85161,85432,85544,85656,85761,85878,86092,86238,86378,86464,86812,86900,87146,87564,87813,87895,87993,88585,88685,88937,89361,89616,89710,89799,90036,92060,92302,92404,92657,94971,105007,106523,116657,118185,119942,120568,120988,122049,123314,123570,123806,124353,124847,125452,125650,126230,126794,127169,127287,127825,127982,128178,128451,128707,128877,129018,129082,129364,129650,130326,130590,130928,131281,131375,131561,131867,132129,132254,132381,132620,132831,132950,133143,133320,133775,133956,134078,134337,134450,134637,134739,134846,134975,135250,135758,136254,137131,137425,137995,138144,138876,139048,139384,139476,140989,145271,149696,149758,150336,150920,151011,151124,151353,151513,151665,151836,152003,152246,152416,152589,152760,153034,153233,153438,153768,153852,153948,154044,154142,154242,154344,154446,154548,154650,154752,154852,154948,155060,155189,155312,155443,155574,155672,155786,155880,156020,156154,156250,156362,156462,156578,156674,156786,156886,157026,157162,157326,157456,157614,157764,157905,158049,158184,158296,158446,158574,158702,158838,158970,159100,159230,159342,161981,162127,162271,162409,162475,162565,162641,162745,162835,162937,163045,163153,163253,163333,163425,163523,163633,163711,163817,163909,164013,164123,164245,164408,166457,166537,166637,166727,166837,166931,167037,167129,167229,167341,167455,167571,167687,167781,167895,168007,168109,168229,168351,168433,168537,168657,168783,168881,168975,169063,169175,169291,169413,169525,169700,169816,169902,169994,170106,170230,170297,170423,170491,170619,170763,170891,170960,171055,171170,171283,171382,171491,171602,171713,171814,171919,172019,172149,172240,172363,172457,172569,172655,172759,172855,172943,173061,173165,173269,173395,173483,173591,173691,173781,173891,173975,174077,174161,174215,174279,174385,174495,174579",
+                        "endLines": "5,6,7,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,655,656,657,658,659,660,707,708,712,713,714,715,716,717,718,737,738,739,740,741,742,743,744,747,748,749,750,752,757,758,762,774,776,777,780,781,787,788,789,790,791,792,793,794,795,796,797,798,799,800,801,802,803,804,805,806,807,808,809,810,811,812,813,814,815,854,860,861,862,863,864,882,883,887,891,895,907,913,920,924,928,933,937,941,945,949,953,957,963,967,973,977,983,987,992,996,999,1003,1009,1013,1019,1023,1029,1032,1036,1040,1044,1048,1052,1053,1054,1055,1058,1061,1064,1067,1071,1072,1073,1074,1075,1078,1080,1082,1084,1089,1090,1094,1100,1104,1105,1107,1118,1119,1123,1129,1133,1134,1135,1139,1166,1170,1171,1175,1203,1372,1398,1565,1591,1622,1630,1636,1650,1672,1677,1682,1692,1701,1710,1714,1721,1729,1736,1737,1746,1749,1752,1756,1760,1764,1767,1768,1772,1776,1786,1791,1798,1804,1805,1808,1812,1817,1819,1821,1824,1827,1829,1833,1836,1843,1846,1849,1853,1855,1859,1861,1863,1865,1869,1877,1885,1897,1903,1912,1915,1926,1929,1934,1935,1940,2022,2081,2082,2092,2101,2102,2104,2108,2111,2114,2117,2120,2124,2127,2130,2133,2137,2140,2144,2148,2149,2150,2151,2152,2153,2154,2155,2156,2157,2158,2159,2160,2161,2162,2163,2164,2165,2166,2167,2168,2170,2172,2173,2174,2175,2176,2177,2178,2179,2181,2182,2184,2185,2187,2189,2190,2192,2193,2194,2195,2196,2197,2199,2200,2201,2202,2203,2204,2244,2246,2248,2249,2250,2251,2252,2253,2254,2255,2256,2257,2258,2259,2260,2262,2263,2264,2265,2266,2267,2269,2273,2277,2312,2313,2314,2315,2316,2317,2318,2320,2322,2324,2326,2328,2329,2330,2331,2333,2335,2337,2338,2339,2340,2341,2342,2343,2344,2345,2346,2347,2348,2351,2352,2353,2354,2356,2358,2359,2361,2362,2364,2366,2368,2369,2370,2371,2372,2373,2374,2375,2376,2377,2378,2379,2381,2382,2383,2384,2386,2387,2388,2389,2390,2392,2394,2396,2398,2399,2400,2401,2402,2403,2404,2405,2406,2407,2408,2409,2410,2411,2412",
                         "endColumns": "54,44,48,40,54,58,61,77,80,60,74,75,76,77,84,81,75,75,76,77,105,105,78,79,56,57,73,74,64,65,54,71,72,66,67,58,58,58,58,58,53,53,52,53,53,53,53,73,78,72,73,70,71,71,72,56,57,72,73,73,74,71,72,69,70,59,60,68,68,69,73,75,63,76,75,76,64,68,76,74,68,67,76,65,60,96,64,68,98,70,58,57,56,58,70,71,71,71,71,66,67,67,58,62,63,89,90,59,65,66,65,69,63,52,112,57,62,64,64,74,72,71,48,60,60,60,61,63,63,63,64,62,59,60,65,58,59,61,70,59,67,85,86,89,86,87,81,82,89,90,51,57,44,65,63,56,56,53,56,47,48,50,33,46,48,45,31,63,61,59,56,73,69,77,53,69,84,47,45,70,77,77,71,73,73,73,79,72,68,71,76,51,72,73,68,74,73,73,140,69,52,77,89,87,95,89,12,88,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,136,130,104,12,12,12,12,12,111,111,104,116,12,12,12,12,12,87,12,12,12,81,12,12,99,12,12,12,93,88,12,12,12,101,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,117,12,12,12,12,12,12,12,63,12,12,12,12,12,12,93,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,91,12,12,12,61,12,12,90,12,12,12,12,12,12,12,12,12,12,12,12,12,12,83,95,95,97,99,101,101,101,101,101,99,95,111,128,122,130,130,97,113,93,12,12,95,111,99,115,95,111,99,12,135,12,129,12,12,140,12,134,111,149,127,127,12,131,129,129,111,139,12,12,12,65,89,75,103,89,101,107,107,99,79,91,97,12,77,105,91,103,109,12,12,12,79,99,89,109,93,105,91,12,12,12,12,12,93,113,111,12,12,12,81,103,119,125,97,93,87,111,115,121,111,12,115,85,91,12,12,66,12,67,12,12,12,68,94,114,112,98,108,110,110,100,104,99,12,90,122,93,12,85,103,95,87,12,12,12,12,87,107,99,89,109,83,101,83,53,63,105,109,83,119",
-                        "endOffsets": "365,410,459,4663,4718,4777,4839,4917,4998,5059,5134,5210,5287,5365,5450,5532,5608,5684,5761,5839,5945,6051,6130,6210,6267,6325,8355,8430,8495,8561,8616,8688,8761,8828,8896,8955,9014,9073,9132,9191,9245,9299,9352,9406,9460,9514,9568,9863,9942,10015,10089,10160,10232,10304,10377,10434,10492,10565,10639,10713,10788,10860,10933,11003,11074,11134,11195,52384,52453,52523,52597,52673,52737,52814,52890,52967,53032,53101,53178,53253,53322,53390,53467,53533,53594,53691,53756,53825,53924,53995,54054,54112,54169,54228,54299,54371,54443,54515,54587,54654,54722,54790,54849,54912,54976,55066,55157,55217,55283,55350,55416,55486,55550,55603,55716,55774,55837,55902,55967,56042,56115,56187,56236,56297,56358,56419,56481,56545,56609,56673,56738,56801,56861,56922,56988,57047,57107,57169,57240,57300,57368,60347,60434,60687,60774,60862,60944,61027,61117,61208,62461,62519,62564,62630,62694,62751,62808,62862,63067,63115,63164,63215,63289,63515,63564,63757,64301,64413,64475,64663,64720,65109,65179,65257,65311,65381,65466,65514,65560,65631,65709,65787,65859,65933,66007,66081,66161,66234,66303,66375,66452,66504,66577,66651,66720,66795,66869,66943,67084,67154,71413,71769,71859,71947,72043,72133,73284,73373,73620,73901,74153,74852,75245,75722,75944,76166,76442,76669,76899,77129,77359,77589,77816,78235,78461,78886,79116,79544,79763,80046,80254,80385,80612,81038,81263,81690,81911,82336,82456,82732,83033,83357,83648,83962,84099,84230,84335,84577,84744,84948,85156,85427,85539,85651,85756,85873,86087,86233,86373,86459,86807,86895,87141,87559,87808,87890,87988,88580,88680,88932,89356,89611,89705,89794,90031,92055,92297,92399,92652,94808,105002,106518,116652,118180,119937,120563,120983,122044,123309,123565,123801,124348,124842,125447,125645,126225,126789,127164,127282,127820,127977,128173,128446,128702,128872,129013,129077,129359,129645,130321,130585,130923,131276,131370,131556,131862,132124,132249,132376,132615,132826,132945,133138,133315,133770,133951,134073,134332,134445,134632,134734,134841,134970,135245,135753,136249,137126,137420,137990,138139,138871,139043,139379,139471,139749,145037,149462,149524,150102,150686,150777,150890,151119,151279,151431,151602,151769,152012,152182,152355,152526,152800,152999,153204,153534,153618,153714,153810,153908,154008,154110,154212,154314,154416,154518,154618,154714,154826,154955,155078,155209,155340,155438,155552,155646,155786,155920,156016,156128,156228,156344,156440,156552,156652,156792,156928,157092,157222,157380,157530,157671,157815,157950,158062,158212,158340,158468,158604,158736,158866,158996,159108,159248,161893,162037,162175,162241,162331,162407,162511,162601,162703,162811,162919,163019,163099,163191,163289,163399,163477,163583,163675,163779,163889,164011,164174,164331,166303,166403,166493,166603,166697,166803,166895,166995,167107,167221,167337,167453,167547,167661,167773,167875,167995,168117,168199,168303,168423,168549,168647,168741,168829,168941,169057,169179,169291,169466,169582,169668,169760,169872,169996,170063,170189,170257,170385,170529,170657,170726,170821,170936,171049,171148,171257,171368,171479,171580,171685,171785,171915,172006,172129,172223,172335,172421,172525,172621,172709,172827,172931,173035,173161,173249,173357,173457,173547,173657,173741,173843,173927,173981,174045,174151,174261,174345,174465"
+                        "endOffsets": "365,410,459,4663,4718,4777,4839,4917,4998,5059,5134,5210,5287,5365,5450,5532,5608,5684,5761,5839,5945,6051,6130,6210,6267,6325,8355,8430,8495,8561,8616,8688,8761,8828,8896,8955,9014,9073,9132,9191,9245,9299,9352,9406,9460,9514,9568,9863,9942,10015,10089,10160,10232,10304,10377,10434,10492,10565,10639,10713,10788,10860,10933,11003,11074,11134,11195,52384,52453,52523,52597,52673,52737,52814,52890,52967,53032,53101,53178,53253,53322,53390,53467,53533,53594,53691,53756,53825,53924,53995,54054,54112,54169,54228,54299,54371,54443,54515,54587,54654,54722,54790,54849,54912,54976,55066,55157,55217,55283,55350,55416,55486,55550,55603,55716,55774,55837,55902,55967,56042,56115,56187,56236,56297,56358,56419,56481,56545,56609,56673,56738,56801,56861,56922,56988,57047,57107,57169,57240,57300,57368,60347,60434,60687,60774,60862,60944,61027,61117,61208,62461,62519,62564,62630,62694,62751,62808,62862,63067,63115,63164,63215,63289,63515,63564,63757,64301,64413,64475,64663,64720,65109,65179,65257,65311,65381,65466,65514,65560,65631,65709,65787,65859,65933,66007,66081,66161,66234,66303,66375,66452,66504,66577,66651,66720,66795,66869,66943,67084,67154,71413,71769,71859,71947,72043,72133,73284,73373,73620,73901,74153,74852,75245,75722,75944,76166,76442,76669,76899,77129,77359,77589,77816,78235,78461,78886,79116,79544,79763,80046,80254,80385,80612,81038,81263,81690,81911,82336,82456,82732,83033,83357,83648,83962,84099,84230,84335,84577,84744,84948,85156,85427,85539,85651,85756,85873,86087,86233,86373,86459,86807,86895,87141,87559,87808,87890,87988,88580,88680,88932,89356,89611,89705,89794,90031,92055,92297,92399,92652,94808,105002,106518,116652,118180,119937,120563,120983,122044,123309,123565,123801,124348,124842,125447,125645,126225,126789,127164,127282,127820,127977,128173,128446,128702,128872,129013,129077,129359,129645,130321,130585,130923,131276,131370,131556,131862,132124,132249,132376,132615,132826,132945,133138,133315,133770,133951,134073,134332,134445,134632,134734,134841,134970,135245,135753,136249,137126,137420,137990,138139,138871,139043,139379,139471,139749,145266,149691,149753,150331,150915,151006,151119,151348,151508,151660,151831,151998,152241,152411,152584,152755,153029,153228,153433,153763,153847,153943,154039,154137,154237,154339,154441,154543,154645,154747,154847,154943,155055,155184,155307,155438,155569,155667,155781,155875,156015,156149,156245,156357,156457,156573,156669,156781,156881,157021,157157,157321,157451,157609,157759,157900,158044,158179,158291,158441,158569,158697,158833,158965,159095,159225,159337,159477,162122,162266,162404,162470,162560,162636,162740,162830,162932,163040,163148,163248,163328,163420,163518,163628,163706,163812,163904,164008,164118,164240,164403,164560,166532,166632,166722,166832,166926,167032,167124,167224,167336,167450,167566,167682,167776,167890,168002,168104,168224,168346,168428,168532,168652,168778,168876,168970,169058,169170,169286,169408,169520,169695,169811,169897,169989,170101,170225,170292,170418,170486,170614,170758,170886,170955,171050,171165,171278,171377,171486,171597,171708,171809,171914,172014,172144,172235,172358,172452,172564,172650,172754,172850,172938,173056,173160,173264,173390,173478,173586,173686,173776,173886,173970,174072,174156,174210,174274,174380,174490,174574,174694"
                     }
                 }
             ]

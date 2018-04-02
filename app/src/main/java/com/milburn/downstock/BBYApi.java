@@ -16,13 +16,15 @@ import java.net.URL;
 
 import com.milburn.downstock.ProductDetails.ItemStoreInfo;
 import com.milburn.downstock.ProductDetails.DetailedItem;
+import com.milburn.downstock.ProductDetails.BasicItem;
 
-public class BBYApi extends AsyncTask<ProductDetails, Void, ProductDetails> {
+public class BBYApi extends AsyncTask<Object, Void, Object> {
 
     public AsyncResponse delegate;
     private MainActivity context;
     private SharedPreferences sharedPreferences;
     private Gson gson = new Gson();
+    private int maxAttempts = 3;
 
     public BBYApi(MainActivity con, AsyncResponse asyncResponse) {
         context = con;
@@ -31,33 +33,25 @@ public class BBYApi extends AsyncTask<ProductDetails, Void, ProductDetails> {
     }
 
     public interface AsyncResponse {
-        void processFinish(ProductDetails result);
+        void processFinish(Object result);
     }
 
     @Override
-    protected ProductDetails doInBackground(ProductDetails... params) {
+    protected Object doInBackground(Object... params) {
         context.showProgress(false,false,0);
-        ProductDetails productDetails = null;
-        String itemUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + params[0].getAllBasicSkus() + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&apiKey=" + context.getString(R.string.bbyapi);
-        String itemResult = null;
-        try {
-            itemResult = Jsoup.connect(itemUrl).ignoreContentType(true).execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (itemResult != null) {
-            productDetails = gson.fromJson(itemResult, ProductDetails.class);
+        Object object = params[0];
 
-            for (DetailedItem item : productDetails.getDetailedItems()) {
-                context.showProgress(true, true, 100/productDetails.sizeDetailedItems());
-                item.setImageBit(getBitmap(item.getImage()));
-                item.setPageNum(params[0].getBasicItem(item.getSku()).getPageNum());
-                item.setStock(getStoreInfo(item));
+        if (object instanceof ProductDetails) {
+            ProductDetails productDetails = (ProductDetails)object;
+            if (productDetails.sizeDetailedItems() > 0) {
+                return getUpdatedStoreInfo(productDetails);
+            } else {
+                return getDetailedItems(productDetails);
             }
-
+        } else if (object instanceof BasicItem) {
+            return getDetailedItem((BasicItem)object);
         }
-        context.showProgress(false, false, 0);
-        return productDetails;
+        return object;
     }
 
     private Bitmap getBitmap(String url) {
@@ -75,22 +69,89 @@ public class BBYApi extends AsyncTask<ProductDetails, Void, ProductDetails> {
     private ItemStoreInfo getStoreInfo(DetailedItem item) {
         String availUrl = "https://api.bestbuy.com/v1/products/" + item.getSku() + "/stores.json?storeId="+ sharedPreferences.getString("store_id_pref", "0") + "&apiKey=" + context.getString(R.string.bbyapi);
         String availResult = null;
-        try {
-            availResult = Jsoup.connect(availUrl).ignoreContentType(true).execute().body();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (e.getMessage().contains("Status=403")) {
-                //
+        int count = 0;
+        while (count <= maxAttempts && availResult == null) {
+            count++;
+            try {
+                availResult = Jsoup.connect(availUrl).ignoreContentType(true).execute().body();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+
         if (availResult != null) {
             return gson.fromJson(availResult, ItemStoreInfo.class);
         }
         return new ItemStoreInfo();
     }
 
+    private ProductDetails getUpdatedStoreInfo(ProductDetails productDetails) {
+        for (DetailedItem item : productDetails.getDetailedItems()) {
+            item.setStock(getStoreInfo(item));
+        }
+        return productDetails;
+    }
+
+    private DetailedItem getDetailedItem(BasicItem basicItem) {
+        String itemUrl = "https://api.bestbuy.com/v1/products/" + basicItem.getSku() + ".json?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&apiKey=" + context.getString(R.string.bbyapi);
+        String itemResult = null;
+        int count = 0;
+        while (count <= maxAttempts && itemResult == null) {
+            count++;
+            try {
+                itemResult = Jsoup.connect(itemUrl).ignoreContentType(true).execute().body();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (itemResult != null) {
+            DetailedItem detailedItem = gson.fromJson(itemResult, DetailedItem.class);
+            detailedItem.setImageBit(getBitmap(detailedItem.getImage()));
+            detailedItem.setPageNum(basicItem.getPageNum());
+            detailedItem.setMultiPlano(basicItem.isMutiPlano());
+            detailedItem.setStock(getStoreInfo(detailedItem));
+
+            return detailedItem;
+        }
+        return null;
+    }
+
+    private ProductDetails getDetailedItems(ProductDetails productDetails) {
+        int numPages = (int) Math.ceil(productDetails.sizeBasicItems() / 100.0);
+
+        for (int i = 1; i <= numPages; i++) {
+            String itemUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + productDetails.getAllBasicSkus() + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&page=" + i + "&apiKey=" + context.getString(R.string.bbyapi);
+            String itemResult = null;
+            int count = 0;
+            while (count <= maxAttempts && itemResult == null) {
+                count++;
+                try {
+                    itemResult = Jsoup.connect(itemUrl).ignoreContentType(true).execute().body();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (itemResult != null) {
+                ProductDetails tempProductDetails = gson.fromJson(itemResult, ProductDetails.class);
+                productDetails.addDetailedItems(tempProductDetails.getDetailedItems());
+            }
+        }
+
+        for (DetailedItem item : productDetails.getDetailedItems()) {
+            context.showProgress(true, true, 100/productDetails.sizeDetailedItems());
+            item.setImageBit(getBitmap(item.getImage()));
+            item.setPageNum(productDetails.getBasicItem(item.getSku()).getPageNum());
+            item.setMultiPlano(productDetails.getBasicItem(item.getSku()).isMutiPlano());
+            item.setStock(getStoreInfo(item));
+        }
+        context.showProgress(false, false, 0);
+        return productDetails;
+    }
+
     @Override
-    protected void onPostExecute(ProductDetails result) {
+    protected void onPostExecute(Object result) {
         delegate.processFinish(result);
     }
 }

@@ -57,10 +57,8 @@ public class ProductDetails {
         private boolean lowStock = false;
 
         public void setStock(ItemStoreInfo info) {
-            if (info.isInStock()) {
-                inStock = true;
-                lowStock = info.isLowStock();
-            }
+            inStock = info.isInStock();
+            lowStock = info.isLowStock();
         }
 
         public void setPageNum(int pageNum) {
@@ -83,6 +81,10 @@ public class ProductDetails {
 
         public void setSelected(boolean selected) {
             this.selected = selected;
+        }
+
+        public void setMultiPlano(boolean multi) {
+            this.multiPlano = multi;
         }
 
         public String getSku() {
@@ -218,12 +220,11 @@ public class ProductDetails {
 
     public List<BasicItem> addBasicItem(BasicItem item) {
         if (item != null) {
-            if (getBasicItem(item) != null) {
-                getBasicItem(item).setMultiPlano(true);
+            if (getBasicItem(item.getSku()) != null) {
+                getBasicItem(item.getSku()).setMultiPlano(true);
             } else {
                 getBasicItems().add(item);
             }
-            return getBasicItems();
         }
         return getBasicItems();
     }
@@ -252,7 +253,7 @@ public class ProductDetails {
         return getBasicItems();
     }
 
-    public void setDetailedItems(List<DetailedItem> itemList) {
+    public void addDetailedItems(List<DetailedItem> itemList) {
         getDetailedItems().addAll(itemList);
     }
 
