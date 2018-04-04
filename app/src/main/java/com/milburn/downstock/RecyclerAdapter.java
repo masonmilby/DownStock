@@ -18,7 +18,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private ProductDetails productDetails;
     private List<DetailedItem> detailedList;
-    private MainActivity context;
+    private RecyclerFragment context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -58,7 +58,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    public RecyclerAdapter(ProductDetails data, MainActivity con) {
+    public RecyclerAdapter(ProductDetails data, RecyclerFragment con) {
         setHasStableIds(true);
         productDetails = data;
         context = con;
@@ -83,8 +83,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.selectedPosition = position;
-                if (!context.selectionState) {
+                context.setSelectedPosition(position);
+                if (!context.isSelectionState()) {
                     view.showContextMenu();
                 } else {
                     context.selectItem(position);
@@ -95,7 +95,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                MenuInflater inflater = context.getMenuInflater();
+                MenuInflater inflater = context.getActivityMenuInflater();
                 inflater.inflate(R.menu.context_menu, menu);
 
                 menu.setHeaderTitle("Item options");

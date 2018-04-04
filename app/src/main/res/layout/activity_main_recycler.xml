@@ -8,6 +8,7 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorWhite"
         android:clipToPadding="false"
         android:paddingBottom="0dp"
         android:paddingTop="8dp"

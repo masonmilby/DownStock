@@ -2,20 +2,15 @@ package com.milburn.downstock;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,42 +22,25 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.milburn.downstock.ProductDetails.DetailedItem;
-
 public class MainActivity extends AppCompatActivity {
-    List<Uri> uriList = new ArrayList<>();
     ProgressBar progressBar;
     Toolbar toolbar;
     ActionBar actionBar;
 
     MenuItem showSwipedItems;
+    MenuItem viewPage;
 
     Button buttonSelect;
     Button buttonScan;
 
-    SwipeRefreshLayout swipeRefresh;
-    RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter;
-
     View fragmentContainer;
+    FragmentManager fragmentManager = null;
+    FragmentTransaction fragmentTransaction = null;
+    String shownFragmentTag;
 
-    int selectedPosition = 0;
-    int swipedPosition = 0;
-    boolean selectionState = false;
-    DetailedItem selectedItem;
-    DetailedItem swipedItem;
-
-    DetailedItem removedItem;
-    List<DetailedItem> removedItems = new ArrayList<>();
-    int removedPosition = 0;
-
-    ProductDetails productDetails;
+    PhotoUriList uriList = new PhotoUriList();
 
     SharedPreferences sharedPreferences;
-    SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
     OcrDetectorProcessor ocr;
 
     @Override
@@ -91,53 +69,62 @@ public class MainActivity extends AppCompatActivity {
         if (sharedPreferences.getString("store_id_pref", "0").contentEquals("0")) {
             startActivityForResult(new Intent(this, SettingsActivity.class), 0);
         } else {
-            showStartFragment(true);
+            showStartFragment(true, null);
         }
     }
 
-    private void showStartFragment(boolean show) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    private void showStartFragment(boolean show, RecyclerFragment recyclerFragment) {
+        if (fragmentManager == null) {
+            fragmentManager = getSupportFragmentManager();
 
-        SelectionFragment selectionFragment = new SelectionFragment();
-        RecyclerFragment recyclerFragment = new RecyclerFragment();
+            fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+                @Override
+                public void onFragmentStarted(FragmentManager fm, Fragment f) {
+                    super.onFragmentStarted(fm, f);
+                    shownFragmentTag = f.getTag();
 
-        fragmentTransaction.replace(R.id.fragment_container, show ? selectionFragment : recyclerFragment, show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commit();
+                    if (f.getTag().contentEquals("Selection")) {
+                        buttonSelect = f.getView().findViewById(R.id.button_select);
+                        buttonScan = f.getView().findViewById(R.id.button_scan);
 
-        fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
-            @Override
-            public void onFragmentStarted(FragmentManager fm, Fragment f) {
-                super.onFragmentStarted(fm, f);
+                        if (buttonSelect != null && buttonScan != null) {
+                            buttonSelect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    setSelectionButtonsEnabled(false);
+                                    pickPhotos();
+                                }
+                            });
 
-                if (f.getTag().contentEquals("Selection")) {
-                    buttonSelect = f.getView().findViewById(R.id.button_select);
-                    buttonScan = f.getView().findViewById(R.id.button_scan);
-
-                    if (buttonSelect != null && buttonScan != null) {
-                        buttonSelect.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                setSelectionButtonsEnabled(false);
-                                pickPhotos();
-                            }
-                        });
-
-                        buttonScan.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                setSelectionButtonsEnabled(false);
-                                takePhotos();
-                            }
-                        });
+                            buttonScan.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    setSelectionButtonsEnabled(false);
+                                    takePhotos();
+                                }
+                            });
+                        }
                     }
-                } else {
-                    recyclerView = f.getView().findViewById(R.id.recycler);
-                    swipeRefresh = f.getView().findViewById(R.id.swipeRefresh);
-
-                    setupRecycler();
                 }
-            }
-        }, true);
+            }, true);
+        }
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, show ? new SelectionFragment() : recyclerFragment, show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commitAllowingStateLoss();
+    }
+
+    private Fragment getShownFragment() {
+        return fragmentManager.findFragmentByTag(shownFragmentTag);
+    }
+
+    private RecyclerFragment getRecyclerFragment() {
+        return (RecyclerFragment)fragmentManager.findFragmentByTag("Recycler");
+    }
+
+    private boolean isSelectionState() {
+        if (shownFragmentTag.contentEquals("Recycler")) {
+            return ((RecyclerFragment)getShownFragment()).isSelectionState();
+        }
+        return false;
     }
 
     private void setSelectionButtonsEnabled(boolean enabled) {
@@ -158,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void pickPhotos() {
         //TODO: Fix api requirement
+        //TODO: Move to selection fragment
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
         startActivityForResult(intent, 1);
     }
 
@@ -174,17 +161,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 0:
-                showStartFragment(true);
+                showStartFragment(true, null);
                 break;
 
             case 1:
                 if (data != null) {
                     if (data.getClipData() != null) {
                         for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                            uriList.add(data.getClipData().getItemAt(i).getUri());
+                            uriList.addUri(data.getClipData().getItemAt(i).getUri());
                         }
                     } else if (data.getData() != null){
-                        uriList.add(data.getData());
+                        uriList.addUri(data.getData());
                     }
                 } else {
                     setSelectionButtonsEnabled(true);
@@ -193,12 +180,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (ocr.isRecognizerReady()) {
-                    productDetails = ocr.recognizeSkus(uriList);
+                    ProductDetails productDetails = ocr.recognizeSkus(uriList);
                     if (productDetails.sizeBasicItems() <= 0) {
                         setSelectionButtonsEnabled(true);
                         Snackbar.make(fragmentContainer, "Cannot find SKUs in image", Snackbar.LENGTH_LONG).show();
                     } else {
-                        queryApi(productDetails, false);
+                        RecyclerFragment recyclerFragment = new RecyclerFragment();
+                        Bundle recyclerBundle = new Bundle();
+                        recyclerBundle.putString("pd", productDetails.toJson());
+                        recyclerBundle.putString("uri", uriList.toJson());
+                        recyclerFragment.setArguments(recyclerBundle);
+                        showStartFragment(false, recyclerFragment);
                     }
                 }
                 break;
@@ -209,123 +201,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void queryApi(ProductDetails prods, final boolean updateStock) {
-        BBYApi bbyApi = new BBYApi(this, new BBYApi.AsyncResponse() {
-            @Override
-            public void processFinish(Object detailed) {
-                productDetails = (ProductDetails)detailed;
-                if (updateStock) {
-                    swipeRefresh.setRefreshing(false);
-                    recyclerAdapter.refreshData();
-                    Snackbar.make(fragmentContainer, "Stock updated", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    showStartFragment(false);
-                }
-            }
-        });
-        bbyApi.execute(prods);
-    }
-
-    class UndoSwipeListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            swipedItem.resetSwiped();
-            swipedItem.setSelected(false);
-            recyclerAdapter.refreshData();
-            recyclerView.smoothScrollToPosition(swipedPosition);
-        }
-    }
-
-    class UndoRemoveListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            insertItem(removedPosition, removedItem);
-        }
-    }
-
-    class UndoRemoveAllListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            insertItems(removedItems);
-        }
-    }
-
-    private void setupRecycler() {
-        recyclerAdapter = new RecyclerAdapter(productDetails, this);
-
-        recyclerView.setLayoutManager(new LinearLayout(this));
-        recyclerView.setAdapter(recyclerAdapter);
-
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                swipedPosition = viewHolder.getLayoutPosition();
-                swipedItem = productDetails.getShownItem(swipedPosition);
-
-                Snackbar snackbar = Snackbar.make(fragmentContainer, "0", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Undo", new UndoSwipeListener());
-
-                switch (direction) {
-                    case ItemTouchHelper.LEFT:
-                        swipedItem.setDeltabusted(true);
-                        snackbar.setText("Product delta busted");
-                        break;
-
-                    case ItemTouchHelper.RIGHT:
-                        swipedItem.setFound(true);
-                        snackbar.setText("Product found");
-                        break;
-                }
-                if (!productDetails.isShowSwiped()) {
-                    snackbar.show();
-                } else {
-                    recyclerView.removeAllViews();
-                }
-                swipedItem.setSelected(false);
-                recyclerAdapter.refreshData();
-                updateSelectionState();
-                updateSwiped();
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                queryApi(productDetails, true);
-            }
-        });
-
-        sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("store_id_pref")) {
-                    swipeRefresh.setRefreshing(true);
-                    queryApi(productDetails, true);
-                }
-            }
-        };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-        if (!selectionState) {
+        if (!isSelectionState()) {
             inflater.inflate(R.menu.toolbar_menu, menu);
             showSwipedItems = menu.findItem(R.id.show_swiped);
-            updateSwiped();
+            viewPage = menu.findItem(R.id.view_page);
+            //((RecyclerFragment)getShownFragment()).updateSwiped();
         } else {
             inflater.inflate(R.menu.toolbar_selected_menu, menu);
         }
@@ -336,8 +220,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (!selectionState) {
-            MenuItem viewPage = menu.findItem(R.id.view_page);
+        if (!isSelectionState()) {
             if (uriList.size() == 0) {
                 viewPage.setVisible(false);
             } else {
@@ -355,166 +238,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.view_page:
-                break;
-
-            case R.id.show_swiped:
-                setSwiped(!productDetails.isShowSwiped());
-                updateSwiped();
-                break;
-
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                break;
-
-            case android.R.id.home:
-                selectAll(true);
-                break;
-
-            case R.id.delete_items:
-                removeSelectedItems();
-                break;
-
-            case R.id.share_items:
-                break;
-
-            case R.id.select_all_items:
-                selectAll(false);
-                break;
+                return true;
 
             default:
-                openImage(item.getItemId());
-                break;
-        }
-
-        return true;
-    }
-
-    public void openImage(int imageId) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(uriList.get(imageId), "image/*");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onContextItemSelected (MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.open_url:
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(productDetails.getShownItem(selectedPosition).getUrl()));
-                startActivity(intent);
-                break;
-
-            case R.id.view_page:
-                openImage(productDetails.getShownItem(selectedPosition).getPageNum());
-                break;
-
-            case R.id.remove_item:
-                removeItem(selectedPosition, true);
-                updateSwiped();
-                break;
-
-            default:
-                productDetails.getShownItem(selectedPosition).resetSwiped();
-                recyclerAdapter.refreshData();
-                updateSwiped();
-                break;
-        }
-        return true;
-    }
-
-    public void insertItem(int position, DetailedItem item) {
-        item.setSelected(false);
-        productDetails.addDetailedItem(position, item);
-        recyclerAdapter.refreshData();
-        updateSwiped();
-    }
-
-    public void insertItems(List<DetailedItem> items) {
-        for (DetailedItem item : items) {
-            insertItem(0, item);
-        }
-    }
-
-    public void removeItem(int position, boolean showSnack) {
-        removedPosition = position;
-        removedItem = productDetails.getShownItem(position);
-
-        productDetails.removeShownItem(position);
-        recyclerAdapter.refreshData();
-
-        if (showSnack) {
-            Snackbar.make(fragmentContainer, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
-        }
-    }
-
-    public void removeSelectedItems() {
-        removedItems.clear();
-        for (DetailedItem item : productDetails.getDetailedItems(true, false, false)) {
-            removedItems.add(item);
-            removeItem(productDetails.getShownItemIndex(item), false);
-        }
-        updateSelectionState();
-        updateSwiped();
-
-        Snackbar.make(fragmentContainer, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
-    }
-
-    public void selectItem(int position) {
-        productDetails.getShownItem(position).setSelected(!productDetails.getShownItem(position).isSelected());
-        recyclerAdapter.refreshData();
-        updateSelectionState();
-    }
-
-    public void selectAll(boolean deselect) {
-        for (int i = 0; i < productDetails.sizeShownItems(); i++) {
-            if (deselect == productDetails.getShownItem(i).isSelected()) {
-                selectItem(i);
-            }
-        }
-    }
-
-    public void setSwiped(boolean show) {
-        productDetails.setShowSwiped(show);
-        recyclerAdapter.refreshData();
-    }
-
-    public void updateSwiped() {
-        if (productDetails != null) {
-            if (productDetails.isShowSwiped() && productDetails.sizeSwipedItems() == 0) {
-                setSwiped(false);
-            }
-            showSwipedItems.setVisible(productDetails.sizeSwipedItems() != 0);
-            showSwipedItems.setIcon(productDetails.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
-        }
-    }
-
-    public void updateSelectionState() {
-        selectionState = productDetails.sizeSelectedItems() != 0;
-
-        supportInvalidateOptionsMenu();
-
-        if (selectionState) {
-            toolbar.setTitle(productDetails.sizeSelectedItems() + " selected");
-            toolbar.setTitleTextColor(getResources().getColor(R.color.colorToolbarSelectedInverse));
-            toolbar.setBackgroundColor(getResources().getColor(R.color.colorToolbarSelected));
-            toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorToolbarSelectedInverse), PorterDuff.Mode.MULTIPLY);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorToolbarSelectedInverse), PorterDuff.Mode.MULTIPLY);
-        } else {
-            toolbar.setTitle(R.string.app_name);
-            toolbar.setTitleTextColor(getResources().getColor(R.color.colorToolbarSelected));
-            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorToolbarSelected), PorterDuff.Mode.MULTIPLY);
-            actionBar.setDisplayHomeAsUpEnabled(false);
+                return false;
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (selectionState) {
-            selectAll(true);
+        if (isSelectionState()) {
+            getRecyclerFragment().selectAll(true);
         } else {
             super.onBackPressed();
             finish();

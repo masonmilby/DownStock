@@ -1,5 +1,6 @@
 package com.milburn.downstock;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,15 +19,15 @@ import com.milburn.downstock.ProductDetails.ItemStoreInfo;
 import com.milburn.downstock.ProductDetails.DetailedItem;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
-public class BBYApi extends AsyncTask<Object, Void, Object> {
+public class BBYApi extends AsyncTask<Object, Integer, Object> {
 
     public AsyncResponse delegate;
-    private MainActivity context;
+    private Context context;
     private SharedPreferences sharedPreferences;
     private Gson gson = new Gson();
     private int maxAttempts = 3;
 
-    public BBYApi(MainActivity con, AsyncResponse asyncResponse) {
+    public BBYApi(Context con, AsyncResponse asyncResponse) {
         context = con;
         delegate = asyncResponse;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(con);
@@ -36,9 +37,32 @@ public class BBYApi extends AsyncTask<Object, Void, Object> {
         void processFinish(Object result);
     }
 
+    public boolean supportsAdvancedOptions() {
+        return context instanceof MainActivity;
+    }
+
+    public MainActivity getMainActivity() {
+        if (supportsAdvancedOptions()) {
+            return (MainActivity)context;
+        }
+        return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... progress) {
+        if (supportsAdvancedOptions()) {
+            if (progress[0] == 0) {
+                getMainActivity().showProgress(false, false, 0);
+            } else {
+                getMainActivity().showProgress(true, true, progress[0]);
+            }
+        }
+    }
+
     @Override
     protected Object doInBackground(Object... params) {
-        context.showProgress(false,false,0);
+        publishProgress(0);
+
         Object object = params[0];
 
         if (object instanceof ProductDetails) {
@@ -121,32 +145,32 @@ public class BBYApi extends AsyncTask<Object, Void, Object> {
         int numPages = (int) Math.ceil(productDetails.sizeBasicItems() / 100.0);
 
         for (int i = 1; i <= numPages; i++) {
-            String itemUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + productDetails.getAllBasicSkus() + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&page=" + i + "&apiKey=" + context.getString(R.string.bbyapi);
-            String itemResult = null;
+            String itemsUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + productDetails.getAllBasicSkus() + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&page=" + i + "&apiKey=" + context.getString(R.string.bbyapi);
+            String itemsResult = null;
             int count = 0;
-            while (count <= maxAttempts && itemResult == null) {
+            while (count <= maxAttempts && itemsResult == null) {
                 count++;
                 try {
-                    itemResult = Jsoup.connect(itemUrl).ignoreContentType(true).execute().body();
+                    itemsResult = Jsoup.connect(itemsUrl).ignoreContentType(true).execute().body();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
-            if (itemResult != null) {
-                ProductDetails tempProductDetails = gson.fromJson(itemResult, ProductDetails.class);
+            if (itemsResult != null) {
+                ProductDetails tempProductDetails = gson.fromJson(itemsResult, ProductDetails.class);
                 productDetails.addDetailedItems(tempProductDetails.getDetailedItems());
             }
         }
 
         for (DetailedItem item : productDetails.getDetailedItems()) {
-            context.showProgress(true, true, 100/productDetails.sizeDetailedItems());
+            publishProgress(100/productDetails.sizeDetailedItems());
             item.setImageBit(getBitmap(item.getImage()));
             item.setPageNum(productDetails.getBasicItem(item.getSku()).getPageNum());
             item.setMultiPlano(productDetails.getBasicItem(item.getSku()).isMutiPlano());
             item.setStock(getStoreInfo(item));
         }
-        context.showProgress(false, false, 0);
+        publishProgress(0);
         return productDetails;
     }
 

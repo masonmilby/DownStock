@@ -2,6 +2,8 @@ package com.milburn.downstock;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -367,5 +369,10 @@ public class ProductDetails {
             return getDetailedItems();
         }
         return getDetailedItems();
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this, ProductDetails.class);
     }
 }

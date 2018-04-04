@@ -1,21 +1,23 @@
 package com.milburn.downstock;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.SurfaceHolder;
 
+import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,9 +26,9 @@ import com.milburn.downstock.ProductDetails.BasicItem;
 public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
 
     TextRecognizer textRecognizer;
-    MainActivity context;
+    Context context;
 
-    public OcrDetectorProcessor(MainActivity con) {
+    public OcrDetectorProcessor(Context con) {
         context = con;
         textRecognizer = new TextRecognizer.Builder(context).build();
     }
@@ -37,21 +39,38 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
             boolean hasLowStorage = context.registerReceiver(null, lowstorageFilter) != null;
 
             if (hasLowStorage) {
-                Snackbar.make(context.findViewById(R.id.fragment_container), "Storage too low", Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(context.findViewById(R.id.fragment_container), "Storage too low", Snackbar.LENGTH_LONG).show();
             }
             return false;
         }
         return true;
     }
 
-    public ProductDetails recognizeSkus(List<Uri> uriList) {
+    @SuppressLint("MissingPermission")
+    public void createCameraSource(SurfaceHolder holder, int width, int height) {
+        CameraSource cameraSource = new CameraSource.Builder(context, textRecognizer)
+                .setAutoFocusEnabled(true)
+                .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setRequestedFps(60.0f)
+                .setRequestedPreviewSize(1920, 1080)
+                .build();
+
+        try {
+            cameraSource.start(holder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        textRecognizer.setProcessor(this);
+    }
+
+    public ProductDetails recognizeSkus(PhotoUriList uriList) {
         ProductDetails productDetails = new ProductDetails();
         int pageNum = -1;
         while (pageNum < uriList.size()-1) {
             pageNum++;
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriList.get(pageNum));
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriList.getUri(pageNum));
             } catch (IOException e) {
                 e.printStackTrace();
             }
