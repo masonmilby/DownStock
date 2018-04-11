@@ -3,8 +3,13 @@
     package="com.milburn.downstock">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -14,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -27,7 +34,10 @@
             android:label="Settings"
             android:parentActivityName=".MainActivity" >
         </activity>
-        <activity android:name=".CameraActivity" />
+        <activity
+            android:name=".CameraActivity"
+            android:theme="@style/Camera">
+        </activity>
 
     </application>
 

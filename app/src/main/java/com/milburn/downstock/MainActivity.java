@@ -3,7 +3,6 @@ package com.milburn.downstock;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
@@ -23,25 +22,21 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity {
-    ProgressBar progressBar;
-    Toolbar toolbar;
-    ActionBar actionBar;
+    private ProgressBar progressBar;
+    public Toolbar toolbar;
+    public ActionBar actionBar;
 
-    MenuItem showSwipedItems;
-    MenuItem viewPage;
+    public MenuItem showSwipedItems;
+    private MenuItem viewPage;
 
-    Button buttonSelect;
-    Button buttonScan;
+    private Button buttonScan;
 
-    View fragmentContainer;
-    FragmentManager fragmentManager = null;
-    FragmentTransaction fragmentTransaction = null;
-    String shownFragmentTag;
+    private View fragmentContainer;
+    private FragmentManager fragmentManager = null;
+    private FragmentTransaction fragmentTransaction = null;
+    private String shownFragmentTag;
 
-    PhotoUriList uriList = new PhotoUriList();
-
-    SharedPreferences sharedPreferences;
-    OcrDetectorProcessor ocr;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        ocr = new OcrDetectorProcessor(this);
         setContentView(R.layout.activity_main);
 
         fragmentContainer = findViewById(R.id.fragment_container);
@@ -73,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showStartFragment(boolean show, RecyclerFragment recyclerFragment) {
+    public void showStartFragment(boolean show, RecyclerFragment recyclerFragment) {
         if (fragmentManager == null) {
             fragmentManager = getSupportFragmentManager();
 
@@ -84,22 +78,13 @@ public class MainActivity extends AppCompatActivity {
                     shownFragmentTag = f.getTag();
 
                     if (f.getTag().contentEquals("Selection")) {
-                        buttonSelect = f.getView().findViewById(R.id.button_select);
                         buttonScan = f.getView().findViewById(R.id.button_scan);
 
-                        if (buttonSelect != null && buttonScan != null) {
-                            buttonSelect.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    setSelectionButtonsEnabled(false);
-                                    pickPhotos();
-                                }
-                            });
-
+                        if (buttonScan != null) {
                             buttonScan.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    setSelectionButtonsEnabled(false);
+                                    //setSelectionButtonsEnabled(false);
                                     takePhotos();
                                 }
                             });
@@ -128,29 +113,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSelectionButtonsEnabled(boolean enabled) {
-        if (buttonSelect != null && buttonScan != null) {
+        if (buttonScan != null) {
             if (enabled) {
-                buttonSelect.setEnabled(true);
-                buttonSelect.setAlpha(1);
                 buttonScan.setEnabled(true);
                 buttonScan.setAlpha(1);
             } else {
-                buttonSelect.setEnabled(false);
-                buttonSelect.setAlpha((float)0.5);
                 buttonScan.setEnabled(false);
                 buttonScan.setAlpha((float)0.5);
             }
         }
-    }
-
-    private void pickPhotos() {
-        //TODO: Fix api requirement
-        //TODO: Move to selection fragment
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(intent, 1);
     }
 
     private void takePhotos() {
@@ -164,40 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 showStartFragment(true, null);
                 break;
 
-            case 1:
-                if (data != null) {
-                    if (data.getClipData() != null) {
-                        for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                            uriList.addUri(data.getClipData().getItemAt(i).getUri());
-                        }
-                    } else if (data.getData() != null){
-                        uriList.addUri(data.getData());
-                    }
-                } else {
-                    setSelectionButtonsEnabled(true);
-                    Snackbar.make(fragmentContainer, "No image selected", Snackbar.LENGTH_LONG).show();
+                default:
                     break;
-                }
-
-                if (ocr.isRecognizerReady()) {
-                    ProductDetails productDetails = ocr.recognizeSkus(uriList);
-                    if (productDetails.sizeBasicItems() <= 0) {
-                        setSelectionButtonsEnabled(true);
-                        Snackbar.make(fragmentContainer, "Cannot find SKUs in image", Snackbar.LENGTH_LONG).show();
-                    } else {
-                        RecyclerFragment recyclerFragment = new RecyclerFragment();
-                        Bundle recyclerBundle = new Bundle();
-                        recyclerBundle.putString("pd", productDetails.toJson());
-                        recyclerBundle.putString("uri", uriList.toJson());
-                        recyclerFragment.setArguments(recyclerBundle);
-                        showStartFragment(false, recyclerFragment);
-                    }
-                }
-                break;
-
-            case 2:
-                setSelectionButtonsEnabled(true);
-                break;
         }
     }
 
@@ -209,7 +148,11 @@ public class MainActivity extends AppCompatActivity {
             inflater.inflate(R.menu.toolbar_menu, menu);
             showSwipedItems = menu.findItem(R.id.show_swiped);
             viewPage = menu.findItem(R.id.view_page);
-            //((RecyclerFragment)getShownFragment()).updateSwiped();
+            if (getRecyclerFragment() == null) {
+                showSwipedItems.setVisible(false);
+            } else {
+                getRecyclerFragment().updateSwiped();
+            }
         } else {
             inflater.inflate(R.menu.toolbar_selected_menu, menu);
         }
@@ -220,17 +163,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (!isSelectionState()) {
-            if (uriList.size() == 0) {
+        if (!isSelectionState() && getRecyclerFragment() != null) {
+            int uriSize = getRecyclerFragment().getProductDetails().getUriList().size();
+            if (uriSize == 0) {
                 viewPage.setVisible(false);
             } else {
                 viewPage.getSubMenu().clear();
 
-                for (int i = 0; i < uriList.size(); i++) {
+                for (int i = 0; i < uriSize; i++) {
                     viewPage.getSubMenu().add(Menu.NONE, i, i, "Page " + (i+1));
                 }
                 viewPage.setVisible(true);
             }
+        } else if (getRecyclerFragment() == null) {
+            viewPage.setVisible(false);
         }
         return true;
     }

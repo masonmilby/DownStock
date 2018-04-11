@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/selector_bar_qr"
+        android:enabled="true"
+        android:icon="@drawable/barcode"
+        android:title="Bar/QR" />
+    <item
+        android:id="@+id/selector_sku_upc"
+        android:enabled="true"
+        android:icon="@drawable/numeric"
+        android:title="SKU/UPC" />
+    <item
+        android:id="@+id/selector_page"
+        android:enabled="true"
+        android:icon="@drawable/file_document"
+        android:title="Page" />
+</menu>

@@ -1,6 +1,8 @@
 package com.milburn.downstock;
 
 import android.net.Uri;
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -14,11 +16,16 @@ public class PhotoUriList {
     }
 
     public Uri getUri(int position) {
+        Log.i("Uri", uriList.get(position));
         return Uri.parse(uriList.get(position));
     }
 
     public int size() {
         return uriList.size();
+    }
+
+    public void clear() {
+        uriList.clear();
     }
 
     public String toJson() {

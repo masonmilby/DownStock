@@ -62,10 +62,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         setHasStableIds(true);
         productDetails = data;
         context = con;
-        refreshData();
+        refreshData(productDetails);
     }
 
     public void refreshData() {
+        detailedList = productDetails.getShownItems();
+        notifyDataSetChanged();
+    }
+
+    public void refreshData(ProductDetails products) {
+        productDetails = products;
         detailedList = productDetails.getShownItems();
         notifyDataSetChanged();
     }

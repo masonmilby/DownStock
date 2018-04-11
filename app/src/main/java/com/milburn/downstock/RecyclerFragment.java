@@ -43,21 +43,15 @@ public class RecyclerFragment extends Fragment {
     private List<DetailedItem> removedItems = new ArrayList<>();
     private int removedPosition = 0;
 
-    PhotoUriList uriList;
     Gson gson = new Gson();
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
 
-    public RecyclerFragment() {
-        //
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        System.out.println();
     }
 
     @Override
@@ -76,15 +70,7 @@ public class RecyclerFragment extends Fragment {
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getArguments() != null) {
-            uriList = toPhotoUriList(getArguments().getString("uri"));
             queryApi(toProductDetails(getArguments().getString("pd")), false);
-        } else {
-            productDetails = new ProductDetails();
-            setupRecycler(productDetails);
-            queryApi(new ProductDetails.BasicItem("3789011", 0), false);
-            queryApi(new ProductDetails.BasicItem("3789011", 0), false);
-            queryApi(new ProductDetails.BasicItem("3789011", 0), false);
-            queryApi(new ProductDetails.BasicItem("3789011", 0), false);
         }
     }
 
@@ -123,17 +109,16 @@ public class RecyclerFragment extends Fragment {
         return null;
     }
 
+    public ProductDetails getProductDetails() {
+        return productDetails;
+    }
+
     public ProductDetails toProductDetails(String json) {
         productDetails = gson.fromJson(json, ProductDetails.class);
         return productDetails;
     }
 
-    public PhotoUriList toPhotoUriList(String json) {
-        uriList = gson.fromJson(json, PhotoUriList.class);
-        return uriList;
-    }
-
-    private void queryApi(Object object, final boolean updateStock) {
+    public void queryApi(Object object, final boolean updateStock) {
         BBYApi bbyApi = new BBYApi(activityContext, new BBYApi.AsyncResponse() {
             @Override
             public void processFinish(Object object) {
@@ -146,7 +131,7 @@ public class RecyclerFragment extends Fragment {
                     if (recyclerAdapter == null) {
                         setupRecycler(productDetails);
                     } else {
-                        recyclerAdapter.refreshData();
+                        recyclerAdapter.refreshData(productDetails);
                     }
                 } else if (object instanceof DetailedItem) {
                     insertItem(0, (DetailedItem)object);
@@ -186,7 +171,7 @@ public class RecyclerFragment extends Fragment {
     public void openImage(int imageId) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(uriList.getUri(imageId), "image/*");
+        intent.setDataAndType(productDetails.getUriList().getUri(imageId), "image/*");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
@@ -256,9 +241,8 @@ public class RecyclerFragment extends Fragment {
         return true;
     }
 
-    public void setupRecycler(ProductDetails prods) {
+    public void setupRecycler(final ProductDetails prods) {
         this.productDetails = prods;
-
         recyclerAdapter = new RecyclerAdapter(productDetails, this);
 
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(activityContext));
@@ -313,6 +297,8 @@ public class RecyclerFragment extends Fragment {
             public void onRefresh() {
                 if (productDetails.sizeDetailedItems() > 0) {
                     queryApi(productDetails, true);
+                } else {
+                    swipeRefresh.setRefreshing(false);
                 }
             }
         });
@@ -331,6 +317,9 @@ public class RecyclerFragment extends Fragment {
 
     public void insertItem(int position, DetailedItem item) {
         item.setSelected(false);
+        ProductDetails.BasicItem basicItem = new ProductDetails.BasicItem(item.getSku(), item.getPageNum());
+        basicItem.setMultiPlano(item.isMultiPlano());
+        productDetails.addBasicItem(basicItem);
         productDetails.addDetailedItem(position, item);
         recyclerAdapter.refreshData();
         updateSwiped();
@@ -346,11 +335,17 @@ public class RecyclerFragment extends Fragment {
         removedPosition = position;
         removedItem = productDetails.getShownItem(position);
 
+        productDetails.removeBasicItem(productDetails.getBasicItem(removedItem.getSku()));
         productDetails.removeShownItem(position);
         recyclerAdapter.refreshData();
+        updateSwiped();
 
-        if (showSnack) {
-            Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
+        if (supportsAdvancedOptions() && productDetails.sizeDetailedItems() == 0) {
+            getMainActivity().showStartFragment(true, null);
+        } else if (productDetails.sizeDetailedItems() != 0) {
+            if (showSnack) {
+                Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
+            }
         }
     }
 
@@ -363,7 +358,11 @@ public class RecyclerFragment extends Fragment {
         updateSelectionState();
         updateSwiped();
 
-        Snackbar.make(recyclerView, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
+        if (supportsAdvancedOptions() && productDetails.sizeDetailedItems() == 0) {
+            getMainActivity().showStartFragment(true, null);
+        } else if (productDetails.sizeDetailedItems() != 0){
+            Snackbar.make(recyclerView, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
+        }
     }
 
     public void selectItem(int position) {

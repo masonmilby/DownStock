@@ -10,6 +10,7 @@ import java.util.List;
 public class ProductDetails {
     private List<BasicItem> basicList = new ArrayList<>();
     private List<DetailedItem> products = new ArrayList<>();
+    private PhotoUriList uriList = new PhotoUriList();
 
     private boolean showSwiped = false;
 
@@ -222,10 +223,14 @@ public class ProductDetails {
 
     public List<BasicItem> addBasicItem(BasicItem item) {
         if (item != null) {
-            if (getBasicItem(item.getSku()) != null) {
-                getBasicItem(item.getSku()).setMultiPlano(true);
-            } else {
+            if (item.pageNum == -1) {
                 getBasicItems().add(item);
+            } else {
+                if (getBasicItem(item.getSku()) != null) {
+                    getBasicItem(item.getSku()).setMultiPlano(true);
+                } else {
+                    getBasicItems().add(item);
+                }
             }
         }
         return getBasicItems();
@@ -374,5 +379,13 @@ public class ProductDetails {
     public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this, ProductDetails.class);
+    }
+
+    public PhotoUriList getUriList() {
+        return uriList;
+    }
+
+    public PhotoUriList setUriList(PhotoUriList uriList) {
+        return this.uriList = uriList;
     }
 }
