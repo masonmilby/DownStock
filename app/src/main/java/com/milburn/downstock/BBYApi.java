@@ -37,32 +37,8 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
         void processFinish(Object result);
     }
 
-    public boolean supportsAdvancedOptions() {
-        return context instanceof MainActivity;
-    }
-
-    public MainActivity getMainActivity() {
-        if (supportsAdvancedOptions()) {
-            return (MainActivity)context;
-        }
-        return null;
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... progress) {
-        if (supportsAdvancedOptions()) {
-            if (progress[0] == 0) {
-                getMainActivity().showProgress(false, false, 0);
-            } else {
-                getMainActivity().showProgress(true, true, progress[0]);
-            }
-        }
-    }
-
     @Override
     protected Object doInBackground(Object... params) {
-        publishProgress(0);
-
         Object object = params[0];
 
         if (object instanceof ProductDetails) {
@@ -143,9 +119,10 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
 
     private ProductDetails getDetailedItems(ProductDetails productDetails) {
         int numPages = (int) Math.ceil(productDetails.sizeBasicItems() / 100.0);
+        String[] itemIds = productDetails.getAllBasicIds();
 
         for (int i = 1; i <= numPages; i++) {
-            String itemsUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + productDetails.getAllBasicSkus() + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&page=" + i + "&apiKey=" + context.getString(R.string.bbyapi);
+            String itemsUrl = "https://api.bestbuy.com/v1/products(sku%20in(" + itemIds[0] + ")|upc%20in(" + itemIds[1] + "))?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&pageSize=100&page=" + i + "&apiKey=" + context.getString(R.string.bbyapi);
             String itemsResult = null;
             int count = 0;
             while (count <= maxAttempts && itemsResult == null) {
@@ -164,13 +141,18 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
         }
 
         for (DetailedItem item : productDetails.getDetailedItems()) {
-            publishProgress(100/productDetails.sizeDetailedItems());
             item.setImageBit(getBitmap(item.getImage()));
-            item.setPageNum(productDetails.getBasicItem(item.getSku()).getPageNum());
-            item.setMultiPlano(productDetails.getBasicItem(item.getSku()).isMutiPlano());
+
+            if (productDetails.getBasicItem(item.getSku()) == null) {
+                item.setPageNum(productDetails.getBasicItem(item.getUpc()).getPageNum());
+                item.setMultiPlano(productDetails.getBasicItem(item.getUpc()).isMutiPlano());
+            } else {
+                item.setPageNum(productDetails.getBasicItem(item.getSku()).getPageNum());
+                item.setMultiPlano(productDetails.getBasicItem(item.getSku()).isMutiPlano());
+            }
+
             item.setStock(getStoreInfo(item));
         }
-        publishProgress(0);
         return productDetails;
     }
 

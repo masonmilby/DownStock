@@ -21,7 +21,14 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.milburn.downstock.ProductDetails.DetailedItem;
+import com.milburn.downstock.ProductDetails.BasicItem;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +38,7 @@ public class RecyclerFragment extends Fragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerAdapter recyclerAdapter;
-    private ProductDetails productDetails;
+    private ProductDetails productDetails = new ProductDetails();
 
     private int selectedPosition = 0;
     private int swipedPosition = 0;
@@ -47,6 +54,13 @@ public class RecyclerFragment extends Fragment {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
+
+    @Override
+    public void onAttach (Context context) {
+        super.onAttach(context);
+        this.activityContext = context;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,18 +81,9 @@ public class RecyclerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getArguments() != null) {
-            queryApi(toProductDetails(getArguments().getString("pd")), false);
-        }
-    }
-
-    @Override
-    public void onAttach (Context context) {
-        super.onAttach(context);
-        this.activityContext = context;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    public void onStart() {
+        super.onStart();
+        retrieveState();
     }
 
     public boolean isSelectionState() {
@@ -113,25 +118,20 @@ public class RecyclerFragment extends Fragment {
         return productDetails;
     }
 
-    public ProductDetails toProductDetails(String json) {
-        productDetails = gson.fromJson(json, ProductDetails.class);
-        return productDetails;
-    }
-
     public void queryApi(Object object, final boolean updateStock) {
         BBYApi bbyApi = new BBYApi(activityContext, new BBYApi.AsyncResponse() {
             @Override
             public void processFinish(Object object) {
+                swipeRefresh.setRefreshing(false);
                 if (object instanceof ProductDetails) {
-                    productDetails = (ProductDetails)object;
+                    ProductDetails returnedProducts = (ProductDetails)object;
                     if (updateStock) {
-                        swipeRefresh.setRefreshing(false);
                         Snackbar.make(recyclerView, "Stock updated", Snackbar.LENGTH_SHORT).show();
                     }
                     if (recyclerAdapter == null) {
                         setupRecycler(productDetails);
                     } else {
-                        recyclerAdapter.refreshData(productDetails);
+                        insertItems(returnedProducts.getDetailedItems());
                     }
                 } else if (object instanceof DetailedItem) {
                     insertItem(0, (DetailedItem)object);
@@ -139,6 +139,13 @@ public class RecyclerFragment extends Fragment {
             }
         });
         bbyApi.execute(object);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefresh.setRefreshing(true);
+            }
+        });
     }
 
     class UndoSwipeListener implements View.OnClickListener {
@@ -220,7 +227,10 @@ public class RecyclerFragment extends Fragment {
                 break;
 
             case R.id.view_page:
-                openImage(productDetails.getShownItem(selectedPosition).getPageNum());
+                int pageNum = productDetails.getShownItem(selectedPosition).getPageNum();
+                if (pageNum != -1) {
+                    openImage(pageNum);
+                }
                 break;
 
             case R.id.remove_item:
@@ -241,7 +251,7 @@ public class RecyclerFragment extends Fragment {
         return true;
     }
 
-    public void setupRecycler(final ProductDetails prods) {
+    private void setupRecycler(final ProductDetails prods) {
         this.productDetails = prods;
         recyclerAdapter = new RecyclerAdapter(productDetails, this);
 
@@ -296,7 +306,7 @@ public class RecyclerFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (productDetails.sizeDetailedItems() > 0) {
-                    queryApi(productDetails, true);
+                    updateStock();
                 } else {
                     swipeRefresh.setRefreshing(false);
                 }
@@ -307,17 +317,25 @@ public class RecyclerFragment extends Fragment {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals("store_id_pref")) {
-                    swipeRefresh.setRefreshing(true);
-                    queryApi(productDetails, true);
+                    updateStock();
                 }
             }
         };
         sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+
+        if (productDetails.sizeDetailedItems() != 0) {
+            updateStock();
+        }
+    }
+
+    private void updateStock() {
+        swipeRefresh.setRefreshing(true);
+        queryApi(productDetails, true);
     }
 
     public void insertItem(int position, DetailedItem item) {
         item.setSelected(false);
-        ProductDetails.BasicItem basicItem = new ProductDetails.BasicItem(item.getSku(), item.getPageNum());
+        BasicItem basicItem = new ProductDetails.BasicItem(item.getSku(), item.getUpc(), item.getPageNum());
         basicItem.setMultiPlano(item.isMultiPlano());
         productDetails.addBasicItem(basicItem);
         productDetails.addDetailedItem(position, item);
@@ -335,14 +353,14 @@ public class RecyclerFragment extends Fragment {
         removedPosition = position;
         removedItem = productDetails.getShownItem(position);
 
-        productDetails.removeBasicItem(productDetails.getBasicItem(removedItem.getSku()));
+        productDetails.removeBasicItem(removedItem.getSku());
         productDetails.removeShownItem(position);
         recyclerAdapter.refreshData();
         updateSwiped();
 
         if (supportsAdvancedOptions() && productDetails.sizeDetailedItems() == 0) {
-            getMainActivity().showStartFragment(true, null);
-        } else if (productDetails.sizeDetailedItems() != 0) {
+            getMainActivity().showStartFragment(true);
+        } else {
             if (showSnack) {
                 Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
             }
@@ -359,8 +377,8 @@ public class RecyclerFragment extends Fragment {
         updateSwiped();
 
         if (supportsAdvancedOptions() && productDetails.sizeDetailedItems() == 0) {
-            getMainActivity().showStartFragment(true, null);
-        } else if (productDetails.sizeDetailedItems() != 0){
+            getMainActivity().showStartFragment(true);
+        } else {
             Snackbar.make(recyclerView, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
         }
     }
@@ -410,15 +428,87 @@ public class RecyclerFragment extends Fragment {
                 mainActivity.toolbar.setTitleTextColor(getResources().getColor(R.color.colorBlack));
                 mainActivity.toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 mainActivity.toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
-                mainActivity.actionBar.setDisplayHomeAsUpEnabled(true);
+                mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 mainActivity.toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
             } else {
                 mainActivity.toolbar.setTitle(R.string.app_name);
                 mainActivity.toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
                 mainActivity.toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 mainActivity.toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.MULTIPLY);
-                mainActivity.actionBar.setDisplayHomeAsUpEnabled(false);
+                mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         }
+    }
+
+    private void saveState() {
+        if (productDetails.sizeDetailedItems() == 0) {
+            deleteState();
+        } else {
+            String path = getActivity().getExternalFilesDir(null).getAbsolutePath() + "/savedstate";
+            File state = new File(path);
+            try {
+                FileOutputStream fos = new FileOutputStream(state);
+                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                osw.write(productDetails.toJson());
+                osw.close();
+                fos.close();
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void retrieveState() {
+        String path = getActivity().getExternalFilesDir(null).getAbsolutePath() + "/savedstate";
+        File state = new File(path);
+        StringBuffer pd = new StringBuffer();
+        if (state.exists()) {
+            try {
+                FileInputStream fis = new FileInputStream(state);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(isr);
+
+                String fileString = bufferedReader.readLine();
+                while (fileString != null) {
+                    pd.append(fileString);
+                    fileString = bufferedReader.readLine();
+                }
+                isr.close();
+                fis.close();
+
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+            productDetails = gson.fromJson(pd.toString(), ProductDetails.class);
+        }
+        if (recyclerAdapter == null) {
+            setupRecycler(productDetails);
+        } else {
+            recyclerAdapter.refreshData(productDetails);
+        }
+    }
+
+    private void deleteState() {
+        String path = getActivity().getExternalFilesDir(null).getAbsolutePath()+"/savedstate";
+        File state = new File(path);
+        state.delete();
+    }
+
+    @Override
+    public void onPause() {
+        saveState();
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        saveState();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        saveState();
+        super.onDestroy();
     }
 }

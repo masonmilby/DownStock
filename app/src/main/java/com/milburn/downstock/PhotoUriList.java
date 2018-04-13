@@ -1,7 +1,6 @@
 package com.milburn.downstock;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -16,7 +15,6 @@ public class PhotoUriList {
     }
 
     public Uri getUri(int position) {
-        Log.i("Uri", uriList.get(position));
         return Uri.parse(uriList.get(position));
     }
 

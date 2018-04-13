@@ -1,9 +1,12 @@
 package com.milburn.downstock;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +19,26 @@ public class ProductDetails {
 
     public static class BasicItem {
         private final String sku;
+        private final String upc;
         private final int pageNum;
         private boolean multiPlano = false;
 
-        public BasicItem(String sku, int pageNum) {
+        public BasicItem(String sku, String upc, int pageNum) {
             this.sku = sku;
+            this.upc = upc;
             this.pageNum = pageNum;
         }
 
         public String getSku() {
             return sku;
+        }
+
+        public String getUpc() {
+            return upc;
+        }
+
+        public String getId() {
+            return getSku().contentEquals("") ? getUpc() : getSku();
         }
 
         public int getPageNum() {
@@ -50,7 +63,7 @@ public class ProductDetails {
         private String url;
         private String modelNumber;
 
-        private Bitmap imageBit;
+        private String imageBit;
         private boolean multiPlano = false;
         private int pageNum = 0;
         private boolean found = false;
@@ -69,7 +82,11 @@ public class ProductDetails {
         }
 
         public void setImageBit(Bitmap imageBit) {
-            this.imageBit = imageBit;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            imageBit.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            byte[] b = bos.toByteArray();
+
+            this.imageBit = Base64.encodeToString(b, Base64.DEFAULT);
         }
 
         public void setFound(boolean found) {
@@ -119,7 +136,8 @@ public class ProductDetails {
         }
 
         public Bitmap getImageBit() {
-            return imageBit;
+            byte[] decodedString = Base64.decode(imageBit, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         }
 
         public boolean isMultiPlano() {
@@ -182,12 +200,26 @@ public class ProductDetails {
 
     }
 
-    public String getAllBasicSkus() {
+    public String[] getAllBasicIds() {
         String combinedSkus = "";
+        String combinedUpcs = "";
+
         for (BasicItem item : getBasicItems()) {
-            combinedSkus = combinedSkus.concat(combinedSkus.contentEquals("") ? item.getSku() : "," + item.getSku());
+            if (item.getId().length() == 7) {
+                combinedSkus = combinedSkus.concat(combinedSkus.length() == 0 ? item.getSku() : "," + item.getSku());
+            } else {
+                combinedUpcs = combinedUpcs.concat(combinedUpcs.length() == 0 ? item.getUpc() : "," + item.getUpc());
+            }
         }
-        return combinedSkus;
+
+        if (combinedSkus.length() == 0) {
+            combinedSkus = "1";
+        }
+        if (combinedUpcs.length() == 0) {
+            combinedUpcs = "1";
+        }
+
+        return new String[]{combinedSkus, combinedUpcs};
     }
 
     public List<BasicItem> getBasicItems() {
@@ -201,9 +233,9 @@ public class ProductDetails {
         return null;
     }
 
-    public BasicItem getBasicItem(String sku) {
+    public BasicItem getBasicItem(String id) {
         for (BasicItem item : getBasicItems()) {
-            if (item.getSku().contentEquals(sku)) {
+            if (item.getSku().contentEquals(id) | item.getUpc().contentEquals(id)) {
                 return item;
             }
         }
@@ -223,11 +255,11 @@ public class ProductDetails {
 
     public List<BasicItem> addBasicItem(BasicItem item) {
         if (item != null) {
-            if (item.pageNum == -1) {
+            if (item.pageNum == -1 && getBasicItem(item.getId()) == null) {
                 getBasicItems().add(item);
             } else {
-                if (getBasicItem(item.getSku()) != null) {
-                    getBasicItem(item.getSku()).setMultiPlano(true);
+                if (getBasicItem(item.getId()) != null) {
+                    getBasicItem(item.getId()).setMultiPlano(true);
                 } else {
                     getBasicItems().add(item);
                 }
@@ -244,11 +276,23 @@ public class ProductDetails {
         return getBasicItems();
     }
 
+    public List<BasicItem> addBasicItems(List<BasicItem> basicList) {
+        for (BasicItem item : basicList) {
+            addBasicItem(item);
+        }
+        return getBasicItems();
+    }
+
     public List<BasicItem> removeBasicItem(BasicItem item) {
         if (item != null) {
             getBasicItems().remove(item);
             return getBasicItems();
         }
+        return getBasicItems();
+    }
+
+    public List<BasicItem> removeBasicItem(String sku) {
+        getBasicItems().remove(getBasicItem(sku));
         return getBasicItems();
     }
 
@@ -352,8 +396,17 @@ public class ProductDetails {
         return getDetailedItems();
     }
 
+    public DetailedItem getDetailedItem(String id) {
+        for (DetailedItem item : getDetailedItems()) {
+            if (item.getSku().contentEquals(id) | item.getUpc().contentEquals(id)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public List<DetailedItem> addDetailedItem(int position, DetailedItem item) {
-        if (item != null && position >= 0) {
+        if (item != null && position >= 0 && getDetailedItem(item.getSku()) == null) {
             getDetailedItems().add(position, item);
             return getDetailedItems();
         }

@@ -2,15 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/selector_bar_qr"
-        android:enabled="true"
-        android:icon="@drawable/barcode"
-        android:title="Bar/QR" />
-    <item
         android:id="@+id/selector_sku_upc"
         android:enabled="true"
         android:icon="@drawable/numeric"
-        android:title="SKU/UPC" />
+        android:title="Product" />
     <item
         android:id="@+id/selector_page"
         android:enabled="true"

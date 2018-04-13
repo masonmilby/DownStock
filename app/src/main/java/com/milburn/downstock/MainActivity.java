@@ -5,36 +5,27 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
-    private ProgressBar progressBar;
     public Toolbar toolbar;
-    public ActionBar actionBar;
 
     public MenuItem showSwipedItems;
     private MenuItem viewPage;
 
-    private Button buttonScan;
-
-    private View fragmentContainer;
     private FragmentManager fragmentManager = null;
     private FragmentTransaction fragmentTransaction = null;
-    private String shownFragmentTag;
 
     private SharedPreferences sharedPreferences;
 
@@ -47,13 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        fragmentContainer = findViewById(R.id.fragment_container);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-
-        progressBar = findViewById(R.id.progressBar);
-        showProgress(false, false, 0);
 
         MobileAds.initialize(this, this.getString(R.string.admob_key));
         AdView adView = findViewById(R.id.adView);
@@ -62,43 +48,35 @@ public class MainActivity extends AppCompatActivity {
 
         if (sharedPreferences.getString("store_id_pref", "0").contentEquals("0")) {
             startActivityForResult(new Intent(this, SettingsActivity.class), 0);
+        } else if (canRetrieveState()) {
+            showStartFragment(false);
         } else {
-            showStartFragment(true, null);
+            showStartFragment(true);
         }
     }
 
-    public void showStartFragment(boolean show, RecyclerFragment recyclerFragment) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 0:
+                if (canRetrieveState()) {
+                    showStartFragment(false);
+                } else {
+                    showStartFragment(true);
+                }
+                break;
+
+                default:
+                    break;
+        }
+    }
+
+    public void showStartFragment(boolean show) {
         if (fragmentManager == null) {
             fragmentManager = getSupportFragmentManager();
-
-            fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
-                @Override
-                public void onFragmentStarted(FragmentManager fm, Fragment f) {
-                    super.onFragmentStarted(fm, f);
-                    shownFragmentTag = f.getTag();
-
-                    if (f.getTag().contentEquals("Selection")) {
-                        buttonScan = f.getView().findViewById(R.id.button_scan);
-
-                        if (buttonScan != null) {
-                            buttonScan.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //setSelectionButtonsEnabled(false);
-                                    takePhotos();
-                                }
-                            });
-                        }
-                    }
-                }
-            }, true);
         }
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, show ? new SelectionFragment() : recyclerFragment, show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commitAllowingStateLoss();
-    }
-
-    private Fragment getShownFragment() {
-        return fragmentManager.findFragmentByTag(shownFragmentTag);
+        fragmentTransaction.replace(R.id.fragment_container, show ? new SelectionFragment() : new RecyclerFragment(), show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commitAllowingStateLoss();
     }
 
     private RecyclerFragment getRecyclerFragment() {
@@ -106,38 +84,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isSelectionState() {
-        if (shownFragmentTag.contentEquals("Recycler")) {
-            return ((RecyclerFragment)getShownFragment()).isSelectionState();
+        if (getRecyclerFragment() != null) {
+            return getRecyclerFragment().isSelectionState();
         }
         return false;
     }
 
-    private void setSelectionButtonsEnabled(boolean enabled) {
-        if (buttonScan != null) {
-            if (enabled) {
-                buttonScan.setEnabled(true);
-                buttonScan.setAlpha(1);
-            } else {
-                buttonScan.setEnabled(false);
-                buttonScan.setAlpha((float)0.5);
-            }
-        }
-    }
-
-    private void takePhotos() {
-        startActivityForResult(new Intent(this, CameraActivity.class), 2);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 0:
-                showStartFragment(true, null);
-                break;
-
-                default:
-                    break;
-        }
+    private boolean canRetrieveState() {
+        String path = getExternalFilesDir(null).getAbsolutePath()+"/savedstate";
+        File state = new File(path);
+        return state.exists();
     }
 
     @Override
@@ -188,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
+            case R.id.scan:
+                startActivity(new Intent(this, CameraActivity.class));
+                return true;
+
             default:
                 return false;
         }
@@ -203,17 +163,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void showProgress(final boolean showBar, final boolean increment, final int progress) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (increment) {
-                    progressBar.incrementProgressBy(progress);
-                } else {
-                    progressBar.setProgress(progress);
-                }
-                progressBar.setVisibility(showBar ? View.VISIBLE : View.GONE);
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getRecyclerFragment() == null && canRetrieveState()) {
+            showStartFragment(false);
+        } else if (getRecyclerFragment() != null && !canRetrieveState()) {
+            showStartFragment(true);
+        }
     }
 }
