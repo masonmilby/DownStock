@@ -9,6 +9,7 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.util.SparseArray;
@@ -32,17 +33,16 @@ public class OcrDetectorProcessor {
     private TextRecognizer textRecognizer;
     private BarcodeDetector barcodeDetector;
     private Context context;
-    private ProductDetails currentProductDetails;
     private DetectedInterface delegate;
     private boolean isReadyForFrame = false;
+    private boolean isStopped = true;
 
     public interface DetectedInterface {
-        void FinishedProcessing(List<BasicItem> basicList, ProductDetails products, int responseType);
+        void FinishedProcessing(List<BasicItem> basicList, Bitmap bitmap, String pageId, int responseType);
     }
 
-    public OcrDetectorProcessor(Context con, ProductDetails productDetails, DetectedInterface del) {
+    public OcrDetectorProcessor(Context con, DetectedInterface del) {
         context = con;
-        currentProductDetails = productDetails;
         delegate = del;
     }
 
@@ -54,7 +54,7 @@ public class OcrDetectorProcessor {
             if (hasLowStorage) {
                 Snackbar.make(((CameraActivity)(context)).coordinatorLayout, "Storage too low", Snackbar.LENGTH_LONG).show();
             }
-            stop();
+            stop(true);
             return false;
         }
         return true;
@@ -64,43 +64,48 @@ public class OcrDetectorProcessor {
         return isReadyForFrame;
     }
 
-    public boolean start() {
-        textRecognizer = new TextRecognizer.Builder(context).build();
-        barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.QR_CODE | Barcode.UPC_A).build();
-        isReadyForFrame = isRecognizerReady();
-        return isReadyForFrame;
+    public boolean isStopped() {
+        return isStopped;
     }
 
-    public void stop() {
+    public void start() {
+        if (isStopped) {
+            textRecognizer = new TextRecognizer.Builder(context).build();
+            barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.QR_CODE | Barcode.UPC_A).build();
+            isReadyForFrame = isRecognizerReady();
+            isStopped = false;
+        }
+    }
+
+    public void stop(boolean release) {
+        isStopped = true;
         isReadyForFrame = false;
-        textRecognizer.release();
-        barcodeDetector.release();
+        if (release && textRecognizer != null && barcodeDetector != null) {
+            textRecognizer.release();
+            barcodeDetector.release();
+        }
     }
 
-    public ProductDetails getProductDetailsFromUris(PhotoUriList uriList) {
-        ProductDetails productDetails = new ProductDetails();
-        for (int pageNum = 0; pageNum < uriList.size(); pageNum++) {
+    public void recognizeSkusFromUris(List<Uri> uriList) {
+        for (int page = 0; page < uriList.size(); page++) {
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriList.getUri(pageNum));
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriList.get(page));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Frame frame = new Frame.Builder()
-                    .setBitmap(bitmap)
-                    .build();
+            if (bitmap != null) {
+                Frame frame = new Frame.Builder()
+                        .setBitmap(bitmap)
+                        .build();
 
-            List<BasicItem> basicList = recognizeSkus(textRecognizer.detect(frame), barcodeDetector.detect(frame), pageNum);
-            for (BasicItem item : basicList) {
-                productDetails.addBasicItem(item);
+                recognizeFrame(frame, 0, false, false, ProductDetails.generateUUID());
             }
-            productDetails.getUriList().addUri(uriList.getUri(pageNum));
         }
-        return productDetails;
     }
 
-    private List<BasicItem> recognizeSkus(SparseArray<TextBlock> textItems, SparseArray<Barcode> barcodeItems, int pageNum) {
+    private List<BasicItem> recognizeSkus(SparseArray<TextBlock> textItems, SparseArray<Barcode> barcodeItems, String pageId) {
         List<BasicItem> basicList = new ArrayList<>();
         Pattern p = Pattern.compile("\\b((\\d{7})|\\d{12})(?!\\d)");
         Matcher m;
@@ -113,9 +118,9 @@ public class OcrDetectorProcessor {
                     if (!isAlreadyRecognized(m.group())) {
                         BasicItem basicItem;
                         if (m.group().length() == 7) {
-                            basicItem = new BasicItem(m.group(), "", pageNum);
+                            basicItem = new BasicItem(m.group(), "", pageId);
                         } else {
-                            basicItem = new BasicItem("", m.group(), pageNum);
+                            basicItem = new BasicItem("", m.group(), pageId);
                         }
                         basicList.add(basicItem);
                     }
@@ -129,7 +134,11 @@ public class OcrDetectorProcessor {
                 rawData = rawData.replace("http://bby.us/?c=", "");
                 rawData = rawData.substring(7, 14);
                 if (!isAlreadyRecognized(rawData)) {
-                    basicList.add(new BasicItem(rawData, "", pageNum));
+                    basicList.add(new BasicItem(rawData, "", pageId));
+                }
+            } else if (rawData.length() == 12) {
+                if (!isAlreadyRecognized(rawData)) {
+                    basicList.add(new BasicItem("", rawData, pageId));
                 }
             }
         }
@@ -137,23 +146,24 @@ public class OcrDetectorProcessor {
         return basicList;
     }
 
-    public void recognizeFrame(io.fotoapparat.preview.Frame frame, int angle) {
+    public void recognizeFrame(Frame frame, int angle, boolean continuous, boolean rotate, String id) {
         isReadyForFrame = false;
-        List<BasicItem> basicList = recognizeSkus(textRecognizer.detect(rotateFrame(convertToGVFrame(frame), angle)), barcodeDetector.detect(convertToGVFrame(frame)), -1);
-        if (basicList.size() != 0) {
-            delegate.FinishedProcessing(basicList, null, 1);
+        Frame rotatedFrame = rotateFrame(frame, angle);
+        List<BasicItem> basicList = recognizeSkus(textRecognizer.detect(rotate ? rotatedFrame : frame), barcodeDetector.detect(frame), id);
+        if (basicList.size() != 0 | !continuous) {
+            delegate.FinishedProcessing(basicList, rotate ? rotatedFrame.getBitmap() : frame.getBitmap(), id, continuous ? 1 : 2);
         } else {
-            delegate.FinishedProcessing(null, null, 0);
+            delegate.FinishedProcessing(null, null, null, 0);
         }
-        isReadyForFrame = true;
+        isReadyForFrame = continuous;
     }
 
     private boolean isAlreadyRecognized(String id) {
-        currentProductDetails = ((CameraActivity)context).getRecyclerFragment().getProductDetails();
-        return currentProductDetails.getBasicItem(id) != null | currentProductDetails.getDetailedItem(id) != null;
+        ProductDetails productDetails = ((CameraActivity)context).getRecyclerFragment().getProductDetails();
+        return productDetails.getBasicItem(id) != null | productDetails.getDetailedItem(id) != null;
     }
 
-    private Frame convertToGVFrame(io.fotoapparat.preview.Frame frame) {
+    public Frame convertToGVFrame(io.fotoapparat.preview.Frame frame) {
         int width = frame.getSize().width;
         int height = frame.getSize().height;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -166,18 +176,16 @@ public class OcrDetectorProcessor {
     }
 
     private Frame rotateFrame(Frame frame, int angle) {
-        int newAngle = 270-angle;
-        int width = frame.getBitmap().getWidth();
-        int height = frame.getBitmap().getHeight();
+        return new Frame.Builder().setBitmap(rotateBitmap(frame.getBitmap(), angle)).build();
+    }
 
-        if ((angle > 315 || angle < 45) || (angle > 135 && angle < 225)) {
-            newAngle = 90-angle;
-        }
+    public Bitmap rotateBitmap(Bitmap bitmap, int angle) {
+        int newAngle = 90+angle;
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
 
         Matrix matrix = new Matrix();
         matrix.postRotate(newAngle);
-        return new Frame.Builder()
-                .setBitmap(Bitmap.createBitmap(frame.getBitmap(), 0, 0, width, height, matrix, true))
-                .build();
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 }

@@ -30,12 +30,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView item_model;
         private ImageView item_image;
         private TextView multiple_plano;
-        private TextView page_num;
         private ImageView item_selected;
         private TextView item_status;
         private TextView item_stock;
 
-        private TextView div_multi;
         private TextView div_status;
 
         public ViewHolder(View v) {
@@ -44,16 +42,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             item_name = v.findViewById(R.id.item_name);
             item_sku = v.findViewById(R.id.item_sku);
             item_upc = v.findViewById(R.id.item_upc);
-            //item_price = v.findViewById(R.id.item_price);
+            item_price = v.findViewById(R.id.item_price);
             item_model = v.findViewById(R.id.item_model);
             item_image = v.findViewById(R.id.item_image);
             multiple_plano = v.findViewById(R.id.multiple_plano);
-            page_num = v.findViewById(R.id.page_num);
             item_selected = v.findViewById(R.id.item_selected);
             item_status = v.findViewById(R.id.item_status);
             item_stock = v.findViewById(R.id.item_stock);
 
-            div_multi = v.findViewById(R.id.div_multi);
             div_status = v.findViewById(R.id.div_status);
         }
     }
@@ -106,7 +102,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                 menu.setHeaderTitle("Item options");
 
-                if (detailedList.get(position).getPageNum() == -1) {
+                if (detailedList.get(position).getPageId().equals("-1")) {
                     menu.getItem(1).setVisible(false);
                 }
 
@@ -129,15 +125,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.item_name.setText(detailedList.get(position).getName());
         holder.item_sku.setText(detailedList.get(position).getSku());
         holder.item_upc.setText(detailedList.get(position).getUpc());
-        //holder.item_price.setText(detailedList.get(position).getSalePrice());
+        holder.item_price.setText("$" + detailedList.get(position).getSalePrice());
         holder.item_model.setText(detailedList.get(position).getModelNumber());
         holder.item_image.setImageBitmap(detailedList.get(position).getImageBit());
-
-        if (detailedList.get(position).getPageNum() == -1) {
-            holder.page_num.setText("No page");
-        } else {
-            holder.page_num.setText("Page " + (detailedList.get(position).getPageNum()+1));
-        }
 
         if (detailedList.get(position).isInStock() && detailedList.get(position).isLowStock()) {
             holder.item_stock.setText("Few in stock");
@@ -151,7 +141,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
 
         holder.multiple_plano.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
-        holder.div_multi.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
 
         holder.item_selected.setVisibility(detailedList.get(position).isSelected() ? View.VISIBLE : View.GONE);
 

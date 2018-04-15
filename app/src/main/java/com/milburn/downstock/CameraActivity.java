@@ -1,7 +1,11 @@
 package com.milburn.downstock;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -9,7 +13,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +28,7 @@ import android.support.v7.widget.Toolbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.fotoapparat.Fotoapparat;
@@ -45,7 +51,6 @@ import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class CameraActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
-    private ProductDetails productDetails = new ProductDetails();
 
     private Button captureButton;
     private CameraView cameraView;
@@ -64,12 +69,54 @@ public class CameraActivity extends AppCompatActivity {
     private long[] PATTERN_FOUND = new long[]{0, 50};
 
     private int currentAngle;
+    private boolean isPageSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            isPageSelected = savedInstanceState.getBoolean("page_selected");
+        }
         setContentView(R.layout.activity_camera);
 
+        if (checkPermissions()) {
+            finishSetup();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private boolean checkPermissions() {
+        return !(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    finishSetup();
+                } else {
+                    finish();
+                }
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    private void finishSetup() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -91,13 +138,12 @@ public class CameraActivity extends AppCompatActivity {
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File dirs = new File(getExternalFilesDir(null).getAbsolutePath() + "/pages");
-                dirs.mkdirs();
-                File photo = new File(dirs.getAbsolutePath() + "/page0.png");
+                final int rotation = currentAngle;
                 fotoapparat.takePicture().toBitmap().whenAvailable(new Function1<BitmapPhoto, Unit>() {
                     @Override
-                    public Unit invoke(BitmapPhoto bitmapPhoto) {
-                        //TODO Post rotate and save
+                    public Unit invoke(final BitmapPhoto bitmapPhoto) {
+                        com.google.android.gms.vision.Frame frame = new com.google.android.gms.vision.Frame.Builder().setBitmap(bitmapPhoto.bitmap).build();
+                        ocr.recognizeFrame(frame, rotation, false, true, ProductDetails.generateUUID());
                         return null;
                     }
                 });
@@ -107,15 +153,10 @@ public class CameraActivity extends AppCompatActivity {
         cameraView = findViewById(R.id.camera_view);
         fotoapparat = createFotoapparat();
 
-        ocr = new OcrDetectorProcessor(this, productDetails, detectedInterface);
-
         bottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.selector_sku_upc);
-        selectNavigation(false);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -133,10 +174,10 @@ public class CameraActivity extends AppCompatActivity {
         });
 
         fragmentManager = getSupportFragmentManager();
+        ocr = new OcrDetectorProcessor(this, detectedInterface);
 
-        productDetails = getRecyclerFragment().getProductDetails();
+        bottomNavigationView.setSelectedItemId(isPageSelected ? R.id.selector_page : R.id.selector_sku_upc);
 
-        ocr.start();
         fotoapparat.start();
     }
 
@@ -165,15 +206,16 @@ public class CameraActivity extends AppCompatActivity {
         public void process(Frame frame) {
             latestFrame = frame;
 
-            if (ocr.isReadyForFrame()) {
-                ocr.recognizeFrame(frame, currentAngle);
+            if (!ocr.isStopped() && ocr.isReadyForFrame()) {
+                ocr.recognizeFrame(ocr.convertToGVFrame(frame), currentAngle, true, true, "-1");
             }
         }
     }
 
     private void selectNavigation(boolean page) {
+        isPageSelected = page;
         if (page) {
-            ocr.stop();
+            ocr.stop(false);
             captureButton.setEnabled(true);
             captureButton.setAlpha(1.0f);
         } else {
@@ -185,7 +227,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
         @Override
-        public void FinishedProcessing(List<BasicItem> items, ProductDetails products, int responseType) {
+        public void FinishedProcessing(List<BasicItem> items, Bitmap bitmap, String pageId, int responseType) {
             switch (responseType) {
                 //No new items detected
                 case 0:
@@ -193,19 +235,34 @@ public class CameraActivity extends AppCompatActivity {
 
                 //New items detected
                 case 1:
-                    ProductDetails tempProductDetails = new ProductDetails();
-                    tempProductDetails.addBasicItems(items);
-                    vibrateToast(null, Toast.LENGTH_SHORT, PATTERN_FOUND);
-                    getRecyclerFragment().queryApi(tempProductDetails, false);
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    submitItems(items, bitmap, pageId, false);
                     break;
 
                 //Single frame processed
                 case 2:
+                    submitItems(items, bitmap, pageId,true);
                     break;
             }
         }
     };
+
+    private void submitItems(List<BasicItem> basicItems, Bitmap bitmap, String pageId, boolean save) {
+        if (basicItems.size() != 0) {
+            ProductDetails tempProductDetails = new ProductDetails();
+            tempProductDetails.addBasicItems(basicItems);
+            vibrateToast(null, Toast.LENGTH_SHORT, PATTERN_FOUND);
+            getRecyclerFragment().queryApi(tempProductDetails, false);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            if (save) {
+                AsyncSaveImage asyncSaveImage = new AsyncSaveImage(this);
+                asyncSaveImage.execute(bitmap, pageId);
+            }
+
+        } else {
+            Snackbar.make(coordinatorLayout, "No items detected", Snackbar.LENGTH_SHORT).show();
+        }
+    }
 
     public RecyclerFragment getRecyclerFragment() {
         return (RecyclerFragment) fragmentManager.findFragmentById(R.id.fragment_recycler);
@@ -233,27 +290,21 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        PhotoUriList uriList = productDetails.getUriList();
+        List<Uri> uriList = new ArrayList<>();
         switch (requestCode) {
             case 0:
                 if (data != null) {
                     if (data.getClipData() != null) {
                         for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                            uriList.addUri(data.getClipData().getItemAt(i).getUri());
+                            uriList.add(data.getClipData().getItemAt(i).getUri());
                         }
                     } else if (data.getData() != null){
-                        uriList.addUri(data.getData());
+                        uriList.add(data.getData());
                     }
-                    ProductDetails productDetails = ocr.getProductDetailsFromUris(uriList);
-                    if (productDetails.sizeBasicItems() > 0) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        getRecyclerFragment().queryApi(productDetails, false);
-                    } else {
-                        Snackbar.make(coordinatorLayout, "No products detected", Snackbar.LENGTH_LONG).show();
-                    }
+                    ocr.recognizeSkusFromUris(uriList);
                     break;
                 } else {
-                    Snackbar.make(coordinatorLayout, "No image selected", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(coordinatorLayout, "No image selected", Snackbar.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -290,21 +341,35 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("page_selected", isPageSelected);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        fotoapparat.start();
+        if (fotoapparat != null && checkPermissions()) {
+            fotoapparat.start();
+        } else {
+            recreate();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        fotoapparat.stop();
+        if (fotoapparat != null) {
+            fotoapparat.stop();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        fotoapparat.stop();
-        ocr.stop();
+        if (fotoapparat != null && ocr != null) {
+            fotoapparat.stop();
+            ocr.stop(true);
+        }
     }
 }

@@ -175,10 +175,10 @@ public class RecyclerFragment extends Fragment {
         }
     }
 
-    public void openImage(int imageId) {
+    public void openImage(String pageId) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(productDetails.getUriList().getUri(imageId), "image/*");
+        intent.setDataAndType(PageManager.getUri(activityContext, pageId), "image/*");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
@@ -211,7 +211,6 @@ public class RecyclerFragment extends Fragment {
                 break;
 
             default:
-                openImage(item.getItemId());
                 break;
         }
 
@@ -227,9 +226,9 @@ public class RecyclerFragment extends Fragment {
                 break;
 
             case R.id.view_page:
-                int pageNum = productDetails.getShownItem(selectedPosition).getPageNum();
-                if (pageNum != -1) {
-                    openImage(pageNum);
+                String pageId = productDetails.getShownItem(selectedPosition).getPageId();
+                if (!pageId.equals("-1")) {
+                    openImage(pageId);
                 }
                 break;
 
@@ -335,7 +334,7 @@ public class RecyclerFragment extends Fragment {
 
     public void insertItem(int position, DetailedItem item) {
         item.setSelected(false);
-        BasicItem basicItem = new ProductDetails.BasicItem(item.getSku(), item.getUpc(), item.getPageNum());
+        BasicItem basicItem = new ProductDetails.BasicItem(item.getSku(), item.getUpc(), item.getPageId());
         basicItem.setMultiPlano(item.isMultiPlano());
         productDetails.addBasicItem(basicItem);
         productDetails.addDetailedItem(position, item);
@@ -509,6 +508,7 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onDestroy() {
         saveState();
+        PageManager.cleanUp(activityContext, productDetails);
         super.onDestroy();
     }
 }

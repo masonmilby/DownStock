@@ -9,24 +9,24 @@ import com.google.gson.Gson;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ProductDetails {
     private List<BasicItem> basicList = new ArrayList<>();
     private List<DetailedItem> products = new ArrayList<>();
-    private PhotoUriList uriList = new PhotoUriList();
 
     private boolean showSwiped = false;
 
     public static class BasicItem {
         private final String sku;
         private final String upc;
-        private final int pageNum;
+        private final String pageId;
         private boolean multiPlano = false;
 
-        public BasicItem(String sku, String upc, int pageNum) {
+        public BasicItem(String sku, String upc, String pageId) {
             this.sku = sku;
             this.upc = upc;
-            this.pageNum = pageNum;
+            this.pageId = pageId;
         }
 
         public String getSku() {
@@ -41,8 +41,8 @@ public class ProductDetails {
             return getSku().contentEquals("") ? getUpc() : getSku();
         }
 
-        public int getPageNum() {
-            return pageNum;
+        public String getPageId() {
+            return pageId;
         }
 
         public boolean isMutiPlano() {
@@ -65,7 +65,7 @@ public class ProductDetails {
 
         private String imageBit;
         private boolean multiPlano = false;
-        private int pageNum = 0;
+        private String pageId = "-1";
         private boolean found = false;
         private boolean deltabusted = false;
         private boolean selected = false;
@@ -77,8 +77,8 @@ public class ProductDetails {
             lowStock = info.isLowStock();
         }
 
-        public void setPageNum(int pageNum) {
-            this.pageNum = pageNum;
+        public void setPageId(String pageId) {
+            this.pageId = pageId;
         }
 
         public void setImageBit(Bitmap imageBit) {
@@ -144,8 +144,8 @@ public class ProductDetails {
             return multiPlano;
         }
 
-        public int getPageNum() {
-            return pageNum;
+        public String getPageId() {
+            return pageId;
         }
 
         public boolean isFound() {
@@ -255,7 +255,7 @@ public class ProductDetails {
 
     public List<BasicItem> addBasicItem(BasicItem item) {
         if (item != null) {
-            if (item.pageNum == -1 && getBasicItem(item.getId()) == null) {
+            if (item.getPageId().equals("-1") && getBasicItem(item.getId()) == null) {
                 getBasicItems().add(item);
             } else {
                 if (getBasicItem(item.getId()) != null) {
@@ -434,11 +434,14 @@ public class ProductDetails {
         return gson.toJson(this, ProductDetails.class);
     }
 
-    public PhotoUriList getUriList() {
-        return uriList;
-    }
-
-    public PhotoUriList setUriList(PhotoUriList uriList) {
-        return this.uriList = uriList;
+    public static String generateUUID() {
+        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        return sb.toString();
     }
 }

@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar toolbar;
 
     public MenuItem showSwipedItems;
-    private MenuItem viewPage;
 
     private FragmentManager fragmentManager = null;
     private FragmentTransaction fragmentTransaction = null;
@@ -80,7 +79,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private RecyclerFragment getRecyclerFragment() {
-        return (RecyclerFragment)fragmentManager.findFragmentByTag("Recycler");
+        if (fragmentManager != null) {
+            return (RecyclerFragment)fragmentManager.findFragmentByTag("Recycler");
+        }
+        return null;
     }
 
     private boolean isSelectionState() {
@@ -103,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         if (!isSelectionState()) {
             inflater.inflate(R.menu.toolbar_menu, menu);
             showSwipedItems = menu.findItem(R.id.show_swiped);
-            viewPage = menu.findItem(R.id.view_page);
             if (getRecyclerFragment() == null) {
                 showSwipedItems.setVisible(false);
             } else {
@@ -119,21 +120,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (!isSelectionState() && getRecyclerFragment() != null) {
-            int uriSize = getRecyclerFragment().getProductDetails().getUriList().size();
-            if (uriSize == 0) {
-                viewPage.setVisible(false);
-            } else {
-                viewPage.getSubMenu().clear();
-
-                for (int i = 0; i < uriSize; i++) {
-                    viewPage.getSubMenu().add(Menu.NONE, i, i, "Page " + (i+1));
-                }
-                viewPage.setVisible(true);
-            }
-        } else if (getRecyclerFragment() == null) {
-            viewPage.setVisible(false);
-        }
         return true;
     }
 
