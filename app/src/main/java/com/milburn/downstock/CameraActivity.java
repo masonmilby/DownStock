@@ -51,6 +51,7 @@ import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class CameraActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
+    private FileManager fileManager;
 
     private Button captureButton;
     private CameraView cameraView;
@@ -74,10 +75,10 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fileManager = new FileManager(this);
         if (savedInstanceState != null) {
             isPageSelected = savedInstanceState.getBoolean("page_selected");
         }
-        setContentView(R.layout.activity_camera);
 
         if (checkPermissions()) {
             finishSetup();
@@ -100,10 +101,7 @@ public class CameraActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 0: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                if (checkPermissions()) {
                     finishSetup();
                 } else {
                     finish();
@@ -117,6 +115,8 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void finishSetup() {
+        setContentView(R.layout.activity_camera);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -255,8 +255,7 @@ public class CameraActivity extends AppCompatActivity {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
             if (save) {
-                AsyncSaveImage asyncSaveImage = new AsyncSaveImage(this);
-                asyncSaveImage.execute(bitmap, pageId);
+                fileManager.savePage(bitmap, pageId);
             }
 
         } else {
@@ -351,7 +350,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onResume();
         if (fotoapparat != null && checkPermissions()) {
             fotoapparat.start();
-        } else {
+        } else if (fotoapparat != null) {
             recreate();
         }
     }

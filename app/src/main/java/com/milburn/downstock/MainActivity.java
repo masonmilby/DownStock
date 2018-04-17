@@ -11,27 +11,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public Toolbar toolbar;
 
     public MenuItem showSwipedItems;
+    public Spinner listSelectSpinner;
 
     private FragmentManager fragmentManager = null;
     private FragmentTransaction fragmentTransaction = null;
 
     private SharedPreferences sharedPreferences;
+    private FileManager fileManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        fileManager = new FileManager(this);
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -45,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
+        fragmentManager = getSupportFragmentManager();
+
         if (sharedPreferences.getString("store_id_pref", "0").contentEquals("0")) {
             startActivityForResult(new Intent(this, SettingsActivity.class), 0);
-        } else if (canRetrieveState()) {
+        } else if (fileManager.saveStateExists()) {
             showStartFragment(false);
         } else {
             showStartFragment(true);
@@ -58,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 0:
-                if (canRetrieveState()) {
+                if (fileManager.saveStateExists()) {
                     showStartFragment(false);
                 } else {
                     showStartFragment(true);
@@ -71,11 +79,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showStartFragment(boolean show) {
-        if (fragmentManager == null) {
-            fragmentManager = getSupportFragmentManager();
-        }
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, show ? new SelectionFragment() : new RecyclerFragment(), show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.fragment_container, show ? new SelectionFragment() : new RecyclerFragment(), show ? "Selection" : "Recycler").addToBackStack(show ? "Selection" : "Recycler").commit();
     }
 
     private RecyclerFragment getRecyclerFragment() {
@@ -92,12 +97,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean canRetrieveState() {
-        String path = getExternalFilesDir(null).getAbsolutePath()+"/savedstate";
-        File state = new File(path);
-        return state.exists();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -105,6 +104,19 @@ public class MainActivity extends AppCompatActivity {
         if (!isSelectionState()) {
             inflater.inflate(R.menu.toolbar_menu, menu);
             showSwipedItems = menu.findItem(R.id.show_swiped);
+
+            MenuItem spinnerItem = menu.findItem(R.id.list_selector);
+            listSelectSpinner = (Spinner)spinnerItem.getActionView();
+
+            List<String> spinnerArray =  new ArrayList<>();
+            spinnerArray.add("Main List");
+            spinnerArray.add("Shared List");
+            spinnerArray.add("Alex's Shared List");
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, spinnerArray);
+
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            listSelectSpinner.setAdapter(spinnerAdapter);
+
             if (getRecyclerFragment() == null) {
                 showSwipedItems.setVisible(false);
             } else {
@@ -152,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (getRecyclerFragment() == null && canRetrieveState()) {
+        if (getRecyclerFragment() == null && fileManager.saveStateExists()) {
             showStartFragment(false);
-        } else if (getRecyclerFragment() != null && !canRetrieveState()) {
+        } else if (getRecyclerFragment() != null && !fileManager.saveStateExists()) {
             showStartFragment(true);
         }
     }

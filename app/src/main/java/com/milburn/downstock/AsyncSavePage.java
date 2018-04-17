@@ -7,11 +7,11 @@ import android.os.AsyncTask;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class AsyncSaveImage extends AsyncTask<Object, Integer, Void> {
+public class AsyncSavePage extends AsyncTask<Object, Integer, Void> {
 
     private Context context;
 
-    public AsyncSaveImage(Context con) {
+    public AsyncSavePage(Context con) {
         context = con;
     }
 

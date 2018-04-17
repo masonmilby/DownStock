@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import com.bumptech.glide.Glide;
 import com.milburn.downstock.ProductDetails.DetailedItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -34,6 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView item_status;
         private TextView item_stock;
 
+        private View div_bottom;
         private TextView div_status;
 
         public ViewHolder(View v) {
@@ -50,6 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             item_status = v.findViewById(R.id.item_status);
             item_stock = v.findViewById(R.id.item_stock);
 
+            div_bottom = v.findViewById(R.id.div_bottom);
             div_status = v.findViewById(R.id.div_status);
         }
     }
@@ -127,7 +130,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.item_upc.setText(detailedList.get(position).getUpc());
         holder.item_price.setText("$" + detailedList.get(position).getSalePrice());
         holder.item_model.setText(detailedList.get(position).getModelNumber());
-        holder.item_image.setImageBitmap(detailedList.get(position).getImageBit());
+
+        Glide.with(context).asBitmap().load(detailedList.get(position).getImageUrl()).into(holder.item_image);
 
         if (detailedList.get(position).isInStock() && detailedList.get(position).isLowStock()) {
             holder.item_stock.setText("Few in stock");
@@ -140,6 +144,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextBad));
         }
 
+        boolean showDiv = detailedList.get(position).isDeltabusted() | detailedList.get(position).isFound() | detailedList.get(position).isMultiPlano();
+        holder.div_bottom.setVisibility(showDiv ? View.VISIBLE : View.GONE);
         holder.multiple_plano.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
 
         holder.item_selected.setVisibility(detailedList.get(position).isSelected() ? View.VISIBLE : View.GONE);
@@ -148,12 +154,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.item_status.setText("Deltabusted");
             holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextBad));
             holder.item_status.setVisibility(View.VISIBLE);
-            holder.div_status.setVisibility(View.VISIBLE);
+            holder.div_status.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
         } else if (detailedList.get(position).isFound()) {
             holder.item_status.setText("Found");
             holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextGood));
             holder.item_status.setVisibility(View.VISIBLE);
-            holder.div_status.setVisibility(View.VISIBLE);
+            holder.div_status.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
         } else {
             holder.item_status.setVisibility(View.GONE);
             holder.div_status.setVisibility(View.GONE);

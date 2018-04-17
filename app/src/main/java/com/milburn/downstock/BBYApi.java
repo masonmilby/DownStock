@@ -107,7 +107,6 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
 
         if (itemResult != null) {
             DetailedItem detailedItem = gson.fromJson(itemResult, DetailedItem.class);
-            detailedItem.setImageBit(getBitmap(detailedItem.getImage()));
             detailedItem.setPageId(basicItem.getPageId());
             detailedItem.setMultiPlano(basicItem.isMutiPlano());
             detailedItem.setStock(getStoreInfo(detailedItem));
@@ -141,7 +140,6 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
         }
 
         for (DetailedItem item : productDetails.getDetailedItems()) {
-            item.setImageBit(getBitmap(item.getImage()));
             item.setPageId(productDetails.getBasicItem(item.getSku()).getPageId());
             item.setMultiPlano(productDetails.getBasicItem(item.getSku()).isMutiPlano());
             item.setStock(getStoreInfo(item));

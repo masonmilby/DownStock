@@ -4,10 +4,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/list_selector"
+        android:title="List Selector"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.Spinner"/>
+    <item
         android:id="@+id/show_swiped"
         android:icon="@drawable/ic_visibility"
         android:title="Show swiped items"
-        app:showAsAction="always"></item>
+        app:showAsAction="always" />
     <item
         android:id="@+id/settings"
         android:title="Settings" />

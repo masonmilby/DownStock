@@ -1,12 +1,6 @@
 package com.milburn.downstock;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-
 import com.google.gson.Gson;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -63,7 +57,6 @@ public class ProductDetails {
         private String url;
         private String modelNumber;
 
-        private String imageBit;
         private boolean multiPlano = false;
         private String pageId = "-1";
         private boolean found = false;
@@ -79,14 +72,6 @@ public class ProductDetails {
 
         public void setPageId(String pageId) {
             this.pageId = pageId;
-        }
-
-        public void setImageBit(Bitmap imageBit) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            imageBit.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            byte[] b = bos.toByteArray();
-
-            this.imageBit = Base64.encodeToString(b, Base64.DEFAULT);
         }
 
         public void setFound(boolean found) {
@@ -123,7 +108,7 @@ public class ProductDetails {
             return salePrice;
         }
 
-        public String getImage() {
+        public String getImageUrl() {
             return image;
         }
 
@@ -133,11 +118,6 @@ public class ProductDetails {
 
         public String getModelNumber() {
             return modelNumber;
-        }
-
-        public Bitmap getImageBit() {
-            byte[] decodedString = Base64.decode(imageBit, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         }
 
         public boolean isMultiPlano() {
@@ -436,12 +416,12 @@ public class ProductDetails {
 
     public static String generateUUID() {
         char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < 10; i++) {
             char c = chars[random.nextInt(chars.length)];
-            sb.append(c);
+            stringBuilder.append(c);
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
 }

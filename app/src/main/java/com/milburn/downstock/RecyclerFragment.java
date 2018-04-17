@@ -19,16 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.milburn.downstock.ProductDetails.DetailedItem;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,16 +43,17 @@ public class RecyclerFragment extends Fragment {
     private List<DetailedItem> removedItems = new ArrayList<>();
     private int removedPosition = 0;
 
-    Gson gson = new Gson();
-
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
+
+    private FileManager fileManager;
 
     @Override
     public void onAttach (Context context) {
         super.onAttach(context);
         this.activityContext = context;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        fileManager = new FileManager(context);
     }
 
     @Override
@@ -83,7 +77,12 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        retrieveState();
+        productDetails = fileManager.retrieveState();
+        if (recyclerAdapter == null) {
+            setupRecycler(productDetails);
+        } else {
+            recyclerAdapter.refreshData(productDetails);
+        }
     }
 
     public boolean isSelectionState() {
@@ -125,7 +124,7 @@ public class RecyclerFragment extends Fragment {
                 swipeRefresh.setRefreshing(false);
                 if (object instanceof ProductDetails) {
                     ProductDetails returnedProducts = (ProductDetails)object;
-                    if (updateStock) {
+                    if (updateStock && getView() != null) {
                         Snackbar.make(recyclerView, "Stock updated", Snackbar.LENGTH_SHORT).show();
                     }
                     if (recyclerAdapter == null) {
@@ -178,7 +177,7 @@ public class RecyclerFragment extends Fragment {
     public void openImage(String pageId) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(PageManager.getUri(activityContext, pageId), "image/*");
+        intent.setDataAndType(fileManager.getPageUri(pageId), "image/*");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
@@ -439,76 +438,22 @@ public class RecyclerFragment extends Fragment {
         }
     }
 
-    private void saveState() {
-        if (productDetails.sizeDetailedItems() == 0) {
-            deleteState();
-        } else {
-            String path = getActivity().getExternalFilesDir(null).getAbsolutePath() + "/savedstate";
-            File state = new File(path);
-            try {
-                FileOutputStream fos = new FileOutputStream(state);
-                OutputStreamWriter osw = new OutputStreamWriter(fos);
-                osw.write(productDetails.toJson());
-                osw.close();
-                fos.close();
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void retrieveState() {
-        String path = getActivity().getExternalFilesDir(null).getAbsolutePath() + "/savedstate";
-        File state = new File(path);
-        StringBuffer pd = new StringBuffer();
-        if (state.exists()) {
-            try {
-                FileInputStream fis = new FileInputStream(state);
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader bufferedReader = new BufferedReader(isr);
-
-                String fileString = bufferedReader.readLine();
-                while (fileString != null) {
-                    pd.append(fileString);
-                    fileString = bufferedReader.readLine();
-                }
-                isr.close();
-                fis.close();
-
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-            productDetails = gson.fromJson(pd.toString(), ProductDetails.class);
-        }
-        if (recyclerAdapter == null) {
-            setupRecycler(productDetails);
-        } else {
-            recyclerAdapter.refreshData(productDetails);
-        }
-    }
-
-    private void deleteState() {
-        String path = getActivity().getExternalFilesDir(null).getAbsolutePath()+"/savedstate";
-        File state = new File(path);
-        state.delete();
-    }
-
     @Override
     public void onPause() {
-        saveState();
+        fileManager.saveState(productDetails);
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        saveState();
+        fileManager.saveState(productDetails);
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        saveState();
-        PageManager.cleanUp(activityContext, productDetails);
+        fileManager.saveState(productDetails);
+        fileManager.cleanUp(productDetails);
         super.onDestroy();
     }
 }
