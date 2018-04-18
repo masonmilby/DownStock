@@ -3,7 +3,6 @@ package com.milburn.downstock;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -371,16 +370,6 @@ public class RecyclerFragment extends Fragment {
 
             if (selectionState) {
                 cameraActivity.toolbar.setTitle(productDetails.sizeSelectedItems() + " selected");
-                cameraActivity.toolbar.setTitleTextColor(getResources().getColor(R.color.colorBlack));
-                cameraActivity.toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                cameraActivity.toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
-                cameraActivity.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-            } else {
-                cameraActivity.toolbar.setTitle(R.string.app_name);
-                cameraActivity.toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
-                cameraActivity.toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                cameraActivity.toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.MULTIPLY);
-                cameraActivity.toolbar.setNavigationIcon(R.drawable.ic_close);
             }
         }
     }

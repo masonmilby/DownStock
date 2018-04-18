@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -160,8 +161,6 @@ public class CameraActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         OrientationEventListener orientationEventListener = new OrientationEventListener(this) {
             @Override
@@ -206,14 +205,15 @@ public class CameraActivity extends AppCompatActivity {
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 switch (newState) {
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        setOcrRunning(false);
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                         toolbar.setNavigationIcon(R.drawable.ic_close);
+                        toolbar.setTitle("");
+                        setOcrRunning(false);
                         break;
 
                     case BottomSheetBehavior.STATE_COLLAPSED:
+                        toolbar.setNavigationIcon(null);
+                        toolbar.setTitle(R.string.app_name);
                         setOcrRunning(true);
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                         break;
 
                     default:
@@ -224,7 +224,9 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 LinearLayout buttonsContainer = findViewById(R.id.buttons_container);
+
                 buttonsContainer.setVisibility((slideOffset>lastFloat) ? View.GONE : View.VISIBLE);
+
                 lastFloat = slideOffset;
             }
         });
@@ -299,6 +301,7 @@ public class CameraActivity extends AppCompatActivity {
             tempProductDetails.addBasicItems(basicItems);
             vibrateToast(null, Toast.LENGTH_SHORT, PATTERN_FOUND);
             getRecyclerFragment().queryApi(tempProductDetails, false);
+
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
             if (save) {
@@ -314,13 +317,13 @@ public class CameraActivity extends AppCompatActivity {
         return (RecyclerFragment) fragmentManager.findFragmentById(R.id.fragment_recycler);
     }
 
-    public void vibrateToast(final CharSequence text, int duration, final long[] pattern) {
+    public void vibrateToast(final CharSequence text, final int duration, final long[] pattern) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 vibrator.vibrate(pattern, -1);
                 if (text != null) {
-                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), text, duration).show();
                 }
             }
         });
@@ -380,6 +383,16 @@ public class CameraActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         if (!isSelectionState()) {
             inflater.inflate(R.menu.camera_toolbar_menu, menu);
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                toolbar.setTitle(R.string.app_name);
+            } else {
+                toolbar.setTitle("");
+                toolbar.setNavigationIcon(R.drawable.ic_close);
+            }
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.MULTIPLY);
+
             showSwipedItems = menu.findItem(R.id.show_swiped);
 
             MenuItem spinnerItem = menu.findItem(R.id.list_selector);
@@ -405,6 +418,10 @@ public class CameraActivity extends AppCompatActivity {
             }
         } else {
             inflater.inflate(R.menu.toolbar_selected_menu, menu);
+            toolbar.setTitleTextColor(getResources().getColor(R.color.colorBlack));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         }
 
         return true;
