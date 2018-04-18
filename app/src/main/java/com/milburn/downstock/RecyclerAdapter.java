@@ -100,7 +100,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                MenuInflater inflater = context.getActivityMenuInflater();
+                MenuInflater inflater = context.getActivity().getMenuInflater();
                 inflater.inflate(R.menu.context_menu, menu);
 
                 menu.setHeaderTitle("Item options");

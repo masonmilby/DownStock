@@ -44,22 +44,17 @@
             android:value="ocr" />
 
         <activity
-            android:name="com.milburn.downstock.MainActivity"
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden" >
+            android:name="com.milburn.downstock.SettingsActivity"
+            android:label="Settings" >
+        </activity>
+        <activity
+            android:name="com.milburn.downstock.CameraActivity"
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.milburn.downstock.SettingsActivity"
-            android:label="Settings"
-            android:parentActivityName="com.milburn.downstock.MainActivity" >
-        </activity>
-        <activity
-            android:name="com.milburn.downstock.CameraActivity"
-            android:theme="@style/Camera" >
         </activity>
 
         <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->

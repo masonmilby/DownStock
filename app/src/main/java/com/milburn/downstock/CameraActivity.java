@@ -1,13 +1,16 @@
 package com.milburn.downstock;
 
 import android.Manifest;
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
@@ -18,11 +21,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -47,21 +52,24 @@ import kotlin.jvm.functions.Function1;
 import static io.fotoapparat.log.LoggersKt.logcat;
 import static io.fotoapparat.selector.LensPositionSelectorsKt.back;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class CameraActivity extends AppCompatActivity {
+    public CoordinatorLayout coordinatorLayout;
+    public Toolbar toolbar;
+    public MenuItem showSwipedItems;
+    public Spinner listSelectSpinner;
     private FragmentManager fragmentManager;
     private FileManager fileManager;
-
+    private SharedPreferences sharedPreferences;
     private Button captureButton;
     private CameraView cameraView;
     private Fotoapparat fotoapparat;
     private Frame latestFrame;
     private OcrDetectorProcessor ocr;
-
-    public CoordinatorLayout coordinatorLayout;
-    public Toolbar toolbar;
-
     private LinearLayout bottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private BottomNavigationView bottomNavigationView;
@@ -71,16 +79,44 @@ public class CameraActivity extends AppCompatActivity {
 
     private int currentAngle;
     private boolean isPageSelected = false;
+    private float lastFloat = 0.0f;
+
+    private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
+        @Override
+        public void FinishedProcessing(List<BasicItem> items, Bitmap bitmap, String pageId, int responseType) {
+            switch (responseType) {
+                //No new items detected
+                case 0:
+                    break;
+
+                //New items detected
+                case 1:
+                    submitItems(items, bitmap, pageId, false);
+                    break;
+
+                //Single frame processed
+                case 2:
+                    setCaptureButtonEnabled(true);
+                    submitItems(items, bitmap, pageId,true);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fileManager = new FileManager(this);
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         if (savedInstanceState != null) {
             isPageSelected = savedInstanceState.getBoolean("page_selected");
         }
 
-        if (checkPermissions()) {
+        if (sharedPreferences.getString("store_id_pref", "0").contentEquals("0")) {
+            startActivityForResult(new Intent(this, SettingsActivity.class), 1);
+        } else if (checkPermissions()) {
             finishSetup();
         } else {
             requestPermissions();
@@ -117,10 +153,15 @@ public class CameraActivity extends AppCompatActivity {
     private void finishSetup() {
         setContentView(R.layout.activity_camera);
 
-        toolbar = findViewById(R.id.toolbar);
+        MobileAds.initialize(this, this.getString(R.string.admob_key));
+        AdView adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         OrientationEventListener orientationEventListener = new OrientationEventListener(this) {
             @Override
@@ -139,6 +180,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final int rotation = currentAngle;
+                setCaptureButtonEnabled(false);
                 fotoapparat.takePicture().toBitmap().whenAvailable(new Function1<BitmapPhoto, Unit>() {
                     @Override
                     public Unit invoke(final BitmapPhoto bitmapPhoto) {
@@ -154,7 +196,38 @@ public class CameraActivity extends AppCompatActivity {
         fotoapparat = createFotoapparat();
 
         bottomSheet = findViewById(R.id.bottom_sheet);
+        LayoutTransition transition = new LayoutTransition();
+        transition.setAnimateParentHierarchy(false);
+        bottomSheet.setLayoutTransition(transition);
+
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        setOcrRunning(false);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        toolbar.setNavigationIcon(R.drawable.ic_close);
+                        break;
+
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        setOcrRunning(true);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                LinearLayout buttonsContainer = findViewById(R.id.buttons_container);
+                buttonsContainer.setVisibility((slideOffset>lastFloat) ? View.GONE : View.VISIBLE);
+                lastFloat = slideOffset;
+            }
+        });
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -201,50 +274,24 @@ public class CameraActivity extends AppCompatActivity {
                 .build();
     }
 
-    private class PreviewFrameProcessor implements FrameProcessor {
-        @Override
-        public void process(Frame frame) {
-            latestFrame = frame;
-
-            if (!ocr.isStopped() && ocr.isReadyForFrame()) {
-                ocr.recognizeFrame(ocr.convertToGVFrame(frame), currentAngle, true, true, "-1");
-            }
-        }
-    }
-
     private void selectNavigation(boolean page) {
         isPageSelected = page;
-        if (page) {
-            ocr.stop(false);
-            captureButton.setEnabled(true);
-            captureButton.setAlpha(1.0f);
-        } else {
+        setCaptureButtonEnabled(page);
+        setOcrRunning(!page);
+    }
+
+    private void setOcrRunning(boolean run) {
+        if (run && !isPageSelected) {
             ocr.start();
-            captureButton.setEnabled(false);
-            captureButton.setAlpha(0.5f);
+        } else if (!run){
+            ocr.stop(false);
         }
     }
 
-    private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
-        @Override
-        public void FinishedProcessing(List<BasicItem> items, Bitmap bitmap, String pageId, int responseType) {
-            switch (responseType) {
-                //No new items detected
-                case 0:
-                    break;
-
-                //New items detected
-                case 1:
-                    submitItems(items, bitmap, pageId, false);
-                    break;
-
-                //Single frame processed
-                case 2:
-                    submitItems(items, bitmap, pageId,true);
-                    break;
-            }
-        }
-    };
+    private void setCaptureButtonEnabled(boolean enabled) {
+        captureButton.setEnabled(enabled);
+        captureButton.setAlpha(enabled ? 1.0f : 0.5f);
+    }
 
     private void submitItems(List<BasicItem> basicItems, Bitmap bitmap, String pageId, boolean save) {
         if (basicItems.size() != 0) {
@@ -297,7 +344,7 @@ public class CameraActivity extends AppCompatActivity {
                         for (int i = 0; i < data.getClipData().getItemCount(); i++) {
                             uriList.add(data.getClipData().getItemAt(i).getUri());
                         }
-                    } else if (data.getData() != null){
+                    } else if (data.getData() != null) {
                         uriList.add(data.getData());
                     }
                     ocr.recognizeSkusFromUris(uriList);
@@ -307,36 +354,98 @@ public class CameraActivity extends AppCompatActivity {
                     break;
                 }
 
-                default:
-                    break;
+            case 1:
+                if (checkPermissions()) {
+                    finishSetup();
+                } else {
+                    requestPermissions();
+                }
+                break;
+
+            default:
+                break;
         }
+    }
+
+    private boolean isSelectionState() {
+        if (getRecyclerFragment() != null) {
+            return getRecyclerFragment().isSelectionState();
+        }
+        return false;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.camera_toolbar_menu, menu);
+        MenuInflater inflater = getMenuInflater();
+        if (!isSelectionState()) {
+            inflater.inflate(R.menu.camera_toolbar_menu, menu);
+            showSwipedItems = menu.findItem(R.id.show_swiped);
+
+            MenuItem spinnerItem = menu.findItem(R.id.list_selector);
+            spinnerItem.setVisible(false);
+
+            /*
+            listSelectSpinner = (Spinner)spinnerItem.getActionView();
+
+            List<String> spinnerArray =  new ArrayList<>();
+            spinnerArray.add("Main List");
+            spinnerArray.add("Shared List");
+            spinnerArray.add("Alex's Shared List");
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, spinnerArray);
+
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            listSelectSpinner.setAdapter(spinnerAdapter);
+            */
+
+            if (getRecyclerFragment() == null) {
+                showSwipedItems.setVisible(false);
+            } else {
+                getRecyclerFragment().updateSwiped();
+            }
+        } else {
+            inflater.inflate(R.menu.toolbar_selected_menu, menu);
+        }
+
         return true;
+    }
+
+    private boolean backNavPressed() {
+        if (isSelectionState()) {
+            getRecyclerFragment().selectAll(true);
+            return true;
+        } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
-                break;
+                backNavPressed();
+                return true;
 
             case R.id.open_image:
                 selectPhotos();
-                break;
+                return true;
 
-            case R.id.auto_rejection:
-                break;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
 
             default:
-                break;
+                return false;
         }
-        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!backNavPressed()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -369,6 +478,17 @@ public class CameraActivity extends AppCompatActivity {
         if (fotoapparat != null && ocr != null) {
             fotoapparat.stop();
             ocr.stop(true);
+        }
+    }
+
+    private class PreviewFrameProcessor implements FrameProcessor {
+        @Override
+        public void process(Frame frame) {
+            latestFrame = frame;
+
+            if (!ocr.isStopped() && ocr.isReadyForFrame()) {
+                ocr.recognizeFrame(ocr.convertToGVFrame(frame), currentAngle, true, true, "-1");
+            }
         }
     }
 }

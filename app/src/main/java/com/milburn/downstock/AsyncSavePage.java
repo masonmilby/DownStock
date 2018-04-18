@@ -33,9 +33,4 @@ public class AsyncSavePage extends AsyncTask<Object, Integer, Void> {
         }
         return null;
     }
-
-    @Override
-    protected void onPostExecute(Void result) {
-        super.onPostExecute(result);
-    }
 }
