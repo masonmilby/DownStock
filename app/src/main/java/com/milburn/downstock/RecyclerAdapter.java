@@ -20,6 +20,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private ProductDetails productDetails;
     private List<DetailedItem> detailedList;
     private RecyclerFragment context;
+    
+    private FileManager fileManager;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -61,6 +63,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         setHasStableIds(true);
         productDetails = data;
         context = con;
+        fileManager = new FileManager(con.getContext());
         refreshData(productDetails);
     }
 
@@ -85,6 +88,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final DetailedItem item = detailedList.get(position);
+        
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,13 +110,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                 menu.setHeaderTitle("Item options");
 
-                if (detailedList.get(position).getPageId().equals("-1")) {
+                String pageId = item.getPageId();
+                if (pageId.equals("-1") | !fileManager.getPageExists(pageId)) {
                     menu.getItem(1).setVisible(false);
                 }
 
-                if (detailedList.get(position).isFound()) {
+                if (item.isFound()) {
                     menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'found'");
-                } else if (detailedList.get(position).isDeltabusted()) {
+                } else if (item.isDeltabusted()) {
                     menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'deltabusted'");
                 }
             }
@@ -125,18 +131,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
-        holder.item_name.setText(detailedList.get(position).getName());
-        holder.item_sku.setText(detailedList.get(position).getSku());
-        holder.item_upc.setText(detailedList.get(position).getUpc());
-        holder.item_price.setText("$" + detailedList.get(position).getSalePrice());
-        holder.item_model.setText(detailedList.get(position).getModelNumber());
+        holder.item_name.setText(item.getName());
+        holder.item_sku.setText(item.getSku());
+        holder.item_upc.setText(item.getUpc());
+        holder.item_price.setText("$" + item.getSalePrice());
+        holder.item_model.setText(item.getModelNumber());
 
-        Glide.with(context).asBitmap().load(detailedList.get(position).getImageUrl()).into(holder.item_image);
+        Glide.with(context).asBitmap().load(item.getImageUrl()).into(holder.item_image);
 
-        if (detailedList.get(position).isInStock() && detailedList.get(position).isLowStock()) {
+        if (item.isInStock() && item.isLowStock()) {
             holder.item_stock.setText("Few in stock");
             holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextOkay));
-        } else if (detailedList.get(position).isInStock()) {
+        } else if (item.isInStock()) {
             holder.item_stock.setText("In stock");
             holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextGood));
         } else {
@@ -144,22 +150,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.item_stock.setTextColor(context.getResources().getColor(R.color.colorTextBad));
         }
 
-        boolean showDiv = detailedList.get(position).isDeltabusted() | detailedList.get(position).isFound() | detailedList.get(position).isMultiPlano();
+        boolean showDiv = item.isDeltabusted() | item.isFound() | item.isMultiPlano();
         holder.div_bottom.setVisibility(showDiv ? View.VISIBLE : View.GONE);
-        holder.multiple_plano.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
+        holder.multiple_plano.setVisibility(item.isMultiPlano() ? View.VISIBLE : View.GONE);
 
-        holder.item_selected.setVisibility(detailedList.get(position).isSelected() ? View.VISIBLE : View.GONE);
+        holder.item_selected.setVisibility(item.isSelected() ? View.VISIBLE : View.GONE);
 
-        if (detailedList.get(position).isDeltabusted()) {
+        if (item.isDeltabusted()) {
             holder.item_status.setText("Deltabusted");
             holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextBad));
             holder.item_status.setVisibility(View.VISIBLE);
-            holder.div_status.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
-        } else if (detailedList.get(position).isFound()) {
+            holder.div_status.setVisibility(item.isMultiPlano() ? View.VISIBLE : View.GONE);
+        } else if (item.isFound()) {
             holder.item_status.setText("Found");
             holder.item_status.setTextColor(context.getResources().getColor(R.color.colorTextGood));
             holder.item_status.setVisibility(View.VISIBLE);
-            holder.div_status.setVisibility(detailedList.get(position).isMultiPlano() ? View.VISIBLE : View.GONE);
+            holder.div_status.setVisibility(item.isMultiPlano() ? View.VISIBLE : View.GONE);
         } else {
             holder.item_status.setVisibility(View.GONE);
             holder.div_status.setVisibility(View.GONE);

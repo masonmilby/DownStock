@@ -3,7 +3,7 @@ package com.milburn.downstock;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
 
 public class ProductDetails {
     private List<BasicItem> basicList = new ArrayList<>();
@@ -237,12 +237,10 @@ public class ProductDetails {
         if (item != null) {
             if (item.getPageId().equals("-1") && getBasicItem(item.getId()) == null) {
                 getBasicItems().add(item);
-            } else {
-                if (getBasicItem(item.getId()) != null) {
+            } else if (!item.getPageId().equals("-1") && getBasicItem(item.getId()) != null) {
                     getBasicItem(item.getId()).setMultiPlano(true);
-                } else {
-                    getBasicItems().add(item);
-                }
+            } else if (!item.getPageId().equals("-1") && getBasicItem(item.getId()) == null){
+                getBasicItems().add(item);
             }
         }
         return getBasicItems();
@@ -415,13 +413,6 @@ public class ProductDetails {
     }
 
     public static String generateUUID() {
-        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-        StringBuilder stringBuilder = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            char c = chars[random.nextInt(chars.length)];
-            stringBuilder.append(c);
-        }
-        return stringBuilder.toString();
+        return UUID.randomUUID().toString();
     }
 }

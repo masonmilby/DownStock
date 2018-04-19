@@ -26,9 +26,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -56,12 +58,14 @@ import static io.fotoapparat.selector.LensPositionSelectorsKt.back;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
 import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class CameraActivity extends AppCompatActivity {
     public CoordinatorLayout coordinatorLayout;
     public Toolbar toolbar;
     public MenuItem showSwipedItems;
+    private MenuItem spinnerItem;
     public Spinner listSelectSpinner;
     private FragmentManager fragmentManager;
     private FileManager fileManager;
@@ -72,7 +76,7 @@ public class CameraActivity extends AppCompatActivity {
     private Frame latestFrame;
     private OcrDetectorProcessor ocr;
     private LinearLayout bottomSheet;
-    private BottomSheetBehavior bottomSheetBehavior;
+    public BottomSheetBehavior bottomSheetBehavior;
     private BottomNavigationView bottomNavigationView;
 
     private Vibrator vibrator;
@@ -81,6 +85,8 @@ public class CameraActivity extends AppCompatActivity {
     private int currentAngle;
     private boolean isPageSelected = false;
     private float lastFloat = 0.0f;
+
+    private FirebaseHelper firebaseHelper;
 
     private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
         @Override
@@ -107,6 +113,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebaseHelper = new FirebaseHelper();
         fileManager = new FileManager(this);
         PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -207,12 +214,14 @@ public class CameraActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_EXPANDED:
                         toolbar.setNavigationIcon(R.drawable.ic_close);
                         toolbar.setTitle("");
+                        spinnerItem.setVisible(true);
                         setOcrRunning(false);
                         break;
 
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         toolbar.setNavigationIcon(null);
                         toolbar.setTitle(R.string.app_name);
+                        spinnerItem.setVisible(false);
                         setOcrRunning(true);
                         break;
 
@@ -383,39 +392,37 @@ public class CameraActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         if (!isSelectionState()) {
             inflater.inflate(R.menu.camera_toolbar_menu, menu);
+            showSwipedItems = menu.findItem(R.id.show_swiped);
+            spinnerItem = menu.findItem(R.id.list_selector);
+            listSelectSpinner = (Spinner)spinnerItem.getActionView();
+
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                 toolbar.setTitle(R.string.app_name);
+                spinnerItem.setVisible(false);
             } else {
                 toolbar.setTitle("");
                 toolbar.setNavigationIcon(R.drawable.ic_close);
+                spinnerItem.setVisible(true);
             }
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.MULTIPLY);
-
-            showSwipedItems = menu.findItem(R.id.show_swiped);
-
-            MenuItem spinnerItem = menu.findItem(R.id.list_selector);
-            spinnerItem.setVisible(false);
-
-            /*
-            listSelectSpinner = (Spinner)spinnerItem.getActionView();
-
-            List<String> spinnerArray =  new ArrayList<>();
-            spinnerArray.add("Main List");
-            spinnerArray.add("Shared List");
-            spinnerArray.add("Alex's Shared List");
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, spinnerArray);
-
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            listSelectSpinner.setAdapter(spinnerAdapter);
-            */
 
             if (getRecyclerFragment() == null) {
                 showSwipedItems.setVisible(false);
             } else {
                 getRecyclerFragment().updateSwiped();
             }
+
+            List<String> spinnerArray =  new ArrayList<>();
+            spinnerArray.add("Main List");
+            spinnerArray.add("Shared List");
+            spinnerArray.add("Alex's Shared List");
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, spinnerArray);
+
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            listSelectSpinner.setAdapter(spinnerAdapter);
+
         } else {
             inflater.inflate(R.menu.toolbar_selected_menu, menu);
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorBlack));

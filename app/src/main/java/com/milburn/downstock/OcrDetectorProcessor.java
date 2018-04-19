@@ -130,7 +130,7 @@ public class OcrDetectorProcessor {
 
         for (int i = 0; i < barcodeItems.size(); i++) {
             String rawData = barcodeItems.valueAt(i).rawValue;
-            if (rawData.contains("bby.us")) {
+            if (rawData.contains("http://bby.us/?c=")) {
                 rawData = rawData.replace("http://bby.us/?c=", "");
                 rawData = rawData.substring(7, 14);
                 if (!isAlreadyRecognized(rawData)) {

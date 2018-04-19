@@ -39,6 +39,11 @@ public class FileManager {
         return null;
     }
 
+    public boolean getPageExists(String pageId) {
+        File page = new File(pageDirFile + "/" + pageId + ".jpg");
+        return page.exists();
+    }
+
     public void savePage(Bitmap bitmap, String pageId) {
         AsyncSavePage asyncSaveImage = new AsyncSavePage(context);
         asyncSaveImage.execute(bitmap, pageId);
