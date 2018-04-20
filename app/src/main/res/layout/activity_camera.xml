@@ -77,7 +77,7 @@
                     android:clipToPadding="false"
                     android:paddingBottom="8dp"
                     app:elevation="2dp"
-                    app:menu="@menu/camera_selector_menu">
+                    app:menu="@menu/bottom_nav_menu">
 
                 </android.support.design.widget.BottomNavigationView>
 

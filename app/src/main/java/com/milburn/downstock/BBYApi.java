@@ -2,18 +2,12 @@ package com.milburn.downstock;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
 import org.jsoup.Jsoup;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import com.milburn.downstock.ProductDetails.ItemStoreInfo;
 import com.milburn.downstock.ProductDetails.DetailedItem;
@@ -52,18 +46,6 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
             return getDetailedItem((BasicItem)object);
         }
         return object;
-    }
-
-    private Bitmap getBitmap(String url) {
-        try {
-            InputStream inputStream = (InputStream) new URL(url).getContent();
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            inputStream.close();
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private ItemStoreInfo getStoreInfo(DetailedItem item) {
@@ -128,7 +110,7 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
                 count++;
                 try {
                     itemsResult = Jsoup.connect(itemsUrl).ignoreContentType(true).execute().body();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

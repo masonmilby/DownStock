@@ -10,18 +10,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.bumptech.glide.Glide;
 import com.milburn.downstock.ProductDetails.DetailedItem;
+import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private ProductDetails productDetails;
-    private List<DetailedItem> detailedList;
+    private List<DetailedItem> detailedList = new ArrayList<>();
+    private Set<DetailedItem> selectedSet = new HashSet<>();
     private RecyclerFragment context;
+
+    private boolean showSwiped = false;
     
     private FileManager fileManager;
+    private FirebaseHelper firebaseHelper;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -64,18 +72,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         productDetails = data;
         context = con;
         fileManager = new FileManager(con.getContext());
-        refreshData(productDetails);
-    }
-
-    public void refreshData() {
-        detailedList = productDetails.getShownItems();
-        notifyDataSetChanged();
-    }
-
-    public void refreshData(ProductDetails products) {
-        productDetails = products;
-        detailedList = productDetails.getShownItems();
-        notifyDataSetChanged();
+        firebaseHelper = new FirebaseHelper();
     }
 
     @Override
@@ -154,7 +151,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.div_bottom.setVisibility(showDiv ? View.VISIBLE : View.GONE);
         holder.multiple_plano.setVisibility(item.isMultiPlano() ? View.VISIBLE : View.GONE);
 
-        holder.item_selected.setVisibility(item.isSelected() ? View.VISIBLE : View.GONE);
+        holder.item_selected.setVisibility(isSelected(item) ? View.VISIBLE : View.GONE);
 
         if (item.isDeltabusted()) {
             holder.item_status.setText("Deltabusted");
@@ -180,5 +177,105 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public long getItemId(int position) {
         return detailedList.get(position).hashCode();
+    }
+
+    public ProductDetails getProductDetails() {
+        return productDetails;
+    }
+
+    public void refreshData() {
+        detailedList = showSwiped ? productDetails.getDetailedItems(true, false) : productDetails.getDetailedItems( false, true);
+        notifyDataSetChanged();
+        context.updateSelectionState();
+        context.updateSwiped();
+        firebaseHelper.saveToFire(productDetails);
+    }
+
+    public void refreshData(ProductDetails products) {
+        productDetails = products;
+        detailedList = showSwiped ? productDetails.getDetailedItems(true, false) : productDetails.getDetailedItems(false, true);
+        notifyDataSetChanged();
+        context.updateSelectionState();
+        context.updateSwiped();
+        firebaseHelper.saveToFire(productDetails);
+    }
+
+    public void setShowSwiped(boolean showSwiped) {
+        this.showSwiped = showSwiped;
+        refreshData();
+    }
+
+    public boolean isShowSwiped() {
+        return showSwiped;
+    }
+
+    public DetailedItem getShownItem(int position) {
+        return productDetails.getDetailedItem(detailedList.get(position).getSku());
+    }
+
+    public int getShownItemIndex(DetailedItem item) {
+        return detailedList.indexOf(item);
+    }
+
+    public int sizeShownItems() {
+        return detailedList.size();
+    }
+
+    public void setSelected(boolean selected, DetailedItem item) {
+        if (selected) {
+            selectedSet.add(item);
+        } else {
+            selectedSet.remove(item);
+        }
+        refreshData();
+    }
+
+    public void selectAll(boolean deselect) {
+        if (deselect) {
+            getSelectedSet().clear();
+        } else {
+            getSelectedSet().addAll(detailedList);
+        }
+        refreshData();
+    }
+
+    public Set<DetailedItem> getSelectedSet() {
+        return selectedSet;
+    }
+
+    public int selectedSetSize() {
+        return selectedSet.size();
+    }
+
+    public boolean isSelected(DetailedItem item) {
+        return selectedSet.contains(item);
+    }
+
+    public void insertItem(int position, DetailedItem item) {
+        setSelected(false, item);
+        BasicItem basicItem = new BasicItem(item.getSku(), item.getUpc(), item.getPageId());
+        basicItem.setMultiPlano(item.isMultiPlano());
+        productDetails.addBasicItem(basicItem);
+        productDetails.addDetailedItem(position, item);
+        refreshData();
+    }
+
+    public void insertItems(List<DetailedItem> items) {
+        for (DetailedItem item : items) {
+            insertItem(0, item);
+        }
+    }
+
+    public void removeItem(int position) {
+        productDetails.removeBasicItem(getShownItem(position).getSku());
+        productDetails.removeDetailedItem(getShownItem(position).getSku());
+        refreshData();
+    }
+
+    public void removeSelectedItems() {
+        for (DetailedItem item : selectedSet) {
+            removeItem(getShownItemIndex(item));
+        }
+        selectAll(true);
     }
 }

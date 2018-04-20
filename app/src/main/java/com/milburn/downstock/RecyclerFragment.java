@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.milburn.downstock.ProductDetails.DetailedItem;
-import com.milburn.downstock.ProductDetails.BasicItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,7 @@ public class RecyclerFragment extends Fragment {
     private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
 
     private FileManager fileManager;
+    private FirebaseHelper firebaseHelper;
 
     private boolean isFirstLaunch = true;
 
@@ -53,8 +53,11 @@ public class RecyclerFragment extends Fragment {
     public void onAttach (Context context) {
         super.onAttach(context);
         this.activityContext = context;
+        recyclerAdapter = new RecyclerAdapter(productDetails,this);
+        recyclerAdapter.refreshData();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         fileManager = new FileManager(context);
+        firebaseHelper = new FirebaseHelper();
     }
 
     @Override
@@ -79,8 +82,6 @@ public class RecyclerFragment extends Fragment {
     public void onStart() {
         super.onStart();
         productDetails = fileManager.retrieveState();
-        updateSwiped();
-
         setupRecycler(productDetails);
     }
 
@@ -116,10 +117,10 @@ public class RecyclerFragment extends Fragment {
                     if (recyclerAdapter == null) {
                         setupRecycler(productDetails);
                     } else {
-                        insertItems(returnedProducts.getDetailedItems());
+                        recyclerAdapter.insertItems(returnedProducts.getDetailedItems());
                     }
                 } else if (object instanceof DetailedItem) {
-                    insertItem(0, (DetailedItem)object);
+                    recyclerAdapter.insertItem(0, (DetailedItem)object);
                 }
             }
         });
@@ -145,12 +146,12 @@ public class RecyclerFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.show_swiped:
-                setSwiped(!productDetails.isShowSwiped());
+                recyclerAdapter.setShowSwiped(!recyclerAdapter.isShowSwiped());
                 updateSwiped();
                 break;
 
             case android.R.id.home:
-                selectAll(true);
+                recyclerAdapter.selectAll(true);
                 break;
 
             case R.id.delete_items:
@@ -162,7 +163,7 @@ public class RecyclerFragment extends Fragment {
                 break;
 
             case R.id.select_all_items:
-                selectAll(false);
+                recyclerAdapter.selectAll(false);
                 break;
 
             default:
@@ -176,12 +177,12 @@ public class RecyclerFragment extends Fragment {
     public boolean onContextItemSelected (MenuItem item) {
         switch (item.getItemId()) {
             case R.id.open_url:
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(productDetails.getShownItem(selectedPosition).getUrl()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recyclerAdapter.getShownItem(selectedPosition).getUrl()));
                 startActivity(intent);
                 break;
 
             case R.id.view_page:
-                String pageId = productDetails.getShownItem(selectedPosition).getPageId();
+                String pageId = recyclerAdapter.getShownItem(selectedPosition).getPageId();
                 if (!pageId.equals("-1")) {
                     openImage(pageId);
                 }
@@ -189,14 +190,12 @@ public class RecyclerFragment extends Fragment {
 
             case R.id.remove_item:
                 removeItem(selectedPosition, true);
-                updateSwiped();
                 break;
 
             case 0:
                 //Remove from swiped
-                productDetails.getShownItem(selectedPosition).resetSwiped();
+                recyclerAdapter.getShownItem(selectedPosition).resetSwiped();
                 recyclerAdapter.refreshData();
-                updateSwiped();
                 break;
 
             default:
@@ -221,7 +220,7 @@ public class RecyclerFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 swipedPosition = viewHolder.getLayoutPosition();
-                swipedItem = productDetails.getShownItem(swipedPosition);
+                swipedItem = recyclerAdapter.getShownItem(swipedPosition);
 
                     Snackbar snackbar = Snackbar.make(recyclerView, "0", Snackbar.LENGTH_LONG);
                     snackbar.setAction("Undo", new UndoSwipeListener());
@@ -237,15 +236,12 @@ public class RecyclerFragment extends Fragment {
                             snackbar.setText("Product found");
                             break;
                     }
-                    if (!productDetails.isShowSwiped()) {
+                    if (!recyclerAdapter.isShowSwiped()) {
                         snackbar.show();
                     } else {
                         recyclerView.removeAllViews();
                     }
-                    swipedItem.setSelected(false);
-                    recyclerAdapter.refreshData();
-                    updateSelectionState();
-                    updateSwiped();
+                    recyclerAdapter.setSelected(false, swipedItem);
                 }
         };
 
@@ -273,6 +269,7 @@ public class RecyclerFragment extends Fragment {
         };
         sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
+        updateSelectionState();
         updateSwiped();
         if (isFirstLaunch && productDetails.sizeDetailedItems() != 0) {
             isFirstLaunch = false;
@@ -280,35 +277,20 @@ public class RecyclerFragment extends Fragment {
         }
     }
 
+    public RecyclerAdapter getRecyclerAdapter() {
+        return recyclerAdapter;
+    }
+
     private void updateStock() {
         swipeRefresh.setRefreshing(true);
         queryApi(productDetails, true);
     }
 
-    public void insertItem(int position, DetailedItem item) {
-        item.setSelected(false);
-        BasicItem basicItem = new ProductDetails.BasicItem(item.getSku(), item.getUpc(), item.getPageId());
-        basicItem.setMultiPlano(item.isMultiPlano());
-        productDetails.addBasicItem(basicItem);
-        productDetails.addDetailedItem(position, item);
-        recyclerAdapter.refreshData();
-        updateSwiped();
-    }
-
-    public void insertItems(List<DetailedItem> items) {
-        for (DetailedItem item : items) {
-            insertItem(0, item);
-        }
-    }
-
     public void removeItem(int position, boolean showSnack) {
         removedPosition = position;
-        removedItem = productDetails.getShownItem(position);
+        removedItem = recyclerAdapter.getShownItem(position);
 
-        productDetails.removeBasicItem(removedItem.getSku());
-        productDetails.removeShownItem(position);
-        recyclerAdapter.refreshData();
-        updateSwiped();
+        recyclerAdapter.removeItem(position);
 
         if (showSnack) {
             Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
@@ -321,33 +303,19 @@ public class RecyclerFragment extends Fragment {
 
     public void removeSelectedItems() {
         removedItems.clear();
-        for (DetailedItem item : productDetails.getDetailedItems(true, false, false)) {
-            removedItems.add(item);
-            removeItem(productDetails.getShownItemIndex(item), false);
-        }
-        updateSelectionState();
-        updateSwiped();
+        removedItems.addAll(recyclerAdapter.getSelectedSet());
+        recyclerAdapter.removeSelectedItems();
 
         Snackbar.make(recyclerView, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
     }
 
     public void selectItem(int position) {
-        productDetails.getShownItem(position).setSelected(!productDetails.getShownItem(position).isSelected());
-        recyclerAdapter.refreshData();
-        updateSelectionState();
+        DetailedItem detailedItem = recyclerAdapter.getShownItem(position);
+        recyclerAdapter.setSelected(!recyclerAdapter.isSelected(detailedItem), detailedItem);
     }
 
-    public void selectAll(boolean deselect) {
-        for (int i = 0; i < productDetails.sizeShownItems(); i++) {
-            if (deselect == productDetails.getShownItem(i).isSelected()) {
-                selectItem(i);
-            }
-        }
-    }
-
-    public void setSwiped(boolean show) {
-        productDetails.setShowSwiped(show);
-        recyclerAdapter.refreshData();
+    public void setItemSelected(boolean selected, DetailedItem item) {
+        recyclerAdapter.setSelected(selected, item);
     }
 
     public void updateSwiped() {
@@ -355,26 +323,26 @@ public class RecyclerFragment extends Fragment {
 
         if (cameraActivity != null) {
             if (productDetails != null) {
-                if (productDetails.isShowSwiped() && productDetails.sizeSwipedItems() == 0) {
-                    setSwiped(false);
+                if (recyclerAdapter.isShowSwiped() && productDetails.sizeSwipedItems() == 0) {
+                    recyclerAdapter.setShowSwiped(false);
                 }
                 if (cameraActivity.showSwipedItems != null) {
                     cameraActivity.showSwipedItems.setVisible(productDetails.sizeSwipedItems() != 0);
-                    cameraActivity.showSwipedItems.setIcon(productDetails.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
+                    cameraActivity.showSwipedItems.setIcon(recyclerAdapter.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
                 }
             }
         }
     }
 
     public void updateSelectionState() {
-        selectionState = productDetails.sizeSelectedItems() != 0;
+        selectionState = recyclerAdapter.selectedSetSize() != 0;
         CameraActivity cameraActivity = getCameraActivity();
 
         if (cameraActivity != null) {
             cameraActivity.supportInvalidateOptionsMenu();
 
             if (selectionState) {
-                cameraActivity.toolbar.setTitle(productDetails.sizeSelectedItems() + " selected");
+                cameraActivity.toolbar.setTitle(recyclerAdapter.selectedSetSize() + " selected");
             }
         }
     }
@@ -383,6 +351,7 @@ public class RecyclerFragment extends Fragment {
     public void onPause() {
         if (recyclerAdapter != null) {
             fileManager.saveState(productDetails);
+            firebaseHelper.saveToFire(productDetails);
         }
         super.onPause();
     }
@@ -409,8 +378,7 @@ public class RecyclerFragment extends Fragment {
         @Override
         public void onClick(View view) {
             swipedItem.resetSwiped();
-            swipedItem.setSelected(false);
-            recyclerAdapter.refreshData();
+            setItemSelected(false, swipedItem);
             recyclerView.smoothScrollToPosition(swipedPosition);
         }
     }
@@ -419,7 +387,7 @@ public class RecyclerFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            insertItem(removedPosition, removedItem);
+            recyclerAdapter.insertItem(removedPosition, removedItem);
         }
     }
 
@@ -427,7 +395,7 @@ public class RecyclerFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            insertItems(removedItems);
+            recyclerAdapter.insertItems(removedItems);
         }
     }
 }

@@ -26,11 +26,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -391,7 +389,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         if (!isSelectionState()) {
-            inflater.inflate(R.menu.camera_toolbar_menu, menu);
+            inflater.inflate(R.menu.toolbar_menu, menu);
             showSwipedItems = menu.findItem(R.id.show_swiped);
             spinnerItem = menu.findItem(R.id.list_selector);
             listSelectSpinner = (Spinner)spinnerItem.getActionView();
@@ -414,14 +412,17 @@ public class CameraActivity extends AppCompatActivity {
                 getRecyclerFragment().updateSwiped();
             }
 
-            List<String> spinnerArray =  new ArrayList<>();
-            spinnerArray.add("Main List");
-            spinnerArray.add("Shared List");
-            spinnerArray.add("Alex's Shared List");
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, spinnerArray);
-
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            listSelectSpinner.setAdapter(spinnerAdapter);
+            /*
+            firebaseHelper.getSavedLists(new FirebaseHelper.taskFinished() {
+                @Override
+                public void finished(Map<String, ProductDetails> productDetailsMap) {
+                    List<String> spinnerArray = new ArrayList<>(productDetailsMap.keySet());
+                    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.custom_spinner_item, spinnerArray);
+                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    listSelectSpinner.setAdapter(spinnerAdapter);
+                }
+            });
+            */
 
         } else {
             inflater.inflate(R.menu.toolbar_selected_menu, menu);
@@ -436,7 +437,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private boolean backNavPressed() {
         if (isSelectionState()) {
-            getRecyclerFragment().selectAll(true);
+            getRecyclerFragment().getRecyclerAdapter().selectAll(true);
             return true;
         } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

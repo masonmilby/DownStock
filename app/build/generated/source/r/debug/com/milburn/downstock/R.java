@@ -4179,9 +4179,9 @@ public final class R {
     public static final int support_simple_spinner_dropdown_item=0x7f0a0040;
   }
   public static final class menu {
-    public static final int camera_selector_menu=0x7f0b0000;
-    public static final int camera_toolbar_menu=0x7f0b0001;
-    public static final int context_menu=0x7f0b0002;
+    public static final int bottom_nav_menu=0x7f0b0000;
+    public static final int context_menu=0x7f0b0001;
+    public static final int toolbar_menu=0x7f0b0002;
     public static final int toolbar_selected_menu=0x7f0b0003;
   }
   public static final class mipmap {
