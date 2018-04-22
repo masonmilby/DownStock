@@ -195,10 +195,28 @@ public class ProductDetails {
         return basicList;
     }
 
+    public BasicItem getBasicItem(BasicItem item) {
+        for (BasicItem basicItem : getBasicItems()) {
+            if (basicItem.getSku().contentEquals(item.getSku()) | basicItem.getUpc().contentEquals(item.getUpc())) {
+                return basicItem;
+            }
+        }
+        return null;
+    }
+
+    public BasicItem getBasicItem(DetailedItem item) {
+        for (BasicItem basicItem : getBasicItems()) {
+            if (basicItem.getSku().contentEquals(item.getSku()) | basicItem.getUpc().contentEquals(item.getUpc())) {
+                return basicItem;
+            }
+        }
+        return null;
+    }
+
     public BasicItem getBasicItem(String id) {
-        for (BasicItem item : getBasicItems()) {
-            if (item.getSku().contentEquals(id) | item.getUpc().contentEquals(id)) {
-                return item;
+        for (BasicItem basicItem : getBasicItems()) {
+            if (basicItem.getSku().contentEquals(id) | basicItem.getUpc().contentEquals(id)) {
+                return basicItem;
             }
         }
         return null;
@@ -210,11 +228,11 @@ public class ProductDetails {
 
     public List<BasicItem> addBasicItem(BasicItem item) {
         if (item != null) {
-            if (item.getPageId().equals("-1") && getBasicItem(item.getId()) == null) {
+            if (item.getPageId().equals("-1") && getBasicItem(item) == null) {
                 getBasicItems().add(item);
-            } else if (!item.getPageId().equals("-1") && getBasicItem(item.getId()) != null) {
-                    getBasicItem(item.getId()).setMultiPlano(true);
-            } else if (!item.getPageId().equals("-1") && getBasicItem(item.getId()) == null){
+            } else if (!item.getPageId().equals("-1") && getBasicItem(item) != null) {
+                    getBasicItem(item).setMultiPlano(true);
+            } else if (!item.getPageId().equals("-1") && getBasicItem(item) == null){
                 getBasicItems().add(item);
             }
         }
@@ -228,8 +246,13 @@ public class ProductDetails {
         return getBasicItems();
     }
 
-    public List<BasicItem> removeBasicItem(String id) {
-        getBasicItems().remove(getBasicItem(id));
+    public List<BasicItem> removeBasicItem(BasicItem item) {
+        getBasicItems().remove(getBasicItem(item));
+        return getBasicItems();
+    }
+
+    public List<BasicItem> removeBasicItem(DetailedItem item) {
+        getBasicItems().remove(getBasicItem(item));
         return getBasicItems();
     }
 

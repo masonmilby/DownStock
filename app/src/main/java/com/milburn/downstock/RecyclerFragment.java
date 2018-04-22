@@ -17,11 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.milburn.downstock.ProductDetails.DetailedItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecyclerFragment extends Fragment {
 
@@ -29,7 +25,6 @@ public class RecyclerFragment extends Fragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerAdapter recyclerAdapter;
-    private ProductDetails productDetails = new ProductDetails();
 
     private int selectedPosition = 0;
     private int swipedPosition = 0;
@@ -37,27 +32,18 @@ public class RecyclerFragment extends Fragment {
     private DetailedItem selectedItem;
     private DetailedItem swipedItem;
 
-    private DetailedItem removedItem;
-    private List<DetailedItem> removedItems = new ArrayList<>();
-    private int removedPosition = 0;
-
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
 
-    private FileManager fileManager;
-    private FirebaseHelper firebaseHelper;
-
-    private boolean isFirstLaunch = true;
+    private Manager manager;
 
     @Override
     public void onAttach (Context context) {
         super.onAttach(context);
         this.activityContext = context;
-        recyclerAdapter = new RecyclerAdapter(productDetails,this);
-        recyclerAdapter.refreshData();
+        recyclerAdapter = new RecyclerAdapter(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        fileManager = new FileManager(context);
-        firebaseHelper = new FirebaseHelper();
+        manager = new Manager(context);
     }
 
     @Override
@@ -81,8 +67,7 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        productDetails = fileManager.retrieveState();
-        setupRecycler(productDetails);
+        setupRecycler();
     }
 
     private CameraActivity getCameraActivity() {
@@ -101,7 +86,7 @@ public class RecyclerFragment extends Fragment {
     }
 
     public ProductDetails getProductDetails() {
-        return productDetails;
+        return recyclerAdapter.getProductDetails();
     }
 
     public void queryApi(Object object, final boolean updateStock) {
@@ -114,11 +99,7 @@ public class RecyclerFragment extends Fragment {
                     if (updateStock && getView() != null) {
                         Snackbar.make(recyclerView, "Stock updated", Snackbar.LENGTH_SHORT).show();
                     }
-                    if (recyclerAdapter == null) {
-                        setupRecycler(productDetails);
-                    } else {
-                        recyclerAdapter.insertItems(returnedProducts.getDetailedItems());
-                    }
+                    recyclerAdapter.insertItems(returnedProducts.getDetailedItems());
                 } else if (object instanceof DetailedItem) {
                     recyclerAdapter.insertItem(0, (DetailedItem)object);
                 }
@@ -137,7 +118,7 @@ public class RecyclerFragment extends Fragment {
     public void openImage(String pageId) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(fileManager.getPageUri(pageId), "image/*");
+        intent.setDataAndType(manager.getPageUri(pageId), "image/*");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
@@ -194,8 +175,7 @@ public class RecyclerFragment extends Fragment {
 
             case 0:
                 //Remove from swiped
-                recyclerAdapter.getShownItem(selectedPosition).resetSwiped();
-                recyclerAdapter.refreshData();
+                recyclerAdapter.removeFromSwiped(selectedPosition);
                 break;
 
             default:
@@ -204,10 +184,7 @@ public class RecyclerFragment extends Fragment {
         return true;
     }
 
-    private void setupRecycler(final ProductDetails prods) {
-        this.productDetails = prods;
-        recyclerAdapter = new RecyclerAdapter(productDetails, this);
-
+    private void setupRecycler() {
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(activityContext));
         recyclerView.setAdapter(recyclerAdapter);
 
@@ -242,6 +219,7 @@ public class RecyclerFragment extends Fragment {
                         recyclerView.removeAllViews();
                     }
                     recyclerAdapter.setSelected(false, swipedItem);
+                    updateSwiped();
                 }
         };
 
@@ -251,11 +229,7 @@ public class RecyclerFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (productDetails.sizeDetailedItems() > 0) {
-                    updateStock();
-                } else {
-                    swipeRefresh.setRefreshing(false);
-                }
+                updateStock();
             }
         });
 
@@ -271,10 +245,7 @@ public class RecyclerFragment extends Fragment {
 
         updateSelectionState();
         updateSwiped();
-        if (isFirstLaunch && productDetails.sizeDetailedItems() != 0) {
-            isFirstLaunch = false;
-            updateStock();
-        }
+        updateStock();
     }
 
     public RecyclerAdapter getRecyclerAdapter() {
@@ -282,54 +253,38 @@ public class RecyclerFragment extends Fragment {
     }
 
     private void updateStock() {
-        swipeRefresh.setRefreshing(true);
-        queryApi(productDetails, true);
+        if (recyclerAdapter.getProductDetails().sizeDetailedItems() > 0) {
+            swipeRefresh.setRefreshing(true);
+            queryApi(recyclerAdapter.getProductDetails(), true);
+        } else {
+            swipeRefresh.setRefreshing(false);
+        }
     }
 
     public void removeItem(int position, boolean showSnack) {
-        removedPosition = position;
-        removedItem = recyclerAdapter.getShownItem(position);
-
         recyclerAdapter.removeItem(position);
 
         if (showSnack) {
             Snackbar.make(recyclerView, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveListener()).show();
         }
 
-        if (productDetails.sizeDetailedItems() == 0 && getCameraActivity() != null) {
+        if (recyclerAdapter.getProductDetails().sizeDetailedItems() == 0 && getCameraActivity() != null) {
             getCameraActivity().bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
     }
 
     public void removeSelectedItems() {
-        removedItems.clear();
-        removedItems.addAll(recyclerAdapter.getSelectedSet());
         recyclerAdapter.removeSelectedItems();
-
         Snackbar.make(recyclerView, "Items removed", Snackbar.LENGTH_LONG).setAction("Undo", new UndoRemoveAllListener()).show();
-    }
-
-    public void selectItem(int position) {
-        DetailedItem detailedItem = recyclerAdapter.getShownItem(position);
-        recyclerAdapter.setSelected(!recyclerAdapter.isSelected(detailedItem), detailedItem);
-    }
-
-    public void setItemSelected(boolean selected, DetailedItem item) {
-        recyclerAdapter.setSelected(selected, item);
     }
 
     public void updateSwiped() {
         CameraActivity cameraActivity = getCameraActivity();
 
         if (cameraActivity != null) {
-            if (productDetails != null) {
-                if (recyclerAdapter.isShowSwiped() && productDetails.sizeSwipedItems() == 0) {
-                    recyclerAdapter.setShowSwiped(false);
-                }
-                if (cameraActivity.showSwipedItems != null) {
-                    cameraActivity.showSwipedItems.setVisible(productDetails.sizeSwipedItems() != 0);
-                    cameraActivity.showSwipedItems.setIcon(recyclerAdapter.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
-                }
+            if (cameraActivity.showSwipedItems != null) {
+                cameraActivity.showSwipedItems.setVisible(recyclerAdapter.getProductDetails().sizeSwipedItems() > 0);
+                cameraActivity.showSwipedItems.setIcon(recyclerAdapter.isShowSwiped() ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
             }
         }
     }
@@ -349,27 +304,16 @@ public class RecyclerFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (recyclerAdapter != null) {
-            fileManager.saveState(productDetails);
-            firebaseHelper.saveToFire(productDetails);
-        }
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        if (recyclerAdapter != null) {
-            fileManager.saveState(productDetails);
-        }
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        if (recyclerAdapter != null) {
-            fileManager.saveState(productDetails);
-        }
-        fileManager.cleanUp(productDetails);
         super.onDestroy();
     }
 
@@ -378,7 +322,7 @@ public class RecyclerFragment extends Fragment {
         @Override
         public void onClick(View view) {
             swipedItem.resetSwiped();
-            setItemSelected(false, swipedItem);
+            recyclerAdapter.setSelected(false, swipedItem);
             recyclerView.smoothScrollToPosition(swipedPosition);
         }
     }
@@ -387,7 +331,7 @@ public class RecyclerFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            recyclerAdapter.insertItem(removedPosition, removedItem);
+            recyclerAdapter.undoRemove();
         }
     }
 
@@ -395,7 +339,7 @@ public class RecyclerFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            recyclerAdapter.insertItems(removedItems);
+            recyclerAdapter.undoRemoveAll();
         }
     }
 }

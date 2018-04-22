@@ -1,6 +1,8 @@
 package com.milburn.downstock;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,20 +18,31 @@ import java.util.List;
 import java.util.Set;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.gson.Gson;
 import com.milburn.downstock.ProductDetails.DetailedItem;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private ProductDetails productDetails;
+    private String[] documentReference = new String[]{"", ""};
+    private ProductDetails productDetails = new ProductDetails();
     private List<DetailedItem> detailedList = new ArrayList<>();
     private Set<DetailedItem> selectedSet = new HashSet<>();
+    private List<DetailedItem> removedSet = new ArrayList<>();
+
+    private DetailedItem removedItem = null;
+    private int removedPosition = 0;
+
     private RecyclerFragment context;
 
     private boolean showSwiped = false;
-    
-    private FileManager fileManager;
-    private FirebaseHelper firebaseHelper;
+
+    private Manager manager;
+
+    private Gson gson = new Gson();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,12 +80,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    public RecyclerAdapter(ProductDetails data, RecyclerFragment con) {
+    public RecyclerAdapter(RecyclerFragment con) {
         setHasStableIds(true);
-        productDetails = data;
         context = con;
-        fileManager = new FileManager(con.getContext());
-        firebaseHelper = new FirebaseHelper();
+        manager = new Manager(con.getContext());
     }
 
     @Override
@@ -94,7 +105,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 if (!context.isSelectionState()) {
                     view.showContextMenu();
                 } else {
-                    context.selectItem(position);
+                    selectItem(position);
                 }
             }
         });
@@ -108,7 +119,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 menu.setHeaderTitle("Item options");
 
                 String pageId = item.getPageId();
-                if (pageId.equals("-1") | !fileManager.getPageExists(pageId)) {
+                if (pageId.equals("-1") | !manager.getPageExists(pageId)) {
                     menu.getItem(1).setVisible(false);
                 }
 
@@ -123,7 +134,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                context.selectItem(position);
+                selectItem(position);
                 return true;
             }
         });
@@ -183,34 +194,64 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return productDetails;
     }
 
-    public void refreshData() {
-        detailedList = showSwiped ? productDetails.getDetailedItems(true, false) : productDetails.getDetailedItems( false, true);
+    private void refreshData() {
+        detailedList = showSwiped ? getProductDetails().getDetailedItems(true, false) : getProductDetails().getDetailedItems( false, true);
         notifyDataSetChanged();
         context.updateSelectionState();
         context.updateSwiped();
-        firebaseHelper.saveToFire(productDetails);
+        if (productDetails.sizeSwipedItems() == 0) {
+            setShowSwiped(false);
+        }
+
+        manager.saveList(productDetails, documentReference);
     }
 
-    public void refreshData(ProductDetails products) {
-        productDetails = products;
-        detailedList = showSwiped ? productDetails.getDetailedItems(true, false) : productDetails.getDetailedItems(false, true);
-        notifyDataSetChanged();
-        context.updateSelectionState();
-        context.updateSwiped();
-        firebaseHelper.saveToFire(productDetails);
+    public void refreshData(String[] reference) {
+        removedSet.clear();
+        selectedSet.clear();
+        removedItem = null;
+        removedPosition = 0;
+
+        documentReference = reference;
+        manager.getDocReference(reference).addSnapshotListener(documentSnapshotEventListener);
     }
+
+    private EventListener<DocumentSnapshot> documentSnapshotEventListener = new EventListener<DocumentSnapshot>() {
+        @Override
+        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+            if (e != null) {
+                Log.w("Snapshot Error", "Listen failed.", e);
+                return;
+            }
+
+            String source = documentSnapshot != null && documentSnapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
+
+            if (documentSnapshot != null && documentSnapshot.exists() && source.contentEquals("Server")) {
+                String prodJson = (String)documentSnapshot.get("productdetails");
+                productDetails = gson.fromJson(prodJson, ProductDetails.class);
+                refreshData();
+            }
+        }
+    };
 
     public void setShowSwiped(boolean showSwiped) {
-        this.showSwiped = showSwiped;
-        refreshData();
+        if (showSwiped != this.showSwiped) {
+            this.showSwiped = showSwiped;
+            refreshData();
+        }
     }
 
     public boolean isShowSwiped() {
         return showSwiped;
     }
 
+    public void removeFromSwiped(int position) {
+        getShownItem(position).resetSwiped();
+        refreshData();
+    }
+
     public DetailedItem getShownItem(int position) {
-        return productDetails.getDetailedItem(detailedList.get(position).getSku());
+        return getProductDetails().getDetailedItem(detailedList.get(position).getSku());
     }
 
     public int getShownItemIndex(DetailedItem item) {
@@ -228,6 +269,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             selectedSet.remove(item);
         }
         refreshData();
+    }
+
+    public void selectItem(int position) {
+        setSelected(!isSelected(position), getShownItem(position));
     }
 
     public void selectAll(boolean deselect) {
@@ -251,12 +296,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return selectedSet.contains(item);
     }
 
+    public boolean isSelected(int position) {
+        return isSelected(getShownItem(position));
+    }
+
     public void insertItem(int position, DetailedItem item) {
         setSelected(false, item);
         BasicItem basicItem = new BasicItem(item.getSku(), item.getUpc(), item.getPageId());
         basicItem.setMultiPlano(item.isMultiPlano());
-        productDetails.addBasicItem(basicItem);
-        productDetails.addDetailedItem(position, item);
+        getProductDetails().addBasicItem(basicItem);
+        getProductDetails().addDetailedItem(position, item);
         refreshData();
     }
 
@@ -267,8 +316,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public void removeItem(int position) {
-        productDetails.removeBasicItem(getShownItem(position).getSku());
-        productDetails.removeDetailedItem(getShownItem(position).getSku());
+        DetailedItem item = getShownItem(position);
+
+        removedItem = item;
+        removedPosition = position;
+        removedSet.add(item);
+
+        getProductDetails().removeBasicItem(item);
+        getProductDetails().removeDetailedItem(item.getSku());
         refreshData();
     }
 
@@ -277,5 +332,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             removeItem(getShownItemIndex(item));
         }
         selectAll(true);
+    }
+
+    public void undoRemoveAll() {
+        insertItems(removedSet);
+    }
+
+    public void undoRemove() {
+        insertItem(removedPosition, removedItem);
     }
 }

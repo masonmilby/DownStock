@@ -122,7 +122,7 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
         }
 
         for (DetailedItem item : productDetails.getDetailedItems()) {
-            item.setPageId(productDetails.getBasicItem(item.getSku()).getPageId());
+            item.setPageId(productDetails.getBasicItem(item).getPageId());
             item.setMultiPlano(productDetails.getBasicItem(item.getSku()).isMutiPlano());
             item.setStock(getStoreInfo(item));
         }

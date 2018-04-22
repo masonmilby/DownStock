@@ -4,14 +4,12 @@ import android.Manifest;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
@@ -26,6 +24,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -57,17 +57,19 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class CameraActivity extends AppCompatActivity {
     public CoordinatorLayout coordinatorLayout;
     public Toolbar toolbar;
     public MenuItem showSwipedItems;
-    private MenuItem spinnerItem;
-    public Spinner listSelectSpinner;
+    private MenuItem spinnerMenuItem;
+    public Spinner spinnerSelect;
     private FragmentManager fragmentManager;
-    private FileManager fileManager;
-    private SharedPreferences sharedPreferences;
+    private Manager manager;
     private Button captureButton;
     private CameraView cameraView;
     private Fotoapparat fotoapparat;
@@ -83,8 +85,6 @@ public class CameraActivity extends AppCompatActivity {
     private int currentAngle;
     private boolean isPageSelected = false;
     private float lastFloat = 0.0f;
-
-    private FirebaseHelper firebaseHelper;
 
     private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
         @Override
@@ -111,16 +111,13 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseHelper = new FirebaseHelper();
-        fileManager = new FileManager(this);
-        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preferences, false);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        manager = new Manager(this);
 
         if (savedInstanceState != null) {
             isPageSelected = savedInstanceState.getBoolean("page_selected");
         }
 
-        if (sharedPreferences.getString("store_id_pref", "0").contentEquals("0")) {
+        if (manager.getStoreId().contentEquals("0")) {
             startActivityForResult(new Intent(this, SettingsActivity.class), 1);
         } else if (checkPermissions()) {
             finishSetup();
@@ -212,14 +209,14 @@ public class CameraActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_EXPANDED:
                         toolbar.setNavigationIcon(R.drawable.ic_close);
                         toolbar.setTitle("");
-                        spinnerItem.setVisible(true);
+                        spinnerMenuItem.setVisible(true);
                         setOcrRunning(false);
                         break;
 
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         toolbar.setNavigationIcon(null);
                         toolbar.setTitle(R.string.app_name);
-                        spinnerItem.setVisible(false);
+                        spinnerMenuItem.setVisible(false);
                         setOcrRunning(true);
                         break;
 
@@ -231,9 +228,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 LinearLayout buttonsContainer = findViewById(R.id.buttons_container);
-
                 buttonsContainer.setVisibility((slideOffset>lastFloat) ? View.GONE : View.VISIBLE);
-
                 lastFloat = slideOffset;
             }
         });
@@ -312,7 +307,7 @@ public class CameraActivity extends AppCompatActivity {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
             if (save) {
-                fileManager.savePage(bitmap, pageId);
+                manager.savePage(bitmap, pageId);
             }
 
         } else {
@@ -391,16 +386,16 @@ public class CameraActivity extends AppCompatActivity {
         if (!isSelectionState()) {
             inflater.inflate(R.menu.toolbar_menu, menu);
             showSwipedItems = menu.findItem(R.id.show_swiped);
-            spinnerItem = menu.findItem(R.id.list_selector);
-            listSelectSpinner = (Spinner)spinnerItem.getActionView();
+            spinnerMenuItem = menu.findItem(R.id.list_selector);
+            spinnerSelect = (Spinner)spinnerMenuItem.getActionView();
 
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                 toolbar.setTitle(R.string.app_name);
-                spinnerItem.setVisible(false);
+                spinnerMenuItem.setVisible(false);
             } else {
                 toolbar.setTitle("");
                 toolbar.setNavigationIcon(R.drawable.ic_close);
-                spinnerItem.setVisible(true);
+                spinnerMenuItem.setVisible(true);
             }
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -412,17 +407,8 @@ public class CameraActivity extends AppCompatActivity {
                 getRecyclerFragment().updateSwiped();
             }
 
-            /*
-            firebaseHelper.getSavedLists(new FirebaseHelper.taskFinished() {
-                @Override
-                public void finished(Map<String, ProductDetails> productDetailsMap) {
-                    List<String> spinnerArray = new ArrayList<>(productDetailsMap.keySet());
-                    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.custom_spinner_item, spinnerArray);
-                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    listSelectSpinner.setAdapter(spinnerAdapter);
-                }
-            });
-            */
+            spinnerSelect.setOnItemSelectedListener(spinnerSelectListener);
+            setupSpinner();
 
         } else {
             inflater.inflate(R.menu.toolbar_selected_menu, menu);
@@ -431,9 +417,43 @@ public class CameraActivity extends AppCompatActivity {
             toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         }
-
         return true;
     }
+
+    private void setupSpinner() {
+        if (manager.getReferences().isEmpty()) {
+            manager.createList("Main List", new ProductDetails(), new Manager.OnCreateListCompleted() {
+                @Override
+                public void finished() {
+                    spinnerSelect.setAdapter(createSpinnerAdapter(manager.getReferences()));
+                }
+            });
+        } else {
+            spinnerSelect.setAdapter(createSpinnerAdapter(manager.getReferences()));
+        }
+    }
+
+    private ArrayAdapter<String> createSpinnerAdapter(List<String[]> references) {
+        List<String> spinnerArray = new ArrayList<>();
+        for (String[] item : references) {
+            spinnerArray.add(item[0]);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
+    }
+
+    private AdapterView.OnItemSelectedListener spinnerSelectListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            getRecyclerFragment().getRecyclerAdapter().refreshData(manager.getReferences().get(position));
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            //
+        }
+    };
 
     private boolean backNavPressed() {
         if (isSelectionState()) {
