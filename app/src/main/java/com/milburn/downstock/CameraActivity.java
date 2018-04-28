@@ -57,9 +57,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.FirebaseUser;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class CameraActivity extends AppCompatActivity {
@@ -68,12 +66,12 @@ public class CameraActivity extends AppCompatActivity {
     public MenuItem showSwipedItems;
     private MenuItem spinnerMenuItem;
     public Spinner spinnerSelect;
+    public ArrayAdapter spinnerArray;
     private FragmentManager fragmentManager;
     private Manager manager;
     private Button captureButton;
     private CameraView cameraView;
     private Fotoapparat fotoapparat;
-    private Frame latestFrame;
     private OcrDetectorProcessor ocr;
     private LinearLayout bottomSheet;
     public BottomSheetBehavior bottomSheetBehavior;
@@ -421,32 +419,81 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        if (manager.getReferences().isEmpty()) {
-            manager.createList("Main List", new ProductDetails(), new Manager.OnCreateListCompleted() {
-                @Override
-                public void finished() {
-                    spinnerSelect.setAdapter(createSpinnerAdapter(manager.getReferences()));
-                }
-            });
-        } else {
-            spinnerSelect.setAdapter(createSpinnerAdapter(manager.getReferences()));
+        if (getRecyclerFragment().getRecyclerAdapter().getProductDetails().sizeDetailedItems() == 0) {
+            getRecyclerFragment().setRefreshing(true);
         }
+        manager.getCurrentUser(new Manager.OnSignedIn() {
+            @Override
+            public void finished(final FirebaseUser user) {
+                if (user != null) {
+                    manager.getReferences(new Manager.OnGetReferences() {
+                        @Override
+                        public void finished(MapListReferences references) {
+                            if (references.isEmpty()) {
+                                manager.saveList(new ProductDetails(), new ListReference("Main List", user.getUid()), new Manager.OnSaveListCompleted() {
+                                    @Override
+                                    public void finished() {
+                                        manager.getReferences(new Manager.OnGetReferences() {
+                                            @Override
+                                            public void finished(MapListReferences references) {
+                                                spinnerArray = references.createSpinnerAdapter(getApplicationContext());
+                                                spinnerSelect.setAdapter(spinnerArray);
+                                                spinnerSelect.setSelection(0);
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                spinnerArray = references.createSpinnerAdapter(getApplicationContext());
+                                spinnerSelect.setAdapter(spinnerArray);
+                                ListReference selectedRef = getRecyclerFragment().getRecyclerAdapter().getSelectedReference();
+
+                                if (selectedRef != null) {
+                                    for (int i = 0; i < spinnerArray.getCount(); i++) {
+                                        ListReference ref = (ListReference)spinnerArray.getItem(i);
+                                        if (ref.equals(selectedRef)) {
+                                            spinnerSelect.setSelection(i);
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    spinnerSelect.setSelection(0);
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    getRecyclerFragment().setRefreshing(false);
+                }
+            }
+        });
     }
 
-    private ArrayAdapter<String> createSpinnerAdapter(List<String[]> references) {
-        List<String> spinnerArray = new ArrayList<>();
-        for (String[] item : references) {
-            spinnerArray.add(item[0]);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return adapter;
+    private void deleteList() {
+        manager.deleteList(getRecyclerFragment().getRecyclerAdapter().getSelectedReference(),
+                getRecyclerFragment().getProductDetails(), new Manager.OnDeletedList() {
+                    @Override
+                    public void finished() {
+                        getRecyclerFragment().updateSelectionState();
+                    }
+                });
     }
 
     private AdapterView.OnItemSelectedListener spinnerSelectListener = new AdapterView.OnItemSelectedListener() {
         @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            getRecyclerFragment().getRecyclerAdapter().refreshData(manager.getReferences().get(position));
+        public void onItemSelected(final AdapterView<?> parent, final View view, final int position, long id) {
+            manager.getReferences(new Manager.OnGetReferences() {
+                @Override
+                public void finished(MapListReferences references) {
+                    ListReference ref = (ListReference)spinnerArray.getItem(position);
+
+                    ListReference currentReference = getRecyclerFragment().getRecyclerAdapter().getSelectedReference();
+                    if (currentReference == null || !ref.equals(currentReference)) {
+                        getRecyclerFragment().getRecyclerAdapter().refreshData(ref);
+                    }
+                    getRecyclerFragment().setRefreshing(false);
+                }
+            });
         }
 
         @Override
@@ -479,6 +526,10 @@ public class CameraActivity extends AppCompatActivity {
 
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+
+            case R.id.delete_list:
+                deleteList();
                 return true;
 
             default:
@@ -529,8 +580,6 @@ public class CameraActivity extends AppCompatActivity {
     private class PreviewFrameProcessor implements FrameProcessor {
         @Override
         public void process(Frame frame) {
-            latestFrame = frame;
-
             if (!ocr.isStopped() && ocr.isReadyForFrame()) {
                 ocr.recognizeFrame(ocr.convertToGVFrame(frame), currentAngle, true, true, "-1");
             }

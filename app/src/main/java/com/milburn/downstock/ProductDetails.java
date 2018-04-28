@@ -2,6 +2,7 @@ package com.milburn.downstock;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -195,15 +196,6 @@ public class ProductDetails {
         return basicList;
     }
 
-    public BasicItem getBasicItem(BasicItem item) {
-        for (BasicItem basicItem : getBasicItems()) {
-            if (basicItem.getSku().contentEquals(item.getSku()) | basicItem.getUpc().contentEquals(item.getUpc())) {
-                return basicItem;
-            }
-        }
-        return null;
-    }
-
     public BasicItem getBasicItem(DetailedItem item) {
         for (BasicItem basicItem : getBasicItems()) {
             if (basicItem.getSku().contentEquals(item.getSku()) | basicItem.getUpc().contentEquals(item.getUpc())) {
@@ -226,28 +218,34 @@ public class ProductDetails {
         return getBasicItems().size();
     }
 
-    public List<BasicItem> addBasicItem(BasicItem item) {
+    public void addBasicItem(BasicItem item) {
         if (item != null) {
-            if (item.getPageId().equals("-1") && getBasicItem(item) == null) {
-                getBasicItems().add(item);
-            } else if (!item.getPageId().equals("-1") && getBasicItem(item) != null) {
-                    getBasicItem(item).setMultiPlano(true);
-            } else if (!item.getPageId().equals("-1") && getBasicItem(item) == null){
-                getBasicItems().add(item);
+            switch (item.getPageId()) {
+                case "-1":
+                    if (getBasicItem(item.getId()) == null) {
+                        getBasicItems().add(item);
+                    }
+                    break;
+
+                default:
+                    if (getBasicItem(item.getId()) == null) {
+                        getBasicItems().add(item);
+                    } else {
+                        getBasicItem(item.getId()).setMultiPlano(true);
+                    }
+                    break;
             }
         }
-        return getBasicItems();
     }
 
-    public List<BasicItem> addBasicItems(List<BasicItem> basicList) {
-        for (BasicItem item : basicList) {
+    public void addBasicItems(List<BasicItem> basics) {
+        for (BasicItem item : basics) {
             addBasicItem(item);
         }
-        return getBasicItems();
     }
 
     public List<BasicItem> removeBasicItem(BasicItem item) {
-        getBasicItems().remove(getBasicItem(item));
+        getBasicItems().remove(getBasicItem(item.getId()));
         return getBasicItems();
     }
 
@@ -309,6 +307,14 @@ public class ProductDetails {
     public List<DetailedItem> removeDetailedItem(String id) {
         getDetailedItems().remove(getDetailedItem(id));
         return getDetailedItems();
+    }
+
+    public HashSet<String> getAllPageIds() {
+        HashSet<String> idList = new HashSet<>();
+        for (DetailedItem item : getDetailedItems()) {
+            idList.add(item.getPageId());
+        }
+        return idList;
     }
 
     public String toJson() {

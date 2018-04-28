@@ -8,9 +8,6 @@
         app:showAsAction="always"
         app:actionViewClass="android.widget.Spinner"/>
     <item
-        android:id="@+id/settings"
-        android:title="Settings" />
-    <item
         android:id="@+id/open_image"
         android:icon="@drawable/ic_open"
         android:title="Select image"
@@ -20,4 +17,10 @@
         android:icon="@drawable/ic_visibility"
         android:title="Show swiped items"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/delete_list"
+        android:title="Delete list" />
+    <item
+        android:id="@+id/settings"
+        android:title="Settings" />
 </menu>

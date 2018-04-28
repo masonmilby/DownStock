@@ -1,6 +1,7 @@
 package com.milburn.downstock;
 
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -21,13 +22,14 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.gson.Gson;
 import com.milburn.downstock.ProductDetails.DetailedItem;
 import com.milburn.downstock.ProductDetails.BasicItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private String[] documentReference = new String[]{"", ""};
+    private ListReference selectedReference;
     private ProductDetails productDetails = new ProductDetails();
     private List<DetailedItem> detailedList = new ArrayList<>();
     private Set<DetailedItem> selectedSet = new HashSet<>();
@@ -39,8 +41,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private RecyclerFragment context;
 
     private boolean showSwiped = false;
+    private boolean pendingActions = false;
 
     private Manager manager;
+    private ListenerRegistration listenerRegistration;
 
     private Gson gson = new Gson();
 
@@ -86,6 +90,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         manager = new Manager(con.getContext());
     }
 
+    private RecyclerFragment getRecyclerFragment() {
+        return context;
+    }
+
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -101,8 +109,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.setSelectedPosition(position);
-                if (!context.isSelectionState()) {
+                getRecyclerFragment().setSelectedPosition(position);
+                if (!getRecyclerFragment().isSelectionState()) {
                     view.showContextMenu();
                 } else {
                     selectItem(position);
@@ -112,16 +120,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         holder.view.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                MenuInflater inflater = context.getActivity().getMenuInflater();
+            public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                MenuInflater inflater = getRecyclerFragment().getActivity().getMenuInflater();
                 inflater.inflate(R.menu.context_menu, menu);
 
                 menu.setHeaderTitle("Item options");
 
-                String pageId = item.getPageId();
-                if (pageId.equals("-1") | !manager.getPageExists(pageId)) {
-                    menu.getItem(1).setVisible(false);
-                }
+                final String pageId = item.getPageId();
+                manager.getPageExists(pageId, new Manager.OnGetPageExists() {
+                    @Override
+                    public void finished(boolean exists) {
+                        if (!pageId.equals("-1") && exists) {
+                            menu.getItem(1).setVisible(true);
+                        }
+                    }
+                });
 
                 if (item.isFound()) {
                     menu.add(Menu.NONE, 0, Menu.NONE, "Remove from 'found'");
@@ -194,26 +207,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return productDetails;
     }
 
+    public ListReference getSelectedReference() {
+        return selectedReference;
+    }
+
     private void refreshData() {
         detailedList = showSwiped ? getProductDetails().getDetailedItems(true, false) : getProductDetails().getDetailedItems( false, true);
         notifyDataSetChanged();
-        context.updateSelectionState();
-        context.updateSwiped();
-        if (productDetails.sizeSwipedItems() == 0) {
+        getRecyclerFragment().updateSelectionState();
+        getRecyclerFragment().updateSwiped();
+        if (getProductDetails().sizeSwipedItems() == 0) {
             setShowSwiped(false);
         }
 
-        manager.saveList(productDetails, documentReference);
+        if (!pendingActions && selectedReference != null) {
+            manager.saveList(getProductDetails(), selectedReference, null);
+        }
     }
 
-    public void refreshData(String[] reference) {
+    public void refreshData(ListReference reference) {
+        if (listenerRegistration != null) {
+            listenerRegistration.remove();
+        }
         removedSet.clear();
         selectedSet.clear();
         removedItem = null;
         removedPosition = 0;
 
-        documentReference = reference;
-        manager.getDocReference(reference).addSnapshotListener(documentSnapshotEventListener);
+        selectedReference = reference;
+        listenerRegistration = manager.getDocReference(reference.getUserId()).addSnapshotListener(documentSnapshotEventListener);
     }
 
     private EventListener<DocumentSnapshot> documentSnapshotEventListener = new EventListener<DocumentSnapshot>() {
@@ -224,15 +246,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 return;
             }
 
-            String source = documentSnapshot != null && documentSnapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
-
-            if (documentSnapshot != null && documentSnapshot.exists() && source.contentEquals("Server")) {
-                String prodJson = (String)documentSnapshot.get("productdetails");
-                productDetails = gson.fromJson(prodJson, ProductDetails.class);
-                refreshData();
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                String prodJson = (String)documentSnapshot.get(selectedReference.getName());
+                if (prodJson != null && !getProductDetails().toJson().contentEquals(prodJson)) {
+                    productDetails = gson.fromJson(prodJson, ProductDetails.class);
+                    if (productDetails != null ) {
+                        refreshData();
+                    }
+                } else if (prodJson == null) {
+                    listEmpty();
+                }
+            } else {
+                listEmpty();
             }
         }
     };
+
+    private void listEmpty() {
+        manager.deleteList(selectedReference, new ProductDetails(), new Manager.OnDeletedList() {
+            @Override
+            public void finished() {
+                getRecyclerFragment().updateSelectionState();
+                getRecyclerFragment().showSnack("List '" + selectedReference.getName() + "' no longer exists", Snackbar.LENGTH_LONG);
+            }
+        });
+    }
 
     public void setShowSwiped(boolean showSwiped) {
         if (showSwiped != this.showSwiped) {
@@ -310,9 +348,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public void insertItems(List<DetailedItem> items) {
+        pendingActions = true;
         for (DetailedItem item : items) {
             insertItem(0, item);
         }
+        pendingActions = false;
+        refreshData();
     }
 
     public void removeItem(int position) {
@@ -324,14 +365,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         getProductDetails().removeBasicItem(item);
         getProductDetails().removeDetailedItem(item.getSku());
+
         refreshData();
     }
 
     public void removeSelectedItems() {
+        pendingActions = true;
         for (DetailedItem item : selectedSet) {
             removeItem(getShownItemIndex(item));
         }
         selectAll(true);
+        pendingActions = false;
+        refreshData();
     }
 
     public void undoRemoveAll() {

@@ -6,7 +6,8 @@
         android:title="Open item URL" />
     <item
         android:id="@+id/view_page"
-        android:title="View page" />
+        android:title="View page"
+        android:visible="false" />
     <item
         android:id="@+id/remove_item"
         android:title="Remove item" />

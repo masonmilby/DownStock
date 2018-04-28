@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.milburn.downstock.ProductDetails.DetailedItem;
+
+import java.io.File;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 public class RecyclerFragment extends Fragment {
 
@@ -116,11 +125,24 @@ public class RecyclerFragment extends Fragment {
     }
 
     public void openImage(String pageId) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(manager.getPageUri(pageId), "image/*");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(intent);
+        manager.getPageUri(pageId, new Manager.OnGetPageUri() {
+            @Override
+            public void finished(Uri uri) {
+                if (uri != null) {
+                    Glide.with(activityContext).asFile().load(uri).into(new SimpleTarget<File>() {
+                        @Override
+                        public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            Uri finalUri = getUriForFile(activityContext, "com.milburn.fileprovider", resource);
+                            intent.setDataAndType(finalUri, "image/*");
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -182,6 +204,10 @@ public class RecyclerFragment extends Fragment {
                 break;
         }
         return true;
+    }
+
+    public void showSnack(String message, int length) {
+        Snackbar.make(recyclerView, message, length).show();
     }
 
     private void setupRecycler() {
@@ -250,6 +276,10 @@ public class RecyclerFragment extends Fragment {
 
     public RecyclerAdapter getRecyclerAdapter() {
         return recyclerAdapter;
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        swipeRefresh.setRefreshing(refreshing);
     }
 
     private void updateStock() {
