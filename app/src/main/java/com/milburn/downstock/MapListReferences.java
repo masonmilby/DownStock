@@ -16,8 +16,7 @@ public class MapListReferences {
     public MapListReferences(List<String> stringArray) {
         if (stringArray != null) {
             for (String string : stringArray) {
-                String[] splitString = string.split(":");
-                addListReference(new ListReference(splitString[0], splitString[1]));
+                addListReference(new ListReference(string));
             }
         }
     }

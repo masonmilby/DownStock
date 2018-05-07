@@ -4,24 +4,7 @@
             "outputFile": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-si/values-si.xml",
             "map": [
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/a7c9a4e02fb3e2f569504f3a13be6873/res/values-si/values-si.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "45",
-                        "startColumns": "4",
-                        "startOffsets": "5270",
-                        "endColumns": "100",
-                        "endOffsets": "5366"
-                    }
-                },
-                {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-15.0.0.aar/38d2fb69730133a63fdc83c863ecc5d5/res/values-si/values.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-base-15.0.1.aar/a920be4ce1b624c20e042f6f35363b2f/res/values-si/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +21,24 @@
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-15.0.0.aar/74462ecec66d2d29cc14e85201f75aee/res/values-si/values.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/a2bd4f18872ecb315fb5a56fce29af67/res/values-si/values-si.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "45",
+                        "startColumns": "4",
+                        "startOffsets": "5270",
+                        "endColumns": "100",
+                        "endOffsets": "5366"
+                    }
+                },
+                {
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-basement-15.0.1.aar/9700e7ca115dbb23dc94c5c805f595c8/res/values-si/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -55,7 +55,7 @@
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-15.0.0.aar/9d49e66da84968176e9efc786ae5b6b2/res/values-si/values.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/play-services-ads-15.0.1.aar/8c12eed48ea9fbd59f9fda31fc8c88ff/res/values-si/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10",
                         "startColumns": "0,0,0,0,0,0,0",
@@ -72,7 +72,7 @@
                     }
                 },
                 {
-                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/4c3d16a60226e470b5fda2a302a68488/res/values-si/values-si.xml",
+                    "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/8648f65a83612b6cde78557e5a37237b/res/values-si/values-si.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

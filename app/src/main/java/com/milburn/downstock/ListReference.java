@@ -1,7 +1,6 @@
 package com.milburn.downstock;
 
 import android.util.ArrayMap;
-
 import java.util.Map;
 import java.util.Objects;
 
@@ -12,6 +11,13 @@ public class ListReference {
     public ListReference(String name, String userId) {
         this.name = name;
         this.userId = userId;
+    }
+
+    public ListReference(String combinedString) {
+        int index = combinedString.lastIndexOf(":");
+        String[] splitString = new String[]{combinedString.substring(0, index), combinedString.substring(index+1, combinedString.length())};
+        this.name = splitString[0];
+        this.userId = splitString[1];
     }
 
     public String getName() {
@@ -30,6 +36,10 @@ public class ListReference {
         Map<String, String> tempMap = new ArrayMap<>();
         tempMap.put(getName(), productDetails.toJson());
         return tempMap;
+    }
+
+    public String getRefCode() {
+        return String.valueOf(hashCode());
     }
 
     @Override

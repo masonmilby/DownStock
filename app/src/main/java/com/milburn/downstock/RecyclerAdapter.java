@@ -3,7 +3,6 @@ package com.milburn.downstock;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -235,17 +234,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         removedPosition = 0;
 
         selectedReference = reference;
-        listenerRegistration = manager.getDocReference(reference.getUserId()).addSnapshotListener(documentSnapshotEventListener);
+        listenerRegistration = manager.getListDocReference(reference).addSnapshotListener(documentSnapshotEventListener);
+        getRecyclerFragment().setRefreshing(true);
     }
 
     private EventListener<DocumentSnapshot> documentSnapshotEventListener = new EventListener<DocumentSnapshot>() {
         @Override
         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-            if (e != null) {
-                Log.w("Snapshot Error", "Listen failed.", e);
-                return;
-            }
-
+            getRecyclerFragment().setRefreshing(false);
             if (documentSnapshot != null && documentSnapshot.exists()) {
                 String prodJson = (String)documentSnapshot.get(selectedReference.getName());
                 if (prodJson != null && !getProductDetails().toJson().contentEquals(prodJson)) {
@@ -263,11 +259,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     };
 
     private void listEmpty() {
-        manager.deleteList(selectedReference, new ProductDetails(), new Manager.OnDeletedList() {
+        manager.deleteReference(selectedReference, new Manager.OnDeletedReference() {
             @Override
             public void finished() {
-                getRecyclerFragment().updateSelectionState();
                 getRecyclerFragment().showSnack("List '" + selectedReference.getName() + "' no longer exists", Snackbar.LENGTH_LONG);
+                getRecyclerFragment().updateSelectionState();
             }
         });
     }

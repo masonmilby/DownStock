@@ -22,9 +22,11 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.firebase.auth.FirebaseUser;
 import com.milburn.downstock.ProductDetails.DetailedItem;
 
 import java.io.File;
+import java.util.Set;
 
 import static android.support.v4.content.FileProvider.getUriForFile;
 
@@ -102,7 +104,7 @@ public class RecyclerFragment extends Fragment {
         BBYApi bbyApi = new BBYApi(activityContext, new BBYApi.AsyncResponse() {
             @Override
             public void processFinish(Object object) {
-                swipeRefresh.setRefreshing(false);
+                setRefreshing(false);
                 if (object instanceof ProductDetails) {
                     ProductDetails returnedProducts = (ProductDetails)object;
                     if (updateStock && getView() != null) {
@@ -115,13 +117,7 @@ public class RecyclerFragment extends Fragment {
             }
         });
         bbyApi.execute(object);
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefresh.setRefreshing(true);
-            }
-        });
+        setRefreshing(true);
     }
 
     public void openImage(String pageId) {
@@ -161,8 +157,12 @@ public class RecyclerFragment extends Fragment {
                 removeSelectedItems();
                 break;
 
-            case R.id.share_items:
-                //
+            case R.id.share_list:
+                shareCurrentList(getRecyclerAdapter().getSelectedReference());
+                break;
+
+            case R.id.new_list_selected:
+                selectedToNewList(getRecyclerAdapter().getSelectedSet());
                 break;
 
             case R.id.select_all_items:
@@ -204,6 +204,44 @@ public class RecyclerFragment extends Fragment {
                 break;
         }
         return true;
+    }
+
+    public void shareCurrentList(ListReference listReference) {
+        QRDialogFragment qrDialogFragment = new QRDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("is_new", false);
+        bundle.putString("list_reference", listReference.createString());
+        qrDialogFragment.setArguments(bundle);
+        qrDialogFragment.show(getFragmentManager(), "qrDialog");
+    }
+
+    public void selectedToNewList(final Set<DetailedItem> selectedSet) {
+        QRDialogFragment qrDialogFragment = new QRDialogFragment();
+        qrDialogFragment.setListener(new QRDialogFragment.OnSaveListName() {
+            @Override
+            public void saveName(final String name) {
+                final ProductDetails tempSelected = new ProductDetails();
+                for (DetailedItem item : selectedSet) {
+                    tempSelected.addDetailedItem(0, item);
+                }
+                manager.getCurrentUser(new Manager.OnSignedIn() {
+                    @Override
+                    public void finished(FirebaseUser user) {
+                        final ListReference newReference = new ListReference(name, user.getUid());
+                        manager.saveList(tempSelected, newReference, new Manager.OnSaveListCompleted() {
+                            @Override
+                            public void finished() {
+                                recyclerAdapter.refreshData(newReference);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("is_new", true);
+        qrDialogFragment.setArguments(bundle);
+        qrDialogFragment.show(getFragmentManager(), "qrDialog");
     }
 
     public void showSnack(String message, int length) {
@@ -278,16 +316,18 @@ public class RecyclerFragment extends Fragment {
         return recyclerAdapter;
     }
 
-    public void setRefreshing(boolean refreshing) {
-        swipeRefresh.setRefreshing(refreshing);
+    public void setRefreshing(final boolean refreshing) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefresh.setRefreshing(refreshing);
+            }
+        });
     }
 
     private void updateStock() {
         if (recyclerAdapter.getProductDetails().sizeDetailedItems() > 0) {
-            swipeRefresh.setRefreshing(true);
             queryApi(recyclerAdapter.getProductDetails(), true);
-        } else {
-            swipeRefresh.setRefreshing(false);
         }
     }
 

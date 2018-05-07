@@ -16,17 +16,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Manager {
 
@@ -39,6 +35,7 @@ public class Manager {
     private FirebaseStorage fireStorage;
 
     private CollectionReference listsReference;
+    private CollectionReference userInfoReference;
     private StorageReference pagesReference;
 
     public interface OnSaveListCompleted {
@@ -65,12 +62,20 @@ public class Manager {
         void finished(boolean exists);
     }
 
+    public interface OnGetListExists {
+        void finished(boolean exists, String name);
+    }
+
     public interface OnGetPageUri {
         void finished(Uri uri);
     }
 
     public interface OnDeletedList {
         void finished();
+    }
+
+    public interface OnFinishedAction {
+        void finished(boolean added);
     }
 
     public Manager(Context context) {
@@ -85,6 +90,7 @@ public class Manager {
         fireStorage = FirebaseStorage.getInstance();
 
         listsReference = fireStore.collection("lists");
+        userInfoReference = fireStore.collection("userinfo");
         pagesReference = fireStorage.getReference().child("pages");
     }
 
@@ -131,9 +137,7 @@ public class Manager {
                     @Override
                     public void finished() {
                         if (user.getUid().contentEquals(reference.getUserId())) {
-                            Map<String,Object> updates = new HashMap<>();
-                            updates.put(reference.getName(), FieldValue.delete());
-                            getDocReference(reference.getUserId()).update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            listsReference.document(reference.getRefCode()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     onDeletedList.finished();
@@ -163,7 +167,7 @@ public class Manager {
             @Override
             public void finished(FirebaseUser user) {
                 if (user != null) {
-                    listsReference.document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    userInfoReference.document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful() && task.getResult().get("References") != null) {
@@ -177,7 +181,7 @@ public class Manager {
                         }
                     });
                 } else {
-                    onGetReferences.finished(null);
+                    onGetReferences.finished(new MapListReferences(null));
                 }
             }
         });
@@ -191,7 +195,7 @@ public class Manager {
                     @Override
                     public void finished(MapListReferences returnedReferences) {
                         returnedReferences.addListReference(reference);
-                        listsReference.document(user.getUid()).set(returnedReferences.getFinalMapReferences(), SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        userInfoReference.document(user.getUid()).set(returnedReferences.getFinalMapReferences()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 onAddedReference.finished();
@@ -203,7 +207,7 @@ public class Manager {
         });
     }
 
-    private void deleteReference(final ListReference reference, final OnDeletedReference onDeletedReference) {
+    public void deleteReference(final ListReference reference, final OnDeletedReference onDeletedReference) {
         getCurrentUser(new OnSignedIn() {
             @Override
             public void finished(final FirebaseUser user) {
@@ -211,7 +215,7 @@ public class Manager {
                     @Override
                     public void finished(MapListReferences returnedReferences) {
                         returnedReferences.removeListReference(reference);
-                        listsReference.document(user.getUid()).set(returnedReferences.getFinalMapReferences(), SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        userInfoReference.document(user.getUid()).set(returnedReferences.getFinalMapReferences()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (onDeletedReference != null) {
@@ -245,7 +249,7 @@ public class Manager {
     }
 
     public void saveList(ProductDetails productDetails, final ListReference reference, final OnSaveListCompleted onSaveListCompleted) {
-        listsReference.document(reference.getUserId()).set(reference.createMap(productDetails), SetOptions.merge())
+        listsReference.document(reference.getRefCode()).set(reference.createMap(productDetails))
         .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -267,7 +271,39 @@ public class Manager {
         });
     }
 
-    public DocumentReference getDocReference(String userId) {
-        return listsReference.document(userId);
+    public void getListExists(final String listName, final OnGetListExists onGetListExists) {
+        getCurrentUser(new OnSignedIn() {
+            @Override
+            public void finished(final FirebaseUser user) {
+                getListDocReference(new ListReference(listName, user.getUid())).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        onGetListExists.finished(task.getResult().exists(), listName);
+                    }
+                });
+            }
+        });
+    }
+
+    public void checkExistsAndAdd(final ListReference listReference, final OnFinishedAction onFinishedAction) {
+        getListDocReference(listReference).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()) {
+                    addReference(listReference, new OnAddedReference() {
+                        @Override
+                        public void finished() {
+                            onFinishedAction.finished(true);
+                        }
+                    });
+                } else {
+                    onFinishedAction.finished(false);
+                }
+            }
+        });
+    }
+
+    public DocumentReference getListDocReference(ListReference listReference) {
+        return listsReference.document(listReference.getRefCode());
     }
 }

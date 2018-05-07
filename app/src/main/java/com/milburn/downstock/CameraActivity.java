@@ -66,6 +66,9 @@ public class CameraActivity extends AppCompatActivity {
     public MenuItem showSwipedItems;
     private MenuItem spinnerMenuItem;
     public Spinner spinnerSelect;
+    private MenuItem openImageMenuItem;
+    private MenuItem shareListMenuItem;
+    private MenuItem deleteListMenuItem;
     public ArrayAdapter spinnerArray;
     private FragmentManager fragmentManager;
     private Manager manager;
@@ -86,7 +89,18 @@ public class CameraActivity extends AppCompatActivity {
 
     private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
         @Override
-        public void FinishedProcessing(List<BasicItem> items, Bitmap bitmap, String pageId, int responseType) {
+        public void FinishedProcessing(List<BasicItem> items, ListReference listReference, Bitmap bitmap, String pageId, int responseType) {
+            if (listReference != null) {
+                vibrateToast(null, 0, PATTERN_FOUND);
+                manager.checkExistsAndAdd(listReference, new Manager.OnFinishedAction() {
+                    @Override
+                    public void finished(boolean added) {
+                        if (added) {
+                            supportInvalidateOptionsMenu();
+                        }
+                    }
+                });
+            }
             switch (responseType) {
                 //No new items detected
                 case 0:
@@ -203,24 +217,7 @@ public class CameraActivity extends AppCompatActivity {
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        toolbar.setNavigationIcon(R.drawable.ic_close);
-                        toolbar.setTitle("");
-                        spinnerMenuItem.setVisible(true);
-                        setOcrRunning(false);
-                        break;
-
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        toolbar.setNavigationIcon(null);
-                        toolbar.setTitle(R.string.app_name);
-                        spinnerMenuItem.setVisible(false);
-                        setOcrRunning(true);
-                        break;
-
-                    default:
-                        break;
-                }
+                setupMenu(newState == BottomSheetBehavior.STATE_EXPANDED);
             }
 
             @Override
@@ -330,11 +327,11 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void selectPhotos() {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/*");
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(intent, 0);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(intent, 0);
     }
 
     @Override
@@ -377,6 +374,22 @@ public class CameraActivity extends AppCompatActivity {
         return false;
     }
 
+    private void setupMenu(boolean bottomExpanded) {
+        if (bottomExpanded) {
+            toolbar.setTitle("");
+            toolbar.setNavigationIcon(R.drawable.ic_close);
+        } else {
+            toolbar.setTitle(R.string.app_name);
+            toolbar.setNavigationIcon(null);
+        }
+
+        spinnerMenuItem.setVisible(bottomExpanded);
+        openImageMenuItem.setVisible(bottomExpanded);
+        shareListMenuItem.setVisible(bottomExpanded);
+        deleteListMenuItem.setVisible(bottomExpanded);
+        setOcrRunning(!bottomExpanded);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -387,14 +400,12 @@ public class CameraActivity extends AppCompatActivity {
             spinnerMenuItem = menu.findItem(R.id.list_selector);
             spinnerSelect = (Spinner)spinnerMenuItem.getActionView();
 
-            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                toolbar.setTitle(R.string.app_name);
-                spinnerMenuItem.setVisible(false);
-            } else {
-                toolbar.setTitle("");
-                toolbar.setNavigationIcon(R.drawable.ic_close);
-                spinnerMenuItem.setVisible(true);
-            }
+            openImageMenuItem = menu.findItem(R.id.open_image);
+            shareListMenuItem = menu.findItem(R.id.share_list);
+            deleteListMenuItem = menu.findItem(R.id.delete_list);
+
+            setupMenu(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED);
+
             toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             toolbar.getOverflowIcon().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.MULTIPLY);
@@ -419,9 +430,6 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        if (getRecyclerFragment().getRecyclerAdapter().getProductDetails().sizeDetailedItems() == 0) {
-            getRecyclerFragment().setRefreshing(true);
-        }
         manager.getCurrentUser(new Manager.OnSignedIn() {
             @Override
             public void finished(final FirebaseUser user) {
@@ -462,8 +470,6 @@ public class CameraActivity extends AppCompatActivity {
                             }
                         }
                     });
-                } else {
-                    getRecyclerFragment().setRefreshing(false);
                 }
             }
         });
@@ -491,15 +497,12 @@ public class CameraActivity extends AppCompatActivity {
                     if (currentReference == null || !ref.equals(currentReference)) {
                         getRecyclerFragment().getRecyclerAdapter().refreshData(ref);
                     }
-                    getRecyclerFragment().setRefreshing(false);
                 }
             });
         }
 
         @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-            //
-        }
+        public void onNothingSelected(AdapterView<?> parent) { }
     };
 
     private boolean backNavPressed() {

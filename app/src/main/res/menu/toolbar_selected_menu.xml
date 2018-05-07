@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/share_items"
-        android:icon="@drawable/ic_share"
-        android:title="share_items"
+        android:id="@+id/new_list_selected"
+        android:icon="@drawable/add_list"
+        android:title="Add to new list"
         app:showAsAction="always" />
     <item
         android:id="@+id/delete_items"
         android:icon="@drawable/ic_delete"
-        android:title="delete_items"
+        android:title="Delete selected"
         app:showAsAction="always" />
     <item
         android:id="@+id/select_all_items"

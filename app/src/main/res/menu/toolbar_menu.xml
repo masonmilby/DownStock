@@ -11,7 +11,12 @@
         android:id="@+id/open_image"
         android:icon="@drawable/ic_open"
         android:title="Select image"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/share_list"
+        android:icon="@drawable/ic_share_white"
+        android:title="Share list"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/show_swiped"
         android:icon="@drawable/ic_visibility"

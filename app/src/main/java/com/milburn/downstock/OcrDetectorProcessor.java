@@ -38,7 +38,7 @@ public class OcrDetectorProcessor {
     private boolean isStopped = true;
 
     public interface DetectedInterface {
-        void FinishedProcessing(List<BasicItem> basicList, Bitmap bitmap, String pageId, int responseType);
+        void FinishedProcessing(List<BasicItem> basicList, ListReference listReference, Bitmap bitmap, String pageId, int responseType);
     }
 
     public OcrDetectorProcessor(Context con, DetectedInterface del) {
@@ -146,14 +146,27 @@ public class OcrDetectorProcessor {
         return basicList;
     }
 
+    public ListReference recognizeRefs(SparseArray<Barcode> barcodeItems) {
+        for (int i = 0; i < barcodeItems.size(); i++) {
+            String rawData = barcodeItems.valueAt(i).rawValue;
+            if (rawData.contains(":")) {
+                return new ListReference(rawData);
+            }
+        }
+        return null;
+    }
+
     public void recognizeFrame(Frame frame, int angle, boolean continuous, boolean rotate, String id) {
         isReadyForFrame = false;
         Frame rotatedFrame = rotateFrame(frame, angle);
-        List<BasicItem> basicList = recognizeSkus(textRecognizer.detect(rotate ? rotatedFrame : frame), barcodeDetector.detect(frame), id);
+        SparseArray<Barcode> barcodeSparseArray = barcodeDetector.detect(frame);
+        List<BasicItem> basicList = recognizeSkus(textRecognizer.detect(rotate ? rotatedFrame : frame), barcodeSparseArray, id);
+        ListReference listReference = recognizeRefs(barcodeSparseArray);
+
         if (basicList.size() != 0 | !continuous) {
-            delegate.FinishedProcessing(basicList, rotate ? rotatedFrame.getBitmap() : frame.getBitmap(), id, continuous ? 1 : 2);
+            delegate.FinishedProcessing(basicList, listReference, rotate ? rotatedFrame.getBitmap() : frame.getBitmap(), id, continuous ? 1 : 2);
         } else {
-            delegate.FinishedProcessing(null, null, null, 0);
+            delegate.FinishedProcessing(null, listReference, null, null, 0);
         }
         isReadyForFrame = continuous;
     }
