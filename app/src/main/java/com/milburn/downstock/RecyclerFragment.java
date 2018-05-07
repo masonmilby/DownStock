@@ -297,7 +297,11 @@ public class RecyclerFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateStock();
+                if (recyclerAdapter.getProductDetails().sizeDetailedItems() > 0) {
+                    queryApi(recyclerAdapter.getProductDetails(), true);
+                } else {
+                    setRefreshing(false);
+                }
             }
         });
 
@@ -332,8 +336,6 @@ public class RecyclerFragment extends Fragment {
     private void updateStock() {
         if (recyclerAdapter.getProductDetails().sizeDetailedItems() > 0) {
             queryApi(recyclerAdapter.getProductDetails(), true);
-        } else {
-            setRefreshing(false);
         }
     }
 
