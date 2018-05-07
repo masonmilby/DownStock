@@ -262,7 +262,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         manager.deleteReference(selectedReference, new Manager.OnDeletedReference() {
             @Override
             public void finished() {
-                getRecyclerFragment().showSnack("List '" + selectedReference.getName() + "' no longer exists", Snackbar.LENGTH_LONG);
+                getRecyclerFragment().showSnack("'" + selectedReference.getName() + "' no longer exists", Snackbar.LENGTH_LONG);
                 getRecyclerFragment().updateSelectionState();
             }
         });
