@@ -1,5 +1,6 @@
 package com.milburn.downstock;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -325,12 +326,15 @@ public class RecyclerFragment extends Fragment {
     }
 
     public void setRefreshing(final boolean refreshing) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefresh.setRefreshing(refreshing);
-            }
-        });
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefresh.setRefreshing(refreshing);
+                }
+            });
+        }
     }
 
     private void updateStock() {

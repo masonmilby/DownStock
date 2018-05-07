@@ -79,6 +79,7 @@ public class CameraActivity extends AppCompatActivity {
     private LinearLayout bottomSheet;
     public BottomSheetBehavior bottomSheetBehavior;
     private BottomNavigationView bottomNavigationView;
+    private LinearLayout buttonsContainer;
 
     private Vibrator vibrator;
     private long[] PATTERN_FOUND = new long[]{0, 50};
@@ -214,6 +215,8 @@ public class CameraActivity extends AppCompatActivity {
         transition.setAnimateParentHierarchy(false);
         bottomSheet.setLayoutTransition(transition);
 
+        buttonsContainer = findViewById(R.id.buttons_container);
+
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -223,7 +226,6 @@ public class CameraActivity extends AppCompatActivity {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                LinearLayout buttonsContainer = findViewById(R.id.buttons_container);
                 buttonsContainer.setVisibility((slideOffset>lastFloat) ? View.GONE : View.VISIBLE);
                 lastFloat = slideOffset;
             }
@@ -387,6 +389,7 @@ public class CameraActivity extends AppCompatActivity {
                     toolbar.setNavigationIcon(null);
                 }
 
+                buttonsContainer.setVisibility(bottomExpanded ? View.GONE : View.VISIBLE);
                 spinnerMenuItem.setVisible(bottomExpanded);
                 openImageMenuItem.setVisible(bottomExpanded);
                 shareListMenuItem.setVisible(bottomExpanded);

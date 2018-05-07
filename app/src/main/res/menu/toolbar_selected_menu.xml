@@ -6,13 +6,15 @@
         android:id="@+id/new_list_selected"
         android:icon="@drawable/add_list"
         android:title="Add to new list"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/delete_items"
         android:icon="@drawable/ic_delete"
         android:title="Delete selected"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/select_all_items"
-        android:title="Select all" />
+        android:icon="@drawable/ic_select_all"
+        android:title="Select all"
+        app:showAsAction="ifRoom" />
 </menu>
