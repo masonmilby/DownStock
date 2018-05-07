@@ -100,23 +100,18 @@ public class RecyclerFragment extends Fragment {
         return recyclerAdapter.getProductDetails();
     }
 
-    public void queryApi(Object object, final boolean updateStock) {
+    public void queryApi(ProductDetails sendingProducts, final boolean updateStock) {
         BBYApi bbyApi = new BBYApi(activityContext, new BBYApi.AsyncResponse() {
             @Override
-            public void processFinish(Object object) {
+            public void processFinish(ProductDetails result) {
                 setRefreshing(false);
-                if (object instanceof ProductDetails) {
-                    ProductDetails returnedProducts = (ProductDetails)object;
-                    if (updateStock && getView() != null) {
-                        Snackbar.make(recyclerView, "Stock updated", Snackbar.LENGTH_SHORT).show();
-                    }
-                    recyclerAdapter.insertItems(returnedProducts.getDetailedItems());
-                } else if (object instanceof DetailedItem) {
-                    recyclerAdapter.insertItem(0, (DetailedItem)object);
+                if (updateStock && getView() != null) {
+                    Snackbar.make(recyclerView, "Stock updated", Snackbar.LENGTH_SHORT).show();
                 }
+                recyclerAdapter.insertItems(result.getDetailedItems());
             }
         });
-        bbyApi.execute(object);
+        bbyApi.execute(sendingProducts);
         setRefreshing(true);
     }
 
@@ -206,13 +201,22 @@ public class RecyclerFragment extends Fragment {
         return true;
     }
 
-    public void shareCurrentList(ListReference listReference) {
-        QRDialogFragment qrDialogFragment = new QRDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("is_new", false);
-        bundle.putString("list_reference", listReference.createString());
-        qrDialogFragment.setArguments(bundle);
-        qrDialogFragment.show(getFragmentManager(), "qrDialog");
+    public void shareCurrentList(final ListReference listReference) {
+        manager.getCurrentUser(new Manager.OnSignedIn() {
+            @Override
+            public void finished(FirebaseUser user) {
+                if (listReference.getUserId().equals(user.getUid()) && listReference.getName().equals("Main List")) {
+                    Snackbar.make(recyclerView, "Cannot share default list", Snackbar.LENGTH_LONG).show();
+                } else {
+                    QRDialogFragment qrDialogFragment = new QRDialogFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("is_new", false);
+                    bundle.putString("list_reference", listReference.createString());
+                    qrDialogFragment.setArguments(bundle);
+                    qrDialogFragment.show(getFragmentManager(), "qrDialog");
+                }
+            }
+        });
     }
 
     public void selectedToNewList(final Set<DetailedItem> selectedSet) {
@@ -328,6 +332,8 @@ public class RecyclerFragment extends Fragment {
     private void updateStock() {
         if (recyclerAdapter.getProductDetails().sizeDetailedItems() > 0) {
             queryApi(recyclerAdapter.getProductDetails(), true);
+        } else {
+            setRefreshing(false);
         }
     }
 

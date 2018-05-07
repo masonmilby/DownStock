@@ -244,6 +244,10 @@
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/8648f65a83612b6cde78557e5a37237b/res/drawable-xhdpi-v4/abc_list_selector_disabled_holo_light.9.png"
     },
     {
+        "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/layout_fragment_custom_id.xml.flat",
+        "source": "/Users/masonmilburn/StudioProjects/DownStock/app/src/main/res/layout/fragment_custom_id.xml"
+    },
+    {
         "merged": "/Users/masonmilburn/StudioProjects/DownStock/app/build/intermediates/res/merged/debug/drawable-xxxhdpi-v4_abc_btn_radio_to_on_mtrl_000.png.flat",
         "source": "/Users/masonmilburn/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/8648f65a83612b6cde78557e5a37237b/res/drawable-xxxhdpi-v4/abc_btn_radio_to_on_mtrl_000.png"
     },

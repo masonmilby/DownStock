@@ -89,14 +89,15 @@ public class CameraActivity extends AppCompatActivity {
 
     private OcrDetectorProcessor.DetectedInterface detectedInterface = new OcrDetectorProcessor.DetectedInterface() {
         @Override
-        public void FinishedProcessing(List<BasicItem> items, ListReference listReference, Bitmap bitmap, String pageId, int responseType) {
+        public void FinishedProcessing(List<BasicItem> items, final ListReference listReference, Bitmap bitmap, String pageId, int responseType) {
             if (listReference != null) {
                 vibrateToast(null, 0, PATTERN_FOUND);
                 manager.checkExistsAndAdd(listReference, new Manager.OnFinishedAction() {
                     @Override
                     public void finished(boolean added) {
                         if (added) {
-                            supportInvalidateOptionsMenu();
+                            getRecyclerFragment().getRecyclerAdapter().refreshData(listReference);
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         }
                     }
                 });
@@ -374,20 +375,25 @@ public class CameraActivity extends AppCompatActivity {
         return false;
     }
 
-    private void setupMenu(boolean bottomExpanded) {
-        if (bottomExpanded) {
-            toolbar.setTitle("");
-            toolbar.setNavigationIcon(R.drawable.ic_close);
-        } else {
-            toolbar.setTitle(R.string.app_name);
-            toolbar.setNavigationIcon(null);
-        }
+    private void setupMenu(final boolean bottomExpanded) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (bottomExpanded) {
+                    toolbar.setTitle("");
+                    toolbar.setNavigationIcon(R.drawable.ic_close);
+                } else {
+                    toolbar.setTitle(R.string.app_name);
+                    toolbar.setNavigationIcon(null);
+                }
 
-        spinnerMenuItem.setVisible(bottomExpanded);
-        openImageMenuItem.setVisible(bottomExpanded);
-        shareListMenuItem.setVisible(bottomExpanded);
-        deleteListMenuItem.setVisible(bottomExpanded);
-        setOcrRunning(!bottomExpanded);
+                spinnerMenuItem.setVisible(bottomExpanded);
+                openImageMenuItem.setVisible(bottomExpanded);
+                shareListMenuItem.setVisible(bottomExpanded);
+                deleteListMenuItem.setVisible(bottomExpanded);
+                setOcrRunning(!bottomExpanded);
+            }
+        });
     }
 
     @Override
@@ -516,11 +522,27 @@ public class CameraActivity extends AppCompatActivity {
         return false;
     }
 
+    private void manuallyAddItem() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        AddProductFragment addProductFragment = new AddProductFragment();
+        addProductFragment.show(getSupportFragmentManager(), "addFragment");
+        addProductFragment.setListener(new AddProductFragment.OnSubmitItem() {
+            @Override
+            public void submit(ProductDetails.DetailedItem detailedItem) {
+                getRecyclerFragment().getRecyclerAdapter().insertItem(0, detailedItem);
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 backNavPressed();
+                return true;
+
+            case R.id.add_item:
+                manuallyAddItem();
                 return true;
 
             case R.id.open_image:

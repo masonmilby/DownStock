@@ -11,9 +11,8 @@ import org.jsoup.Jsoup;
 
 import com.milburn.downstock.ProductDetails.ItemStoreInfo;
 import com.milburn.downstock.ProductDetails.DetailedItem;
-import com.milburn.downstock.ProductDetails.BasicItem;
 
-public class BBYApi extends AsyncTask<Object, Integer, Object> {
+public class BBYApi extends AsyncTask<ProductDetails, Integer, ProductDetails> {
 
     public AsyncResponse delegate;
     private Context context;
@@ -28,24 +27,16 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
     }
 
     public interface AsyncResponse {
-        void processFinish(Object result);
+        void processFinish(ProductDetails result);
     }
 
     @Override
-    protected Object doInBackground(Object... params) {
-        Object object = params[0];
-
-        if (object instanceof ProductDetails) {
-            ProductDetails productDetails = (ProductDetails)object;
-            if (productDetails.sizeDetailedItems() > 0) {
-                return getUpdatedStoreInfo(productDetails);
-            } else {
-                return getDetailedItems(productDetails);
-            }
-        } else if (object instanceof BasicItem) {
-            return getDetailedItem((BasicItem)object);
+    protected ProductDetails doInBackground(ProductDetails... params) {
+        if (params[0].sizeDetailedItems() > 0) {
+            return getUpdatedStoreInfo(params[0]);
+        } else {
+            return getDetailedItems(params[0]);
         }
-        return object;
     }
 
     private ItemStoreInfo getStoreInfo(DetailedItem item) {
@@ -72,30 +63,6 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
             item.setStock(getStoreInfo(item));
         }
         return productDetails;
-    }
-
-    private DetailedItem getDetailedItem(BasicItem basicItem) {
-        String itemUrl = "https://api.bestbuy.com/v1/products/" + basicItem.getSku() + ".json?format=json&show=sku,upc,name,salePrice,image,url,modelNumber&apiKey=" + context.getString(R.string.bbyapi);
-        String itemResult = null;
-        int count = 0;
-        while (count <= maxAttempts && itemResult == null) {
-            count++;
-            try {
-                itemResult = Jsoup.connect(itemUrl).ignoreContentType(true).execute().body();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (itemResult != null) {
-            DetailedItem detailedItem = gson.fromJson(itemResult, DetailedItem.class);
-            detailedItem.setPageId(basicItem.getPageId());
-            detailedItem.setMultiPlano(basicItem.isMutiPlano());
-            detailedItem.setStock(getStoreInfo(detailedItem));
-
-            return detailedItem;
-        }
-        return null;
     }
 
     private ProductDetails getDetailedItems(ProductDetails productDetails) {
@@ -130,7 +97,7 @@ public class BBYApi extends AsyncTask<Object, Integer, Object> {
     }
 
     @Override
-    protected void onPostExecute(Object result) {
+    protected void onPostExecute(ProductDetails result) {
         delegate.processFinish(result);
     }
 }
