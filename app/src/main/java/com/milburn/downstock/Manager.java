@@ -289,7 +289,7 @@ public class Manager {
         getListDocReference(listReference).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.getResult().exists()) {
+                if (task.isSuccessful() && task.getResult().exists()) {
                     addReference(listReference, new OnAddedReference() {
                         @Override
                         public void finished() {
