@@ -35,4 +35,7 @@
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
         android:title="Settings" />
+    <item
+        android:id="@+id/tutorial"
+        android:title="Tutorial" />
 </menu>

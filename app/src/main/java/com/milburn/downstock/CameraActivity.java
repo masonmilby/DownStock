@@ -560,6 +560,11 @@ public class CameraActivity extends AppCompatActivity {
                 deleteList();
                 return true;
 
+            case R.id.tutorial:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://w4a7t.app.goo.gl/tutorial"));
+                startActivity(intent);
+                return true;
+
             default:
                 return false;
         }
