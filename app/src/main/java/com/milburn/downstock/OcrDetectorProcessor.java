@@ -159,16 +159,20 @@ public class OcrDetectorProcessor {
     public void recognizeFrame(Frame frame, int angle, boolean continuous, boolean rotate, String id) {
         isReadyForFrame = false;
         Frame rotatedFrame = rotateFrame(frame, angle);
-        SparseArray<Barcode> barcodeSparseArray = barcodeDetector.detect(frame);
-        List<BasicItem> basicList = recognizeSkus(textRecognizer.detect(rotate ? rotatedFrame : frame), barcodeSparseArray, id);
-        ListReference listReference = recognizeRefs(barcodeSparseArray);
 
-        if (basicList.size() != 0 | !continuous) {
-            delegate.FinishedProcessing(basicList, listReference, rotate ? rotatedFrame.getBitmap() : frame.getBitmap(), id, continuous ? 1 : 2);
+        if (barcodeDetector != null && textRecognizer != null) {
+            SparseArray<Barcode> barcodeSparseArray = barcodeDetector.detect(frame);
+            SparseArray<TextBlock> textBlockSparseArray = textRecognizer.detect(rotate ? rotatedFrame : frame);
+            List<BasicItem> basicList = recognizeSkus(textBlockSparseArray, barcodeSparseArray, id);
+            ListReference listReference = recognizeRefs(barcodeSparseArray);
+
+            if (basicList.size() != 0 | !continuous) {
+                delegate.FinishedProcessing(basicList, listReference, rotate ? rotatedFrame.getBitmap() : frame.getBitmap(), id, continuous ? 1 : 2);
+            }
+            isReadyForFrame = continuous;
         } else {
-            delegate.FinishedProcessing(null, listReference, null, null, 0);
+            start();
         }
-        isReadyForFrame = continuous;
     }
 
     private boolean isAlreadyRecognized(String id) {

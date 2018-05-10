@@ -125,6 +125,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_camera);
         fragmentManager = getSupportFragmentManager();
         manager = new Manager(this);
 
@@ -169,8 +170,6 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void finishSetup() {
-        setContentView(R.layout.activity_camera);
-
         MobileAds.initialize(this, this.getString(R.string.admob_key));
         AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
