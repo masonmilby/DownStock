@@ -117,6 +117,7 @@ public class RecyclerFragment extends Fragment {
     }
 
     public void openImage(String pageId) {
+        setRefreshing(true);
         manager.getPageUri(pageId, new Manager.OnGetPageUri() {
             @Override
             public void finished(Uri uri) {
@@ -130,8 +131,11 @@ public class RecyclerFragment extends Fragment {
                             intent.setDataAndType(finalUri, "image/*");
                             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             startActivity(intent);
+                            setRefreshing(false);
                         }
                     });
+                } else {
+                    setRefreshing(false);
                 }
             }
         });

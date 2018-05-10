@@ -125,6 +125,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentManager = getSupportFragmentManager();
         manager = new Manager(this);
 
         if (savedInstanceState != null) {
@@ -199,8 +200,13 @@ public class CameraActivity extends AppCompatActivity {
                 fotoapparat.takePicture().toBitmap().whenAvailable(new Function1<BitmapPhoto, Unit>() {
                     @Override
                     public Unit invoke(final BitmapPhoto bitmapPhoto) {
-                        com.google.android.gms.vision.Frame frame = new com.google.android.gms.vision.Frame.Builder().setBitmap(bitmapPhoto.bitmap).build();
-                        ocr.recognizeFrame(frame, rotation, false, true, ProductDetails.generateUUID());
+                        if (bitmapPhoto != null) {
+                            com.google.android.gms.vision.Frame frame = new com.google.android.gms.vision.Frame.Builder().setBitmap(bitmapPhoto.bitmap).build();
+                            ocr.recognizeFrame(frame, rotation, false, true, ProductDetails.generateUUID());
+                        } else {
+                            Snackbar.make(coordinatorLayout, "Capture failed", Snackbar.LENGTH_LONG).show();
+                            setCaptureButtonEnabled(true);
+                        }
                         return null;
                     }
                 });
@@ -248,7 +254,6 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
-        fragmentManager = getSupportFragmentManager();
         ocr = new OcrDetectorProcessor(this, detectedInterface);
 
         bottomNavigationView.setSelectedItemId(isPageSelected ? R.id.selector_page : R.id.selector_sku_upc);
