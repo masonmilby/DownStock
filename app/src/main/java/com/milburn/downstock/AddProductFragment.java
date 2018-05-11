@@ -21,7 +21,7 @@ public class AddProductFragment extends DialogFragment {
     private OnSubmitItem listener;
     private BBYApi bbyApi;
     private TextInputLayout idLayout;
-    final private ProductDetails productDetails = new ProductDetails();
+    private ProductDetails productDetails = new ProductDetails();
 
     @Override
     public void onAttach(Context context) {
@@ -70,6 +70,7 @@ public class AddProductFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(final Editable s) {
+                productDetails = new ProductDetails();
                 String prodId = s.toString();
                 if (prodId.length() == 7 || prodId.length() == 12) {
                     if (prodId.length() == 7) {
@@ -94,7 +95,7 @@ public class AddProductFragment extends DialogFragment {
                     });
                     bbyApi.execute(productDetails);
 
-                } else {
+                } else if (getDialog() != null) {
                     ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
             }

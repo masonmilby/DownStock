@@ -93,16 +93,18 @@ public class QRDialogFragment extends DialogFragment {
                         manager.getListExists(s.toString(), new Manager.OnGetListExists() {
                             @Override
                             public void finished(boolean exists, String name) {
-                                if (exists && name.equals(nameLayout.getEditText().getText().toString())) {
-                                    ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                                    nameLayout.setError("List already exists");
-                                } else if (!exists && name.equals(nameLayout.getEditText().getText().toString())) {
-                                    nameLayout.setError("");
-                                    ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                                if (getDialog() != null) {
+                                    if (exists && name.equals(nameLayout.getEditText().getText().toString())) {
+                                        ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                                        nameLayout.setError("List already exists");
+                                    } else if (!exists && name.equals(nameLayout.getEditText().getText().toString())) {
+                                        nameLayout.setError("");
+                                        ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                                    }
                                 }
                             }
                         });
-                    } else {
+                    } else if (getDialog() != null) {
                         ((AlertDialog)getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                     }
                 }
