@@ -81,12 +81,14 @@ public class AddProductFragment extends DialogFragment {
                     bbyApi = new BBYApi(getContext(), new BBYApi.AsyncResponse() {
                         @Override
                         public void processFinish(ProductDetails result) {
-                            if (result.sizeDetailedItems() == 1) {
-                                ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                                idLayout.setError("");
-                            } else {
-                                idLayout.setError("Product does not exist");
-                                ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                            if (getDialog() != null) {
+                                if (result.sizeDetailedItems() == 1) {
+                                    ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                                    idLayout.setError("");
+                                } else {
+                                    idLayout.setError("Product does not exist");
+                                    ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                                }
                             }
                         }
                     });

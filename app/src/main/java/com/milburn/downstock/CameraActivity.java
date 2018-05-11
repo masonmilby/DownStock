@@ -294,9 +294,14 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    private void setCaptureButtonEnabled(boolean enabled) {
-        captureButton.setEnabled(enabled);
-        captureButton.setAlpha(enabled ? 1.0f : 0.5f);
+    private void setCaptureButtonEnabled(final boolean enabled) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                captureButton.setEnabled(enabled);
+                captureButton.setAlpha(enabled ? 1.0f : 0.5f);
+            }
+        });
     }
 
     private void submitItems(List<BasicItem> basicItems, Bitmap bitmap, String pageId, boolean save) {
