@@ -285,7 +285,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public DetailedItem getShownItem(int position) {
-        return getProductDetails().getDetailedItem(detailedList.get(position).getSku());
+        if (detailedList.size() > 0) {
+            return getProductDetails().getDetailedItem(detailedList.get(position).getSku());
+        }
+        return new DetailedItem();
     }
 
     public int getShownItemIndex(DetailedItem item) {
@@ -354,7 +357,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public void removeItem(int position) {
         DetailedItem item = getShownItem(position);
-
         removedItem = item;
         removedPosition = position;
         removedSet.add(item);

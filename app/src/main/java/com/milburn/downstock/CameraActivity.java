@@ -16,7 +16,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -70,7 +69,6 @@ public class CameraActivity extends AppCompatActivity {
     private MenuItem shareListMenuItem;
     private MenuItem deleteListMenuItem;
     public ArrayAdapter spinnerArray;
-    private FragmentManager fragmentManager;
     private Manager manager;
     private Button captureButton;
     private CameraView cameraView;
@@ -97,7 +95,9 @@ public class CameraActivity extends AppCompatActivity {
                     @Override
                     public void finished(boolean added) {
                         if (added) {
-                            getRecyclerFragment().getRecyclerAdapter().refreshData(listReference);
+                            if (getRecyclerFragment() != null) {
+                                getRecyclerFragment().getRecyclerAdapter().refreshData(listReference);
+                            }
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         }
                     }
@@ -126,7 +126,6 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        fragmentManager = getSupportFragmentManager();
         manager = new Manager(this);
 
         if (savedInstanceState != null) {
@@ -309,7 +308,9 @@ public class CameraActivity extends AppCompatActivity {
             ProductDetails tempProductDetails = new ProductDetails();
             tempProductDetails.addBasicItems(basicItems);
             vibrateToast(null, Toast.LENGTH_SHORT, PATTERN_FOUND);
-            getRecyclerFragment().queryApi(tempProductDetails, false);
+            if (getRecyclerFragment() != null) {
+                getRecyclerFragment().queryApi(tempProductDetails, false);
+            }
 
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
@@ -323,7 +324,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     public RecyclerFragment getRecyclerFragment() {
-        return (RecyclerFragment) fragmentManager.findFragmentById(R.id.fragment_recycler);
+        return (RecyclerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recycler);
     }
 
     public void vibrateToast(final CharSequence text, final int duration, final long[] pattern) {
@@ -472,7 +473,11 @@ public class CameraActivity extends AppCompatActivity {
                             } else {
                                 spinnerArray = references.createSpinnerAdapter(getApplicationContext());
                                 spinnerSelect.setAdapter(spinnerArray);
-                                ListReference selectedRef = getRecyclerFragment().getRecyclerAdapter().getSelectedReference();
+
+                                ListReference selectedRef = null;
+                                if (getRecyclerFragment() != null) {
+                                    selectedRef = getRecyclerFragment().getRecyclerAdapter().getSelectedReference();
+                                }
 
                                 if (selectedRef != null) {
                                     for (int i = 0; i < spinnerArray.getCount(); i++) {
@@ -494,13 +499,17 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void deleteList() {
-        manager.deleteList(getRecyclerFragment().getRecyclerAdapter().getSelectedReference(),
-                getRecyclerFragment().getProductDetails(), new Manager.OnDeletedList() {
-                    @Override
-                    public void finished() {
-                        getRecyclerFragment().updateSelectionState();
-                    }
-                });
+        if (getRecyclerFragment() != null) {
+            manager.deleteList(getRecyclerFragment().getRecyclerAdapter().getSelectedReference(),
+                    getRecyclerFragment().getProductDetails(), new Manager.OnDeletedList() {
+                        @Override
+                        public void finished() {
+                            if (getRecyclerFragment() != null) {
+                                getRecyclerFragment().updateSelectionState();
+                            }
+                        }
+                    });
+        }
     }
 
     private AdapterView.OnItemSelectedListener spinnerSelectListener = new AdapterView.OnItemSelectedListener() {
@@ -511,8 +520,12 @@ public class CameraActivity extends AppCompatActivity {
                 public void finished(MapListReferences references) {
                     ListReference ref = (ListReference)spinnerArray.getItem(position);
 
-                    ListReference currentReference = getRecyclerFragment().getRecyclerAdapter().getSelectedReference();
-                    if (currentReference == null || !ref.equals(currentReference)) {
+                    ListReference currentReference = null;
+                    if (getRecyclerFragment() != null) {
+                        currentReference = getRecyclerFragment().getRecyclerAdapter().getSelectedReference();
+                    }
+
+                    if (currentReference == null || !ref.equals(currentReference) && getRecyclerFragment() != null) {
                         getRecyclerFragment().getRecyclerAdapter().refreshData(ref);
                     }
                 }
@@ -524,7 +537,7 @@ public class CameraActivity extends AppCompatActivity {
     };
 
     private boolean backNavPressed() {
-        if (isSelectionState()) {
+        if (isSelectionState() && getRecyclerFragment() != null) {
             getRecyclerFragment().getRecyclerAdapter().selectAll(true);
             return true;
         } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
@@ -541,7 +554,9 @@ public class CameraActivity extends AppCompatActivity {
         addProductFragment.setListener(new AddProductFragment.OnSubmitItem() {
             @Override
             public void submit(ProductDetails.DetailedItem detailedItem) {
-                getRecyclerFragment().getRecyclerAdapter().insertItem(0, detailedItem);
+                if (getRecyclerFragment() != null) {
+                    getRecyclerFragment().getRecyclerAdapter().insertItem(0, detailedItem);
+                }
             }
         });
     }

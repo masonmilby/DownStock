@@ -176,8 +176,12 @@ public class OcrDetectorProcessor {
     }
 
     private boolean isAlreadyRecognized(String id) {
-        ProductDetails productDetails = ((CameraActivity)context).getRecyclerFragment().getProductDetails();
-        return productDetails.getBasicItem(id) != null | productDetails.getDetailedItem(id) != null;
+        RecyclerFragment recyclerFragment = ((CameraActivity)context).getRecyclerFragment();
+        if (recyclerFragment != null) {
+            ProductDetails productDetails = recyclerFragment.getProductDetails();
+            return productDetails.getBasicItem(id) != null | productDetails.getDetailedItem(id) != null;
+        }
+        return true;
     }
 
     public Frame convertToGVFrame(io.fotoapparat.preview.Frame frame) {

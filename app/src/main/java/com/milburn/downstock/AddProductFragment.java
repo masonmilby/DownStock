@@ -39,7 +39,9 @@ public class AddProductFragment extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.submit(productDetails.getDetailedItems().get(0));
+                        if (listener != null) {
+                            listener.submit(productDetails.getDetailedItems().get(0));
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
