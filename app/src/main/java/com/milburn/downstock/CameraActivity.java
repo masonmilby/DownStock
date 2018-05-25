@@ -33,8 +33,14 @@ import android.support.v7.widget.Toolbar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.error.CameraErrorListener;
@@ -457,7 +463,11 @@ public class CameraActivity extends AppCompatActivity {
                         @Override
                         public void finished(MapListReferences references) {
                             if (references.isEmpty()) {
-                                manager.saveList(new ProductDetails(), new ListReference("Main List", user.getUid()), new Manager.OnSaveListCompleted() {
+
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d H:mm:ss", Locale.US);
+                                String dateName = simpleDateFormat.format(new Date());
+
+                                manager.saveList(new ProductDetails(), new ListReference(dateName, user.getUid()), new Manager.OnSaveListCompleted() {
                                     @Override
                                     public void finished() {
                                         manager.getReferences(new Manager.OnGetReferences() {

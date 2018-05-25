@@ -210,16 +210,12 @@ public class RecyclerFragment extends Fragment {
         manager.getCurrentUser(new Manager.OnSignedIn() {
             @Override
             public void finished(FirebaseUser user) {
-                if (listReference.getUserId().equals(user.getUid()) && listReference.getName().equals("Main List")) {
-                    Snackbar.make(recyclerView, "Cannot share default list", Snackbar.LENGTH_LONG).show();
-                } else {
-                    QRDialogFragment qrDialogFragment = new QRDialogFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("is_new", false);
-                    bundle.putString("list_reference", listReference.createString());
-                    qrDialogFragment.setArguments(bundle);
-                    qrDialogFragment.show(getFragmentManager(), "qrDialog");
-                }
+                QRDialogFragment qrDialogFragment = new QRDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("is_new", false);
+                bundle.putString("list_reference", listReference.createString());
+                qrDialogFragment.setArguments(bundle);
+                qrDialogFragment.show(getFragmentManager(), "qrDialog");
             }
         });
     }
