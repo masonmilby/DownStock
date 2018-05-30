@@ -207,17 +207,19 @@ public class RecyclerFragment extends Fragment {
     }
 
     public void shareCurrentList(final ListReference listReference) {
-        manager.getCurrentUser(new Manager.OnSignedIn() {
-            @Override
-            public void finished(FirebaseUser user) {
-                QRDialogFragment qrDialogFragment = new QRDialogFragment();
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("is_new", false);
-                bundle.putString("list_reference", listReference.createString());
-                qrDialogFragment.setArguments(bundle);
-                qrDialogFragment.show(getFragmentManager(), "qrDialog");
-            }
-        });
+        if (listReference != null) {
+            manager.getCurrentUser(new Manager.OnSignedIn() {
+                @Override
+                public void finished(FirebaseUser user) {
+                    QRDialogFragment qrDialogFragment = new QRDialogFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("is_new", false);
+                    bundle.putString("list_reference", listReference.createString());
+                    qrDialogFragment.setArguments(bundle);
+                    qrDialogFragment.show(getFragmentManager(), "qrDialog");
+                }
+            });
+        }
     }
 
     public void selectedToNewList(final Set<DetailedItem> selectedSet) {

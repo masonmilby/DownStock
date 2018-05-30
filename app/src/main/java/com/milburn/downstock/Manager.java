@@ -127,29 +127,31 @@ public class Manager {
     }
 
     public void deleteList(final ListReference reference, final ProductDetails productDetails, final OnDeletedList onDeletedList) {
-        getCurrentUser(new OnSignedIn() {
-            @Override
-            public void finished(final FirebaseUser user) {
-                for (String id : productDetails.getAllPageIds()) {
-                    deletePage(id);
-                }
-                deleteReference(reference, new OnDeletedReference() {
-                    @Override
-                    public void finished() {
-                        if (user.getUid().contentEquals(reference.getUserId())) {
-                            listsReference.document(reference.getRefCode()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    onDeletedList.finished();
-                                }
-                            });
-                        } else {
-                            onDeletedList.finished();
-                        }
+        if (reference != null) {
+            getCurrentUser(new OnSignedIn() {
+                @Override
+                public void finished(final FirebaseUser user) {
+                    for (String id : productDetails.getAllPageIds()) {
+                        deletePage(id);
                     }
-                });
-            }
-        });
+                    deleteReference(reference, new OnDeletedReference() {
+                        @Override
+                        public void finished() {
+                            if (user.getUid().contentEquals(reference.getUserId())) {
+                                listsReference.document(reference.getRefCode()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        onDeletedList.finished();
+                                    }
+                                });
+                            } else {
+                                onDeletedList.finished();
+                            }
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void getPageExists(String pageId, final OnGetPageExists onGetPageExists) {
